@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Your Name — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #0e1621;
+  --bg2:         #131d2e;
+  --surface:     #1a2540;
+  --surface2:    #1f2d4a;
+  --accent:      #7eb8f7;
+  --accent-dim:  rgba(126,184,247,0.1);
+  --accent2:     #93c5fd;
+  --sky:         #bae6fd;
+  --mist:        #94a3c4;
+  --faint:       #3d5070;
+  --bright:      #dde8f8;
+  --border:      rgba(126,184,247,0.1);
+  --border-h:    rgba(126,184,247,0.25);
+  --sidebar-w:   360px;
+  --sans:        'Outfit', sans-serif;
+  --mono:        'DM Mono', monospace;
+}
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  background: var(--bg);
+  color: var(--bright);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* SHELL */
+.shell {
+  display: flex;
+  height: 100vh;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* SIDEBAR — never scrolls */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 72px 48px 56px 0;
+  position: relative;
+}
+
+.sidebar::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 80px; bottom: 80px;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--border) 20%, var(--border) 80%, transparent);
+}
+
+.s-name {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--bright);
+  letter-spacing: -0.3px;
+  line-height: 1.15;
+  margin-bottom: 7px;
+}
+
+.s-title {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.6px;
+  margin-bottom: 16px;
+}
+
+.s-bio {
+  font-size: 0.82rem;
+  color: var(--mist);
+  line-height: 1.65;
+  max-width: 230px;
+}
+
+.s-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 28px 0;
+}
+
+.s-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.s-nav a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: var(--mist);
+  font-size: 0.71rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 0;
+  transition: color 0.22s;
+}
+
+.s-nav a .nl {
+  display: block;
+  height: 1px;
+  width: 24px;
+  background: var(--faint);
+  transition: width 0.28s ease, background 0.28s;
+  flex-shrink: 0;
+}
+
+.s-nav a:hover,
+.s-nav a.active { color: var(--bright); }
+
+.s-nav a:hover .nl,
+.s-nav a.active .nl { width: 48px; background: var(--accent); }
+
+.s-socials {
+  display: flex;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.s-socials a {
+  color: var(--faint);
+  display: flex;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.s-socials a:hover { color: var(--accent); transform: translateY(-2px); }
+.s-socials svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* SCROLL PANE */
+.pane {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 72px 0 120px 64px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--faint) transparent;
+  min-width: 0;
+}
+
+.pane::-webkit-scrollbar { width: 4px; }
+.pane::-webkit-scrollbar-thumb { background: var(--faint); border-radius: 2px; }
+
+/* SECTION */
+section {
+  margin-bottom: 96px;
+  scroll-margin-top: 40px;
+}
+
+.sec-label {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sec-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ABOUT */
+.about-text p { color: var(--mist); font-size: 0.88rem; margin-bottom: 13px; }
+.about-text a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+.about-text a:hover { border-color: var(--accent); }
+.about-text strong { color: var(--bright); font-weight: 500; }
+
+/* EXPERIENCE */
+.exp-item {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 0 20px;
+  padding: 18px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+  margin-bottom: 2px;
+}
+
+.exp-item:hover { background: var(--accent-dim); border-color: var(--border-h); }
+
+.exp-date {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--faint);
+  text-transform: uppercase;
+  padding-top: 3px;
+  line-height: 1.5;
+}
+
+.exp-role {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--bright);
+  margin-bottom: 5px;
+}
+
+.exp-role a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: color 0.2s; }
+.exp-role a:hover { color: var(--accent); }
+
+.arrow {
+  font-size: 0.72rem;
+  color: var(--faint);
+  display: inline-block;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.exp-item:hover .arrow { color: var(--accent); transform: translate(2px,-2px); }
+
+.exp-desc {
+  font-size: 0.82rem;
+  color: var(--mist);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+.tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  background: rgba(126,184,247,0.09);
+  color: var(--accent2);
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+.resume-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  margin-left: 16px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--mist);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.resume-link:hover { color: var(--accent); }
+
+/* SKILLS */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 10px;
+}
+
+.skill-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.skill-box:hover { background: var(--surface2); border-color: var(--border-h); }
+
+.skill-cat {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin-bottom: 10px;
+}
+
+.skill-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+
+.skill-list li {
+  font-size: 0.79rem;
+  color: var(--mist);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.skill-list li::before {
+  content: '';
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.45;
+  flex-shrink: 0;
+}
+
+/* PROJECTS */
+.project-card {
+  display: grid;
+  grid-template-columns: 114px 1fr;
+  gap: 0 18px;
+  padding: 18px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+  margin-bottom: 2px;
+}
+
+.project-card:hover { background: var(--accent-dim); border-color: var(--border-h); }
+
+.proj-thumb {
+  width: 108px; height: 72px;
+  border-radius: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.proj-thumb svg { width: 26px; height: 26px; opacity: 0.28; }
+
+.proj-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--bright);
+  margin-bottom: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.project-card:hover .proj-name .arrow { color: var(--accent); transform: translate(2px,-2px); }
+.proj-desc { font-size: 0.81rem; color: var(--mist); line-height: 1.6; }
+
+/* ART */
+.art-intro {
+  font-size: 0.86rem;
+  color: var(--mist);
+  margin-bottom: 26px;
+  line-height: 1.75;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 12px;
+}
+
+.art-card {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: border-color 0.25s, transform 0.25s;
+  cursor: pointer;
+  position: relative;
+}
+
+.art-card:hover { border-color: var(--border-h); transform: translateY(-3px); }
+
+.art-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.art-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+}
+
+.art-placeholder.ap1 { background: #0d1b35; }
+.art-placeholder.ap1::before { background: radial-gradient(circle at 30% 40%, #1e4d8c 0%, transparent 65%), radial-gradient(circle at 75% 70%, #0d3060 0%, transparent 55%); }
+.art-placeholder.ap2 { background: #101a2a; }
+.art-placeholder.ap2::before { background: radial-gradient(circle at 65% 35%, #163a6b 0%, transparent 60%), radial-gradient(circle at 20% 75%, #0a2548 0%, transparent 50%); }
+.art-placeholder.ap3 { background: #0c1e38; }
+.art-placeholder.ap3::before { background: radial-gradient(circle at 50% 20%, #1b4880 0%, transparent 55%), radial-gradient(circle at 80% 80%, #0e2d5a 0%, transparent 50%); }
+.art-placeholder.ap4 { background: #0e1e34; }
+.art-placeholder.ap4::before { background: radial-gradient(circle at 20% 30%, #2a5298 0%, transparent 50%), radial-gradient(circle at 70% 60%, #112d5c 0%, transparent 60%); }
+.art-placeholder.ap5 { background: #0b1a30; }
+.art-placeholder.ap5::before { background: radial-gradient(circle at 55% 55%, #1a4275 0%, transparent 60%), radial-gradient(circle at 25% 80%, #0c2547 0%, transparent 45%); }
+.art-placeholder.ap6 { background: #0f1e38; }
+.art-placeholder.ap6::before { background: radial-gradient(circle at 75% 25%, #1d4a85 0%, transparent 55%), radial-gradient(circle at 30% 65%, #0e2b54 0%, transparent 50%); }
+
+.art-placeholder svg {
+  position: relative;
+  z-index: 1;
+  opacity: 0.18;
+  width: 36px; height: 36px;
+}
+
+.art-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,18,32,0.78);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.22s;
+  padding: 12px;
+  text-align: center;
+  z-index: 2;
+}
+
+.art-card:hover .art-overlay { opacity: 1; }
+
+.art-ov-title {
+  font-size: 0.77rem;
+  font-weight: 600;
+  color: var(--bright);
+  margin-bottom: 4px;
+}
+
+.art-ov-meta {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+
+.art-caption { padding: 10px 12px; }
+
+.art-caption-title {
+  font-size: 0.77rem;
+  font-weight: 500;
+  color: var(--bright);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.art-caption-sub {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--faint);
+  margin-top: 2px;
+}
+
+.art-hint {
+  margin-top: 18px;
+  padding: 13px 16px;
+  border: 1px dashed var(--faint);
+  border-radius: 10px;
+  font-size: 0.78rem;
+  color: var(--faint);
+  text-align: center;
+  line-height: 1.65;
+}
+
+.art-hint code {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+}
+
+/* CONTACT */
+.contact-intro {
+  font-size: 0.87rem;
+  color: var(--mist);
+  max-width: 480px;
+  margin-bottom: 26px;
+  line-height: 1.75;
+}
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.87rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid rgba(126,184,247,0.28);
+  padding: 13px 26px;
+  border-radius: 8px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.contact-btn:hover { background: var(--accent-dim); border-color: var(--accent); }
+
+/* FOOTER */
+.footer {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--faint);
+  line-height: 1.9;
+}
+
+.footer a { color: var(--mist); text-decoration: none; }
+.footer a:hover { color: var(--accent); }
+
+/* CURSOR GLOW */
+#glow {
+  position: fixed;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(126,184,247,0.04) 0%, transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%,-50%);
+  z-index: 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 860px) {
+  html, body { overflow: auto; height: auto; }
+  .shell { flex-direction: column; height: auto; padding: 0 20px; }
+  .sidebar { position: static; width: 100%; height: auto; padding: 48px 0 0; }
+  .sidebar::after { display: none; }
+  .s-nav { display: none; }
+  .pane { height: auto; overflow: visible; padding: 40px 0 80px; }
+  .exp-item, .project-card { grid-template-columns: 1fr; }
+  .exp-date { margin-bottom: 4px; }
+  .proj-thumb { display: none; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.sidebar { animation: fadeUp 0.65s ease both; }
+section  { animation: fadeUp 0.5s ease both; }
+</style>
+</head>
+<body>
+
+<div id="glow"></div>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div>
+      <div class="s-name">Your Name</div>
+      <div class="s-title">Your Professional Title</div>
+      <p class="s-bio">A short, genuine bio that captures who you are, what you do, and what drives your work.</p>
+    </div>
+
+    <div class="s-divider"></div>
+
+    <nav class="s-nav">
+      <a href="#about"><span class="nl"></span>About</a>
+      <a href="#experience"><span class="nl"></span>Experience</a>
+      <a href="#skills"><span class="nl"></span>Skills</a>
+      <a href="#projects"><span class="nl"></span>Projects</a>
+      <a href="#art"><span class="nl"></span>Art</a>
+      <a href="#contact"><span class="nl"></span>Contact</a>
+    </nav>
+
+    <div class="s-socials">
+      <a href="https://github.com" target="_blank" title="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      <a href="https://linkedin.com" target="_blank" title="LinkedIn">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="https://twitter.com" target="_blank" title="Twitter / X">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.261 5.632 5.903-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="https://instagram.com" target="_blank" title="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="mailto:your@email.com" title="Email">
+        <svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 11.366l9.615-7.545h.749A1.636 1.636 0 0 1 24 5.457z"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- SCROLLABLE PANE -->
+  <div class="pane" id="pane">
+
+    <section id="about">
+      <div class="sec-label">About</div>
+      <div class="about-text">
+        <p>I'm a <strong>[your profession]</strong> with a passion for <strong>[what you love doing]</strong>. I thrive at the intersection of [discipline A] and [discipline B], where craft meets purpose and detail matters.</p>
+        <p>Currently at <a href="#">Company Name</a>, where I [brief description of your role and impact]. Before that I worked with <a href="#">Company A</a>, <a href="#">Company B</a>, and <a href="#">Company C</a> — each shaping how I approach making things that are both useful and beautiful.</p>
+        <p>Outside of work, I make art — [describe your medium]. I believe the best work blurs the line between function and feeling.</p>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="sec-label">Experience</div>
+
+      <div class="exp-item">
+        <div class="exp-date">2023 — Now</div>
+        <div>
+          <div class="exp-role"><a href="#">Senior [Role] · Company Name <span class="arrow">↗</span></a></div>
+          <p class="exp-desc">Describe your key responsibilities and impact. Focus on outcomes over tasks — what did you ship, lead, or improve? Two to three sentences works well here.</p>
+          <div class="tags">
+            <span class="tag">Skill One</span><span class="tag">Skill Two</span><span class="tag">Skill Three</span><span class="tag">Skill Four</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-date">2021 — 2023</div>
+        <div>
+          <div class="exp-role"><a href="#">[Role] · Previous Company <span class="arrow">↗</span></a></div>
+          <p class="exp-desc">What you built and contributed. Mention key projects, collaborations, or technologies. Keep it focused and impact-forward.</p>
+          <div class="tags">
+            <span class="tag">Tool A</span><span class="tag">Tool B</span><span class="tag">Framework C</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-date">2019 — 2021</div>
+        <div>
+          <div class="exp-role"><a href="#">[Role] · Another Company <span class="arrow">↗</span></a></div>
+          <p class="exp-desc">Early career work that shaped your trajectory. Highlight learning, ownership, and initiative — these tell a story of growth.</p>
+          <div class="tags">
+            <span class="tag">Language X</span><span class="tag">Platform Y</span><span class="tag">Concept Z</span>
+          </div>
+        </div>
+      </div>
+
+      <a class="resume-link" href="#">View Full Résumé <span class="arrow" style="font-size:0.85rem">↗</span></a>
+    </section>
+
+    <section id="skills">
+      <div class="sec-label">Skills</div>
+      <div class="skills-grid">
+        <div class="skill-box">
+          <div class="skill-cat">Languages</div>
+          <ul class="skill-list"><li>Language One</li><li>Language Two</li><li>Language Three</li><li>Language Four</li></ul>
+        </div>
+        <div class="skill-box">
+          <div class="skill-cat">Frameworks</div>
+          <ul class="skill-list"><li>Framework A</li><li>Framework B</li><li>Framework C</li><li>Framework D</li></ul>
+        </div>
+        <div class="skill-box">
+          <div class="skill-cat">Tools</div>
+          <ul class="skill-list"><li>Tool Alpha</li><li>Tool Beta</li><li>Tool Gamma</li><li>Tool Delta</li></ul>
+        </div>
+        <div class="skill-box">
+          <div class="skill-cat">Platforms</div>
+          <ul class="skill-list"><li>Platform I</li><li>Platform II</li><li>Platform III</li></ul>
+        </div>
+        <div class="skill-box">
+          <div class="skill-cat">Concepts</div>
+          <ul class="skill-list"><li>Concept X</li><li>Concept Y</li><li>Concept Z</li><li>Concept W</li></ul>
+        </div>
+        <div class="skill-box">
+          <div class="skill-cat">Soft Skills</div>
+          <ul class="skill-list"><li>Leadership</li><li>Communication</li><li>Collaboration</li><li>Mentorship</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="sec-label">Projects</div>
+
+      <a class="project-card" href="#" target="_blank">
+        <div class="proj-thumb">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+        </div>
+        <div>
+          <div class="proj-name">Project Alpha <span class="arrow">↗</span></div>
+          <p class="proj-desc">A concise description of what this project does, the problem it solves, and what makes it technically interesting or meaningful.</p>
+          <div class="tags"><span class="tag">Tech 1</span><span class="tag">Tech 2</span><span class="tag">Tech 3</span></div>
+        </div>
+      </a>
+
+      <a class="project-card" href="#" target="_blank">
+        <div class="proj-thumb">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+        </div>
+        <div>
+          <div class="proj-name">Project Beta <span class="arrow">↗</span></div>
+          <p class="proj-desc">What you built and why it matters. Mention notable outcomes, user numbers, stars, or recognition if applicable.</p>
+          <div class="tags"><span class="tag">Tech A</span><span class="tag">Tech B</span><span class="tag">API C</span></div>
+        </div>
+      </a>
+
+      <a class="project-card" href="#" target="_blank">
+        <div class="proj-thumb">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+        </div>
+        <div>
+          <div class="proj-name">Project Gamma <span class="arrow">↗</span></div>
+          <p class="proj-desc">A side project, open-source work, or experiment that shows your range and curiosity beyond the day job.</p>
+          <div class="tags"><span class="tag">Stack I</span><span class="tag">Stack II</span></div>
+        </div>
+      </a>
+    </section>
+
+    <section id="art">
+      <div class="sec-label">Art</div>
+      <p class="art-intro">
+        Beyond the screen, I create [describe your art practice — illustration, painting, photography, digital art, etc.].
+        Art is how I explore ideas that don't fit neatly into code or words. This is a small window into that world.
+      </p>
+
+      <div class="gallery">
+
+        <div class="art-card">
+          <div class="art-placeholder ap1">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+          </div>
+          <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
+        </div>
+
+        <div class="art-card">
+          <div class="art-placeholder ap2">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+          </div>
+          <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
+        </div>
+
+        <div class="art-card">
+          <div class="art-placeholder ap3">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+          </div>
+          <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
+        </div>
+
+        <div class="art-card">
+          <div class="art-placeholder ap4">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+          </div>
+          <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
+        </div>
+
+        <div class="art-card">
+          <div class="art-placeholder ap5">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+          </div>
+          <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
+        </div>
+
+        <div class="art-card">
+          <div class="art-placeholder ap6">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+          </div>
+          <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
+        </div>
+
+      </div>
+
+      <div class="art-hint">
+        Replace each <code>.art-placeholder</code> div with an <code>&lt;img src="your-image.jpg"&gt;</code> to show your actual artwork.
+        Recommended: square crop, at least 600×600 px.
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="sec-label">Contact</div>
+      <p class="contact-intro">
+        I'm open to new opportunities, collaborations, and interesting conversations. Whether you have a project in mind, a question, or just want to say hello — feel free to reach out.
+      </p>
+      <a class="contact-btn" href="mailto:your@email.com">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 11.366l9.615-7.545h.749A1.636 1.636 0 0 1 24 5.457z"/></svg>
+        Say Hello
+      </a>
+    </section>
+
+    <footer class="footer">
+      <p>Designed &amp; built by <a href="#">Your Name</a>. Inspired by <a href="https://brittanychiang.com" target="_blank">Brittany Chiang</a>.</p>
+      <p>HTML · CSS · Vanilla JS</p>
+    </footer>
+
+  </div>
+</div>
+
+<script>
+  // Cursor glow follows mouse
+  const glow = document.getElementById('glow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top  = e.clientY + 'px';
+  });
+
+  // Active nav highlight — watches the scroll pane, not window
+  const pane  = document.getElementById('pane');
+  const secs  = Array.from(pane.querySelectorAll('section[id]'));
+  const links = Array.from(document.querySelectorAll('.s-nav a'));
+
+  function updateNav() {
+    const st = pane.scrollTop + 80;
+    let active = secs[0].id;
+    secs.forEach(s => { if (s.offsetTop <= st) active = s.id; });
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + active));
+  }
+
+  pane.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+
+  // Smooth-scroll nav clicks into the pane
+  links.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = pane.querySelector(a.getAttribute('href'));
+      if (target) pane.scrollTo({ top: target.offsetTop - 40, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>

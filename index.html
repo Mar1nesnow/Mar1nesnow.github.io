@@ -39,7 +39,7 @@ body {
   line-height: 1.7;
 }
 
-/* SHELL */
+/* ── SHELL ── */
 .shell {
   display: flex;
   height: 100vh;
@@ -48,7 +48,7 @@ body {
   padding: 0 32px;
 }
 
-/* SIDEBAR — never scrolls */
+/* ── SIDEBAR ── */
 .sidebar {
   width: var(--sidebar-w);
   flex-shrink: 0;
@@ -67,93 +67,39 @@ body {
   background: linear-gradient(to bottom, transparent, var(--border) 20%, var(--border) 80%, transparent);
 }
 
-.s-name {
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--bright);
-  letter-spacing: -0.3px;
-  line-height: 1.15;
-  margin-bottom: 7px;
-}
+.s-name { font-size: 2rem; font-weight: 600; color: var(--bright); letter-spacing: -0.3px; line-height: 1.15; margin-bottom: 7px; }
+.s-title { font-size: 0.88rem; font-weight: 500; color: var(--accent); letter-spacing: 0.6px; margin-bottom: 16px; }
+.s-bio { font-size: 0.82rem; color: var(--mist); line-height: 1.65; max-width: 230px; }
+.s-divider { height: 1px; background: var(--border); margin: 28px 0; }
 
-.s-title {
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: var(--accent);
-  letter-spacing: 0.6px;
-  margin-bottom: 16px;
-}
-
-.s-bio {
-  font-size: 0.82rem;
-  color: var(--mist);
-  line-height: 1.65;
-  max-width: 230px;
-}
-
-.s-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 28px 0;
-}
-
-.s-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
-}
+.s-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
 
 .s-nav a {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  text-decoration: none;
-  color: var(--mist);
-  font-size: 0.71rem;
-  font-weight: 500;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 8px 0;
-  transition: color 0.22s;
+  display: flex; align-items: center; gap: 14px;
+  text-decoration: none; color: var(--mist);
+  font-size: 0.71rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+  padding: 8px 0; transition: color 0.22s;
 }
 
 .s-nav a .nl {
-  display: block;
-  height: 1px;
-  width: 24px;
+  display: block; height: 1px; width: 24px;
   background: var(--faint);
   transition: width 0.28s ease, background 0.28s;
   flex-shrink: 0;
 }
 
-.s-nav a:hover,
-.s-nav a.active { color: var(--bright); }
+.s-nav a:hover, .s-nav a.active { color: var(--bright); }
+.s-nav a:hover .nl, .s-nav a.active .nl { width: 48px; background: var(--accent); }
 
-.s-nav a:hover .nl,
-.s-nav a.active .nl { width: 48px; background: var(--accent); }
-
-.s-socials {
-  display: flex;
-  gap: 16px;
-  margin-top: 4px;
-}
-
-.s-socials a {
-  color: var(--faint);
-  display: flex;
-  transition: color 0.2s, transform 0.2s;
-}
-
+.s-socials { display: flex; gap: 16px; margin-top: 4px; }
+.s-socials a { color: var(--faint); display: flex; transition: color 0.2s, transform 0.2s; }
 .s-socials a:hover { color: var(--accent); transform: translateY(-2px); }
 .s-socials svg { width: 18px; height: 18px; fill: currentColor; }
 
-/* SCROLL PANE */
+/* ── SCROLL PANE ── */
 .pane {
-  flex: 1;
-  height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
+  flex: 1; height: 100vh;
+  overflow-y: auto; overflow-x: hidden;
   padding: 72px 0 120px 64px;
   scrollbar-width: thin;
   scrollbar-color: var(--faint) transparent;
@@ -163,238 +109,185 @@ body {
 .pane::-webkit-scrollbar { width: 4px; }
 .pane::-webkit-scrollbar-thumb { background: var(--faint); border-radius: 2px; }
 
-/* SECTION */
-section {
-  margin-bottom: 96px;
-  scroll-margin-top: 40px;
-}
+/* ── VIEWS ── */
+#main-view, #detail-view { width: 100%; }
+#detail-view { display: none; }
+
+/* ── SECTIONS ── */
+section { margin-bottom: 96px; scroll-margin-top: 40px; }
 
 .sec-label {
-  font-family: var(--mono);
-  font-size: 0.66rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 28px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  font-family: var(--mono); font-size: 0.66rem; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 28px; display: flex; align-items: center; gap: 12px;
 }
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-.sec-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-/* ABOUT */
+/* ── ABOUT ── */
 .about-text p { color: var(--mist); font-size: 0.88rem; margin-bottom: 13px; }
 .about-text a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
 .about-text a:hover { border-color: var(--accent); }
 .about-text strong { color: var(--bright); font-weight: 500; }
 
-/* EXPERIENCE */
+/* ── EXPERIENCE LIST ── */
 .exp-item {
-  display: grid;
-  grid-template-columns: 92px 1fr;
-  gap: 0 20px;
-  padding: 18px 16px;
-  border-radius: 10px;
-  border: 1px solid transparent;
+  display: grid; grid-template-columns: 92px 1fr;
+  gap: 0 20px; padding: 18px 16px;
+  border-radius: 10px; border: 1px solid transparent;
   transition: background 0.2s, border-color 0.2s;
-  margin-bottom: 2px;
+  margin-bottom: 2px; cursor: pointer;
 }
 
 .exp-item:hover { background: var(--accent-dim); border-color: var(--border-h); }
 
 .exp-date {
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  color: var(--faint);
-  text-transform: uppercase;
-  padding-top: 3px;
-  line-height: 1.5;
+  font-family: var(--mono); font-size: 0.65rem; color: var(--faint);
+  text-transform: uppercase; padding-top: 3px; line-height: 1.5;
 }
 
-.exp-role {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--bright);
-  margin-bottom: 5px;
-}
-
-.exp-role a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: color 0.2s; }
-.exp-role a:hover { color: var(--accent); }
+.exp-role { font-size: 0.9rem; font-weight: 600; color: var(--bright); margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
 
 .arrow {
-  font-size: 0.72rem;
-  color: var(--faint);
-  display: inline-block;
-  transition: color 0.2s, transform 0.2s;
+  font-size: 0.72rem; color: var(--faint); display: inline-block;
+  transition: color 0.2s, transform 0.2s; flex-shrink: 0;
 }
 
-.exp-item:hover .arrow { color: var(--accent); transform: translate(2px,-2px); }
+.exp-item:hover .arrow { color: var(--accent); transform: translate(2px, -2px); }
 
-.exp-desc {
-  font-size: 0.82rem;
-  color: var(--mist);
-  line-height: 1.6;
-  margin-bottom: 10px;
-}
+.exp-desc { font-size: 0.82rem; color: var(--mist); line-height: 1.6; margin-bottom: 10px; }
 
 .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-
-.tag {
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  background: rgba(126,184,247,0.09);
-  color: var(--accent2);
-  border-radius: 20px;
-  padding: 3px 10px;
-}
+.tag { font-family: var(--mono); font-size: 0.65rem; background: rgba(126,184,247,0.09); color: var(--accent2); border-radius: 20px; padding: 3px 10px; }
 
 .resume-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 16px;
-  margin-left: 16px;
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  color: var(--mist);
-  text-decoration: none;
-  transition: color 0.2s;
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 16px; margin-left: 16px;
+  font-family: var(--mono); font-size: 0.72rem; color: var(--mist);
+  text-decoration: none; transition: color 0.2s;
 }
-
 .resume-link:hover { color: var(--accent); }
 
-/* SKILLS */
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-  gap: 10px;
+/* ── DETAIL PAGE ── */
+.detail-back {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 0.72rem; color: var(--mist);
+  cursor: pointer; margin-bottom: 40px;
+  transition: color 0.2s; border: none; background: none; padding: 0;
 }
+.detail-back:hover { color: var(--accent); }
+.detail-back svg { width: 14px; height: 14px; fill: currentColor; }
+
+.detail-header { margin-bottom: 36px; }
+
+.detail-org {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+}
+
+.detail-title {
+  font-size: 1.6rem; font-weight: 600; color: var(--bright);
+  line-height: 1.2; margin-bottom: 10px;
+}
+
+.detail-date {
+  font-family: var(--mono); font-size: 0.7rem; color: var(--faint); margin-bottom: 20px;
+}
+
+.detail-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 36px; }
+
+.detail-divider { height: 1px; background: var(--border); margin-bottom: 36px; }
+
+.detail-section-title {
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 1.8px;
+  text-transform: uppercase; color: var(--sky); margin-bottom: 14px;
+}
+
+.detail-body { font-size: 0.88rem; color: var(--mist); line-height: 1.8; margin-bottom: 32px; }
+.detail-body p { margin-bottom: 12px; }
+.detail-body ul { padding-left: 18px; display: flex; flex-direction: column; gap: 7px; }
+.detail-body ul li::marker { color: var(--accent); }
+
+.detail-highlights {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px; margin-bottom: 32px;
+}
+
+.highlight-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
+}
+
+.highlight-card-label {
+  font-family: var(--mono); font-size: 0.63rem; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--faint); margin-bottom: 5px;
+}
+
+.highlight-card-value { font-size: 0.85rem; color: var(--bright); font-weight: 500; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.sidebar { animation: fadeUp 0.65s ease both; }
+section  { animation: fadeUp 0.5s ease both; }
+#detail-view.visible { animation: fadeUp 0.35s ease both; }
+
+/* ── SKILLS ── */
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 10px; }
 
 .skill-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
   transition: border-color 0.2s, background 0.2s;
 }
-
 .skill-box:hover { background: var(--surface2); border-color: var(--border-h); }
 
-.skill-cat {
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--sky);
-  margin-bottom: 10px;
-}
+.skill-cat { font-size: 0.68rem; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); margin-bottom: 10px; }
 
 .skill-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.skill-list li { font-size: 0.79rem; color: var(--mist); display: flex; align-items: center; gap: 7px; }
+.skill-list li::before { content: ''; width: 3px; height: 3px; border-radius: 50%; background: var(--accent); opacity: 0.45; flex-shrink: 0; }
 
-.skill-list li {
-  font-size: 0.79rem;
-  color: var(--mist);
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.skill-list li::before {
-  content: '';
-  width: 3px; height: 3px;
-  border-radius: 50%;
-  background: var(--accent);
-  opacity: 0.45;
-  flex-shrink: 0;
-}
-
-/* PROJECTS */
+/* ── PROJECTS ── */
 .project-card {
-  display: grid;
-  grid-template-columns: 114px 1fr;
-  gap: 0 18px;
-  padding: 18px 16px;
-  border-radius: 10px;
-  border: 1px solid transparent;
-  text-decoration: none;
-  transition: background 0.2s, border-color 0.2s;
+  display: grid; grid-template-columns: 114px 1fr;
+  gap: 0 18px; padding: 18px 16px;
+  border-radius: 10px; border: 1px solid transparent;
+  text-decoration: none; transition: background 0.2s, border-color 0.2s;
   margin-bottom: 2px;
 }
-
 .project-card:hover { background: var(--accent-dim); border-color: var(--border-h); }
 
 .proj-thumb {
-  width: 108px; height: 72px;
-  border-radius: 6px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+  width: 108px; height: 72px; border-radius: 6px;
+  background: var(--surface2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-
 .proj-thumb svg { width: 26px; height: 26px; opacity: 0.28; }
 
-.proj-name {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--bright);
-  margin-bottom: 5px;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
+.proj-name { font-size: 0.88rem; font-weight: 600; color: var(--bright); margin-bottom: 5px; display: inline-flex; align-items: center; gap: 5px; }
 .project-card:hover .proj-name .arrow { color: var(--accent); transform: translate(2px,-2px); }
 .proj-desc { font-size: 0.81rem; color: var(--mist); line-height: 1.6; }
 
-/* ART */
-.art-intro {
-  font-size: 0.86rem;
-  color: var(--mist);
-  margin-bottom: 26px;
-  line-height: 1.75;
-}
+/* ── ART ── */
+.art-intro { font-size: 0.86rem; color: var(--mist); margin-bottom: 26px; line-height: 1.75; }
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
-  gap: 12px;
-}
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 12px; }
 
 .art-card {
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  transition: border-color 0.25s, transform 0.25s;
-  cursor: pointer;
-  position: relative;
+  border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border); background: var(--surface);
+  transition: border-color 0.25s, transform 0.25s; cursor: pointer; position: relative;
 }
-
 .art-card:hover { border-color: var(--border-h); transform: translateY(-3px); }
 
 .art-placeholder {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
+  width: 100%; aspect-ratio: 1 / 1;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
 }
-
-.art-placeholder::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.5;
-}
+.art-placeholder::before { content: ''; position: absolute; inset: 0; opacity: 0.5; }
 
 .art-placeholder.ap1 { background: #0d1b35; }
 .art-placeholder.ap1::before { background: radial-gradient(circle at 30% 40%, #1e4d8c 0%, transparent 65%), radial-gradient(circle at 75% 70%, #0d3060 0%, transparent 55%); }
@@ -409,127 +302,49 @@ section {
 .art-placeholder.ap6 { background: #0f1e38; }
 .art-placeholder.ap6::before { background: radial-gradient(circle at 75% 25%, #1d4a85 0%, transparent 55%), radial-gradient(circle at 30% 65%, #0e2b54 0%, transparent 50%); }
 
-.art-placeholder svg {
-  position: relative;
-  z-index: 1;
-  opacity: 0.18;
-  width: 36px; height: 36px;
-}
+.art-placeholder svg { position: relative; z-index: 1; opacity: 0.18; width: 36px; height: 36px; }
 
 .art-overlay {
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: rgba(10,18,32,0.78);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.22s;
-  padding: 12px;
-  text-align: center;
-  z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.22s; padding: 12px; text-align: center; z-index: 2;
 }
-
 .art-card:hover .art-overlay { opacity: 1; }
-
-.art-ov-title {
-  font-size: 0.77rem;
-  font-weight: 600;
-  color: var(--bright);
-  margin-bottom: 4px;
-}
-
-.art-ov-meta {
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  color: var(--accent);
-  letter-spacing: 0.5px;
-}
+.art-ov-title { font-size: 0.77rem; font-weight: 600; color: var(--bright); margin-bottom: 4px; }
+.art-ov-meta { font-family: var(--mono); font-size: 0.62rem; color: var(--accent); letter-spacing: 0.5px; }
 
 .art-caption { padding: 10px 12px; }
+.art-caption-title { font-size: 0.77rem; font-weight: 500; color: var(--bright); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.art-caption-sub { font-family: var(--mono); font-size: 0.62rem; color: var(--faint); margin-top: 2px; }
 
-.art-caption-title {
-  font-size: 0.77rem;
-  font-weight: 500;
-  color: var(--bright);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+.art-hint { margin-top: 18px; padding: 13px 16px; border: 1px dashed var(--faint); border-radius: 10px; font-size: 0.78rem; color: var(--faint); text-align: center; line-height: 1.65; }
+.art-hint code { font-family: var(--mono); font-size: 0.68rem; color: var(--accent); }
 
-.art-caption-sub {
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  color: var(--faint);
-  margin-top: 2px;
-}
-
-.art-hint {
-  margin-top: 18px;
-  padding: 13px 16px;
-  border: 1px dashed var(--faint);
-  border-radius: 10px;
-  font-size: 0.78rem;
-  color: var(--faint);
-  text-align: center;
-  line-height: 1.65;
-}
-
-.art-hint code {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  color: var(--accent);
-}
-
-/* CONTACT */
-.contact-intro {
-  font-size: 0.87rem;
-  color: var(--mist);
-  max-width: 480px;
-  margin-bottom: 26px;
-  line-height: 1.75;
-}
+/* ── CONTACT ── */
+.contact-intro { font-size: 0.87rem; color: var(--mist); max-width: 480px; margin-bottom: 26px; line-height: 1.75; }
 
 .contact-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.87rem;
-  font-weight: 500;
-  color: var(--accent);
-  text-decoration: none;
-  border: 1px solid rgba(126,184,247,0.28);
-  padding: 13px 26px;
-  border-radius: 8px;
-  transition: background 0.2s, border-color 0.2s;
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 0.87rem; font-weight: 500; color: var(--accent);
+  text-decoration: none; border: 1px solid rgba(126,184,247,0.28);
+  padding: 13px 26px; border-radius: 8px; transition: background 0.2s, border-color 0.2s;
 }
-
 .contact-btn:hover { background: var(--accent-dim); border-color: var(--accent); }
 
-/* FOOTER */
-.footer {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  color: var(--faint);
-  line-height: 1.9;
-}
-
+/* ── FOOTER ── */
+.footer { font-family: var(--mono); font-size: 0.68rem; color: var(--faint); line-height: 1.9; }
 .footer a { color: var(--mist); text-decoration: none; }
 .footer a:hover { color: var(--accent); }
 
-/* CURSOR GLOW */
+/* ── CURSOR GLOW ── */
 #glow {
-  position: fixed;
-  width: 500px; height: 500px;
-  border-radius: 50%;
+  position: fixed; width: 500px; height: 500px; border-radius: 50%;
   background: radial-gradient(circle, rgba(126,184,247,0.04) 0%, transparent 70%);
-  pointer-events: none;
-  transform: translate(-50%,-50%);
-  z-index: 0;
+  pointer-events: none; transform: translate(-50%,-50%); z-index: 0;
 }
 
-/* RESPONSIVE */
+/* ── RESPONSIVE ── */
 @media (max-width: 860px) {
   html, body { overflow: auto; height: auto; }
   .shell { flex-direction: column; height: auto; padding: 0 20px; }
@@ -541,14 +356,6 @@ section {
   .exp-date { margin-bottom: 4px; }
   .proj-thumb { display: none; }
 }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.sidebar { animation: fadeUp 0.65s ease both; }
-section  { animation: fadeUp 0.5s ease both; }
 </style>
 </head>
 <body>
@@ -557,13 +364,12 @@ section  { animation: fadeUp 0.5s ease both; }
 
 <div class="shell">
 
-  <!-- SIDEBAR -->
+  <!-- ══ SIDEBAR ══ -->
   <aside class="sidebar">
     <div>
       <div class="s-name">James Benavides</div>
       <div class="s-title">Land Operations and Outreach Support</div>
-      <p class="s-bio"> Nature has a way of reeling me in! My work in oyster aquaculture, coastal fisheries, and invasive species management 
-      have fueled my passion for conservation!</p>
+      <p class="s-bio">Nature has a way of reeling me in! My work in oyster aquaculture, coastal fisheries, and invasive species management have fueled my passion for conservation.</p>
     </div>
 
     <div class="s-divider"></div>
@@ -596,262 +402,434 @@ section  { animation: fadeUp 0.5s ease both; }
     </div>
   </aside>
 
-  <!-- SCROLLABLE PANE -->
+  <!-- ══ SCROLLABLE PANE ══ -->
   <div class="pane" id="pane">
 
-    <section id="about">
-      <div class="sec-label">About</div>
-      <div class="about-text">
-        <p>I'm a <strong>[your profession]</strong> with a passion for <strong>[what you love doing]</strong>. I thrive at the intersection of [discipline A] and [discipline B], where craft meets purpose and detail matters.</p>
-        <p>Currently at <a href="#">Company Name</a>, where I [brief description of your role and impact]. Before that I worked with <a href="#">Company A</a>, <a href="#">Company B</a>, and <a href="#">Company C</a> — each shaping how I approach making things that are both useful and beautiful.</p>
-        <p>Outside of work, I make art — [describe your medium]. I believe the best work blurs the line between function and feeling.</p>
-      </div>
-    </section>
+    <!-- ═══ MAIN VIEW ═══ -->
+    <div id="main-view">
 
-    <section id="experience">
-      <div class="sec-label">Experience</div>
+      <section id="about">
+        <div class="sec-label">About</div>
+        <div class="about-text">
+          <p>I'm a <strong>conservation professional</strong> with a passion for <strong>coastal ecosystems and land stewardship</strong>. I thrive at the intersection of field science and community outreach, where hands-on research meets public engagement.</p>
+          <p>Currently serving as a <a href="#">2025–2026 AmeriCorps Green Iowa member</a> at <a href="#">Whiterock Conservancy</a>, supporting prescribed burns, invasive species mitigation, and volunteer programs. Before that I worked with <a href="#">Texas Parks and Wildlife</a>, the <a href="#">Darling Marine Center</a>, and <a href="#">Duke University Marine Lab</a> — each shaping how I think about conservation science and communication.</p>
+          <p>Outside of work, I make art. I believe the best work blurs the line between function and feeling.</p>
+        </div>
+      </section>
 
-      <div class="exp-item">
-        <div class="exp-date">Dec 2025 — Current </div>
-        <div>
-          <div class="exp-role"><a href="#"> Land Operations and Outreach Support · Whiterock Conservancy <span class="arrow">↗</span></a></div>
-          <p class="exp-desc">2025-2026 AmeriCorps Green Iowa member serving at Whiterock Conservancy. 
+      <section id="experience">
+        <div class="sec-label">Experience</div>
 
-Supporting land management projects and activities, such as prescribed burns, invasive
-species mitigation, monitoring and assessment, research, and mapping! 
-
-Facilitating volunteer projects, public programs, and various events. </p>
-          <div class="tags">
-            <span class="tag">Wildland Fire Fighting</span><span class="tag">Invasive Species Removal</span><span class="tag">Agriculture</span><span class="tag">Soil Sampling</span>
+        <div class="exp-item" onclick="openDetail('whiterock')">
+          <div class="exp-date">Dec 2025 — Current</div>
+          <div>
+            <div class="exp-role">Land Operations and Outreach Support · Whiterock Conservancy <span class="arrow">↗</span></div>
+            <p class="exp-desc">AmeriCorps Green Iowa member supporting land management projects including prescribed burns, invasive species mitigation, and volunteer outreach programs.</p>
+            <div class="tags">
+              <span class="tag">Wildland Fire</span><span class="tag">Invasive Species</span><span class="tag">Agriculture</span><span class="tag">Soil Sampling</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="exp-item">
-        <div class="exp-date"> June 2025 - Sept 2025 </div>
-        <div>
-          <div class="exp-role"><a href="#"> Coastal Fisheries Intern · Texas Parks and Wildlife Department <span class="arrow">↗</span></a></div>
-          <p class="exp-desc">Conducted bay system habitat assessment through sonar scanning, navigating a tran sport boat through shallow bays. Gained experience with bag seining, vertical longlines, and water quality assessments. Presented an educational field program on harmful algal blooms to Friends of Galveston Island State Park. </p>
-          <div class="tags">
-            <span class="tag">Environmental Permitting</span><span class="tag">Oyster Reef Restoration</span><span class="tag"> Harmful Algal Blooms</span> <span class="tag"> Fisheries Sampling </span>
+        <div class="exp-item" onclick="openDetail('tpwd')">
+          <div class="exp-date">June 2025 — Sept 2025</div>
+          <div>
+            <div class="exp-role">Coastal Fisheries Intern · Texas Parks and Wildlife Department <span class="arrow">↗</span></div>
+            <p class="exp-desc">Conducted bay system habitat assessments via sonar scanning, gained field experience in fisheries sampling, and led public educational programs on harmful algal blooms.</p>
+            <div class="tags">
+              <span class="tag">Environmental Permitting</span><span class="tag">Oyster Reef Restoration</span><span class="tag">Harmful Algal Blooms</span><span class="tag">Fisheries Sampling</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="exp-item">
-        <div class="exp-date"> June 2024 — Aug 2024 </div>
-        <div>
-          <div class="exp-role"><a href="#"> Aquaculture Researcher · Darling Marine Center <span class="arrow">↗</span></a></div>
-          <p class="exp-desc">This fellowship strives to weave Indigenous Knowledge and Western Science to produce more knowledgeable and applicable research for local communities. My project focused on intertidal and subtidal farms utilizing tidal energy to tumble oysters, with the goal of reducing the cost and labor that stems from traditional tumblers. </p>
-          <div class="tags">
-            <span class="tag">Oyster aquaculture</span><span class="tag">Science Communication</span><span class="tag">Decolonized Science</span>
+        <div class="exp-item" onclick="openDetail('darling')">
+          <div class="exp-date">June 2024 — Aug 2024</div>
+          <div>
+            <div class="exp-role">Aquaculture Researcher · Darling Marine Center <span class="arrow">↗</span></div>
+            <p class="exp-desc">Fellowship weaving Indigenous Knowledge and Western Science to research tidal-energy oyster tumbling as a low-cost alternative to traditional aquaculture methods.</p>
+            <div class="tags">
+              <span class="tag">Oyster Aquaculture</span><span class="tag">Science Communication</span><span class="tag">Decolonized Science</span>
+            </div>
           </div>
         </div>
-      </div>
 
-           <div class="exp-item">
-        <div class="exp-date"> June 2023 — Dec 2023</div>
-        <div>
-          <div class="exp-role"><a href="#"> Animal Behavior Researcher · Bowdoin College <span class="arrow">↗</span></a></div>
-          <p class="exp-desc">Scallop behavior was monitored under varying light intensities to assess the potential for transitioning scallop 
-            fisheries to light-based methods. Feeding and growth rates of two sea star species were also observed to better understand species dynamics in warming Gulf waters. All specimens were checked daily. </p>
-          <div class="tags">
-            <span class="tag">Bivalve Research</span><span class="tag">Research Design</span><span class="tag">Animal Welfare</span>
+        <div class="exp-item" onclick="openDetail('bowdoin')">
+          <div class="exp-date">June 2023 — Dec 2023</div>
+          <div>
+            <div class="exp-role">Animal Behavior Researcher · Bowdoin College <span class="arrow">↗</span></div>
+            <p class="exp-desc">Monitored scallop behavior under varying light intensities and observed sea star feeding/growth rates to inform fisheries management in warming Gulf waters.</p>
+            <div class="tags">
+              <span class="tag">Bivalve Research</span><span class="tag">Research Design</span><span class="tag">Animal Welfare</span>
+            </div>
           </div>
         </div>
-      </div>
 
- <div class="exp-item">
-        <div class="exp-date"> June 2022 — Aug 2022</div>
-        <div>
-          <div class="exp-role"><a href="#"> Microbial Oceanography Researcher · Duke University Marine Lab <span class="arrow">↗</span></a></div>
-          <p class="exp-desc">Focusing on the isolation of Labyrinthulomycetes from the Pivers Island Coastal Observatory (PICO) time series using pollen grain baiting, isolation on antibiotic containing media, and the subsequent gene sequencing of these isolates. 
-            Pure culture isolates open opportunities to further research different combinations and roles of bacteria, fungi, and Labyrinthulomycetes in degrading organic matter in marine ecosystems. </p>
-          <div class="tags">
-            <span class="tag">Bivalve Research</span><span class="tag">Research Design</span><span class="tag">Animal Welfare</span>
+        <div class="exp-item" onclick="openDetail('duke')">
+          <div class="exp-date">June 2022 — Aug 2022</div>
+          <div>
+            <div class="exp-role">Microbial Oceanography Researcher · Duke University Marine Lab <span class="arrow">↗</span></div>
+            <p class="exp-desc">Isolated Labyrinthulomycetes from the PICO time series using pollen baiting and gene sequencing to study marine organic matter decomposition.</p>
+            <div class="tags">
+              <span class="tag">Microbial Ecology</span><span class="tag">Gene Sequencing</span><span class="tag">Marine Chemistry</span>
+            </div>
           </div>
         </div>
-      </div>
-      <a class="resume-link" href="#">View Full Résumé <span class="arrow" style="font-size:0.85rem">↗</span></a>
-    </section>
 
-    <section id="skills">
-      <div class="sec-label">Skills</div>
-      <div class="skills-grid">
-        <div class="skill-box">
-          <div class="skill-cat">Languages</div>
-          <ul class="skill-list"><li>Language One</li><li>Language Two</li><li>Language Three</li><li>Language Four</li></ul>
-        </div>
-        <div class="skill-box">
-          <div class="skill-cat">Frameworks</div>
-          <ul class="skill-list"><li>Framework A</li><li>Framework B</li><li>Framework C</li><li>Framework D</li></ul>
-        </div>
-        <div class="skill-box">
-          <div class="skill-cat">Tools</div>
-          <ul class="skill-list"><li>Tool Alpha</li><li>Tool Beta</li><li>Tool Gamma</li><li>Tool Delta</li></ul>
-        </div>
-        <div class="skill-box">
-          <div class="skill-cat">Platforms</div>
-          <ul class="skill-list"><li>Platform I</li><li>Platform II</li><li>Platform III</li></ul>
-        </div>
-        <div class="skill-box">
-          <div class="skill-cat">Concepts</div>
-          <ul class="skill-list"><li>Concept X</li><li>Concept Y</li><li>Concept Z</li><li>Concept W</li></ul>
-        </div>
-        <div class="skill-box">
-          <div class="skill-cat">Soft Skills</div>
-          <ul class="skill-list"><li>Leadership</li><li>Communication</li><li>Collaboration</li><li>Mentorship</li></ul>
-        </div>
-      </div>
-    </section>
+        <a class="resume-link" href="#">View Full Résumé <span class="arrow" style="font-size:0.85rem">↗</span></a>
+      </section>
 
-    <section id="projects">
-      <div class="sec-label">Projects</div>
-
-      <a class="project-card" href="#" target="_blank">
-        <div class="proj-thumb">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-        </div>
-        <div>
-          <div class="proj-name">Project Alpha <span class="arrow">↗</span></div>
-          <p class="proj-desc">A concise description of what this project does, the problem it solves, and what makes it technically interesting or meaningful.</p>
-          <div class="tags"><span class="tag">Tech 1</span><span class="tag">Tech 2</span><span class="tag">Tech 3</span></div>
-        </div>
-      </a>
-
-      <a class="project-card" href="#" target="_blank">
-        <div class="proj-thumb">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
-        </div>
-        <div>
-          <div class="proj-name">Project Beta <span class="arrow">↗</span></div>
-          <p class="proj-desc">What you built and why it matters. Mention notable outcomes, user numbers, stars, or recognition if applicable.</p>
-          <div class="tags"><span class="tag">Tech A</span><span class="tag">Tech B</span><span class="tag">API C</span></div>
-        </div>
-      </a>
-
-      <a class="project-card" href="#" target="_blank">
-        <div class="proj-thumb">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
-        </div>
-        <div>
-          <div class="proj-name">Project Gamma <span class="arrow">↗</span></div>
-          <p class="proj-desc">A side project, open-source work, or experiment that shows your range and curiosity beyond the day job.</p>
-          <div class="tags"><span class="tag">Stack I</span><span class="tag">Stack II</span></div>
-        </div>
-      </a>
-    </section>
-
-    <section id="art">
-      <div class="sec-label">Art</div>
-      <p class="art-intro">
-        Beyond the screen, I create [describe your art practice — illustration, painting, photography, digital art, etc.].
-        Art is how I explore ideas that don't fit neatly into code or words. This is a small window into that world.
-      </p>
-
-      <div class="gallery">
-
-        <div class="art-card">
-          <div class="art-placeholder ap1">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-            <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+      <section id="skills">
+        <div class="sec-label">Skills</div>
+        <div class="skills-grid">
+          <div class="skill-box">
+            <div class="skill-cat">Field Science</div>
+            <ul class="skill-list"><li>Prescribed Burns</li><li>Sonar Scanning</li><li>Bag Seining</li><li>Soil Sampling</li><li>Water Quality</li></ul>
           </div>
-          <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
-        </div>
-
-        <div class="art-card">
-          <div class="art-placeholder ap2">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-            <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+          <div class="skill-box">
+            <div class="skill-cat">Research</div>
+            <ul class="skill-list"><li>Experimental Design</li><li>Gene Sequencing</li><li>Habitat Assessment</li><li>Species Monitoring</li></ul>
           </div>
-          <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
-        </div>
-
-        <div class="art-card">
-          <div class="art-placeholder ap3">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-            <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+          <div class="skill-box">
+            <div class="skill-cat">Conservation</div>
+            <ul class="skill-list"><li>Invasive Species Mgmt</li><li>Oyster Reef Restoration</li><li>Land Stewardship</li><li>Wildland Firefighting</li></ul>
           </div>
-          <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
-        </div>
-
-        <div class="art-card">
-          <div class="art-placeholder ap4">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-            <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+          <div class="skill-box">
+            <div class="skill-cat">Outreach</div>
+            <ul class="skill-list"><li>Public Programming</li><li>Volunteer Coordination</li><li>Science Communication</li><li>Event Facilitation</li></ul>
           </div>
-          <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
-        </div>
-
-        <div class="art-card">
-          <div class="art-placeholder ap5">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-            <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+          <div class="skill-box">
+            <div class="skill-cat">Tools</div>
+            <ul class="skill-list"><li>GIS / Mapping</li><li>Transport Boat Nav</li><li>Vertical Longlines</li><li>Microscopy</li></ul>
           </div>
-          <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
-        </div>
-
-        <div class="art-card">
-          <div class="art-placeholder ap6">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-            <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+          <div class="skill-box">
+            <div class="skill-cat">Soft Skills</div>
+            <ul class="skill-list"><li>Collaboration</li><li>Adaptability</li><li>Communication</li><li>Curiosity</li></ul>
           </div>
-          <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
+        </div>
+      </section>
+
+      <section id="projects">
+        <div class="sec-label">Projects</div>
+
+        <a class="project-card" href="#" target="_blank">
+          <div class="proj-thumb">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+          </div>
+          <div>
+            <div class="proj-name">Project Alpha <span class="arrow">↗</span></div>
+            <p class="proj-desc">A concise description of what this project does and what makes it meaningful.</p>
+            <div class="tags"><span class="tag">Ecology</span><span class="tag">Field Research</span></div>
+          </div>
+        </a>
+
+        <a class="project-card" href="#" target="_blank">
+          <div class="proj-thumb">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+          </div>
+          <div>
+            <div class="proj-name">Project Beta <span class="arrow">↗</span></div>
+            <p class="proj-desc">What you built and why it matters. Mention notable outcomes or recognition if applicable.</p>
+            <div class="tags"><span class="tag">Conservation</span><span class="tag">Outreach</span></div>
+          </div>
+        </a>
+      </section>
+
+      <section id="art">
+        <div class="sec-label">Art</div>
+        <p class="art-intro">Beyond the field, I create [describe your art practice — illustration, painting, photography, etc.]. Art is how I explore ideas that don't fit neatly into data or fieldwork. This is a small window into that world.</p>
+
+        <div class="gallery">
+          <div class="art-card">
+            <div class="art-placeholder ap1">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+              <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+            </div>
+            <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
+          </div>
+          <div class="art-card">
+            <div class="art-placeholder ap2">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+              <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+            </div>
+            <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
+          </div>
+          <div class="art-card">
+            <div class="art-placeholder ap3">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+              <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+            </div>
+            <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
+          </div>
+          <div class="art-card">
+            <div class="art-placeholder ap4">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+              <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+            </div>
+            <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
+          </div>
+          <div class="art-card">
+            <div class="art-placeholder ap5">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+              <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+            </div>
+            <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
+          </div>
+          <div class="art-card">
+            <div class="art-placeholder ap6">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+              <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
+            </div>
+            <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
+          </div>
         </div>
 
-      </div>
+        <div class="art-hint">
+          Replace each <code>.art-placeholder</code> div with an <code>&lt;img src="your-image.jpg"&gt;</code> to show your actual artwork. Recommended: square crop, at least 600×600 px.
+        </div>
+      </section>
 
-      <div class="art-hint">
-        Replace each <code>.art-placeholder</code> div with an <code>&lt;img src="your-image.jpg"&gt;</code> to show your actual artwork.
-        Recommended: square crop, at least 600×600 px.
-      </div>
-    </section>
+      <section id="contact">
+        <div class="sec-label">Contact</div>
+        <p class="contact-intro">I'm open to new opportunities, collaborations, and interesting conversations. Whether you have a project in mind, a question, or just want to say hello — feel free to reach out.</p>
+        <a class="contact-btn" href="mailto:your@email.com">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 11.366l9.615-7.545h.749A1.636 1.636 0 0 1 24 5.457z"/></svg>
+          Say Hello
+        </a>
+      </section>
 
-    <section id="contact">
-      <div class="sec-label">Contact</div>
-      <p class="contact-intro">
-        I'm open to new opportunities, collaborations, and interesting conversations. Whether you have a project in mind, a question, or just want to say hello — feel free to reach out.
-      </p>
-      <a class="contact-btn" href="mailto:your@email.com">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 11.366l9.615-7.545h.749A1.636 1.636 0 0 1 24 5.457z"/></svg>
-        Say Hello
-      </a>
-    </section>
+      <footer class="footer">
+        <p>Designed &amp; built by <a href="#">James Benavides</a>. Inspired by <a href="https://brittanychiang.com" target="_blank">Brittany Chiang</a>.</p>
+        <p>HTML · CSS · Vanilla JS</p>
+      </footer>
 
-  </div>
-</div>
+    </div><!-- /main-view -->
 
+    <!-- ═══ DETAIL VIEW ═══ -->
+    <div id="detail-view">
+
+      <button class="detail-back" onclick="closeDetail()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Back to Experience
+      </button>
+
+      <div id="detail-content"></div>
+
+    </div><!-- /detail-view -->
+
+  </div><!-- /pane -->
+</div><!-- /shell -->
+
+<!-- ═══ EXPERIENCE DETAIL DATA ═══ -->
 <script>
-  // Cursor glow follows mouse
-  const glow = document.getElementById('glow');
-  document.addEventListener('mousemove', e => {
-    glow.style.left = e.clientX + 'px';
-    glow.style.top  = e.clientY + 'px';
-  });
+const roles = {
+  whiterock: {
+    org: 'Whiterock Conservancy · AmeriCorps Green Iowa',
+    title: 'Land Operations and Outreach Support',
+    date: 'December 2025 — Present',
+    tags: ['Wildland Firefighting', 'Invasive Species Removal', 'Agriculture', 'Soil Sampling', 'Volunteer Coordination', 'Public Programming'],
+    highlights: [
+      { label: 'Program', value: 'AmeriCorps Green Iowa 2025–2026' },
+      { label: 'Location', value: 'Coon Rapids, Iowa' },
+      { label: 'Focus', value: 'Land Stewardship & Outreach' },
+      { label: 'Type', value: 'Service Year' },
+    ],
+    overview: `<p>As a 2025–2026 AmeriCorps Green Iowa member, I serve at Whiterock Conservancy supporting a wide range of land management and conservation activities across one of Iowa's most ecologically diverse landscapes.</p><p>This role sits at the intersection of hands-on field work and community engagement — two areas I'm deeply passionate about.</p>`,
+    responsibilities: [
+      'Supporting prescribed burns, including planning, execution, and post-burn monitoring',
+      'Conducting invasive species mitigation through mechanical removal, herbicide application, and monitoring',
+      'Performing habitat assessments, species monitoring, and vegetation mapping',
+      'Facilitating volunteer stewardship projects and training community members in conservation techniques',
+      'Leading public programs and educational events for diverse audiences',
+      'Assisting with soil sampling, research data collection, and GIS mapping',
+    ],
+    context: `<p>Whiterock Conservancy protects over 5,500 acres in the Raccoon River watershed, encompassing prairies, forests, wetlands, and working agricultural lands. My work here has deepened my understanding of integrated land management and the role of conservation organizations in bridging science and community.</p>`
+  },
 
-  // Active nav highlight — watches the scroll pane, not window
-  const pane  = document.getElementById('pane');
-  const secs  = Array.from(pane.querySelectorAll('section[id]'));
-  const links = Array.from(document.querySelectorAll('.s-nav a'));
+  tpwd: {
+    org: 'Texas Parks and Wildlife Department',
+    title: 'Coastal Fisheries Intern',
+    date: 'June 2025 — September 2025',
+    tags: ['Environmental Permitting', 'Oyster Reef Restoration', 'Harmful Algal Blooms', 'Fisheries Sampling', 'Sonar Scanning', 'Water Quality'],
+    highlights: [
+      { label: 'Location', value: 'Galveston Bay, Texas' },
+      { label: 'Division', value: 'Coastal Fisheries' },
+      { label: 'Duration', value: '3 months' },
+      { label: 'Type', value: 'Field Internship' },
+    ],
+    overview: `<p>This internship placed me in the field alongside Texas Parks and Wildlife's Coastal Fisheries team, conducting habitat assessments and fisheries sampling across Galveston Bay's complex estuary system.</p><p>Working in one of the most ecologically and economically important coastal regions in the country gave me direct exposure to real-world fisheries management challenges.</p>`,
+    responsibilities: [
+      'Conducted bay system habitat assessments using sonar scanning technology from a transport boat navigating shallow waters',
+      'Gained hands-on experience with bag seining, vertical longlines, and trawl sampling for fish and invertebrate surveys',
+      'Performed water quality assessments including dissolved oxygen, salinity, temperature, and turbidity measurements',
+      'Assisted with oyster reef restoration site evaluation and environmental permitting documentation',
+      'Presented an educational field program on harmful algal blooms (HABs) to Friends of Galveston Island State Park',
+      'Compiled field data and contributed to habitat assessment reports',
+    ],
+    context: `<p>Galveston Bay is Texas's largest estuary and one of the most productive in the nation. The bay faces ongoing pressures from water quality degradation, habitat loss, and harmful algal blooms — making this role a direct education in applied coastal conservation.</p><p>Presenting the HABs program strengthened my science communication skills and reinforced my interest in public environmental education.</p>`
+  },
 
-  function updateNav() {
-    const st = pane.scrollTop + 80;
-    let active = secs[0].id;
-    secs.forEach(s => { if (s.offsetTop <= st) active = s.id; });
-    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + active));
+  darling: {
+    org: 'Darling Marine Center · University of Maine',
+    title: 'Aquaculture Researcher',
+    date: 'June 2024 — August 2024',
+    tags: ['Oyster Aquaculture', 'Science Communication', 'Decolonized Science', 'Indigenous Knowledge', 'Tidal Energy', 'Research Design'],
+    highlights: [
+      { label: 'Location', value: 'Damariscotta, Maine' },
+      { label: 'Fellowship', value: 'Two-Eyed Seeing Program' },
+      { label: 'Duration', value: '3 months' },
+      { label: 'Focus', value: 'Sustainable Aquaculture' },
+    ],
+    overview: `<p>This fellowship brought together Indigenous Knowledge and Western Science frameworks — an approach known as Two-Eyed Seeing — to produce research that is more holistic, community-centered, and applicable to local needs.</p><p>My project investigated whether tidal energy could be harnessed to tumble oysters in intertidal and subtidal farm settings, potentially reducing the cost and labor burden on small-scale aquaculture producers.</p>`,
+    responsibilities: [
+      'Designed and implemented an experiment comparing tidal-tumbled oysters to traditionally managed controls across intertidal and subtidal environments',
+      'Monitored oyster growth rates, shell shape, and survival across treatment groups over the summer season',
+      'Recorded and analyzed tidal cycle data to quantify tumbling frequency and energy exposure',
+      'Collaborated with Indigenous community members and knowledge holders to integrate traditional ecological knowledge into research design',
+      'Presented research findings to the Darling Marine Center community and visiting stakeholders',
+      'Contributed to a final report assessing the viability of tidal tumbling as a low-cost aquaculture method',
+    ],
+    context: `<p>Oyster aquaculture is a growing industry in coastal Maine, but the cost of powered tumblers remains a significant barrier for small-scale and Indigenous-owned operations. By exploring tidal energy as a natural alternative, this project aimed to lower that barrier while keeping the research process grounded in community values.</p><p>This fellowship fundamentally shaped how I think about the relationship between science, culture, and conservation.</p>`
+  },
+
+  bowdoin: {
+    org: 'Bowdoin College — Marine Science Program',
+    title: 'Animal Behavior Researcher',
+    date: 'June 2023 — December 2023',
+    tags: ['Bivalve Research', 'Research Design', 'Animal Welfare', 'Behavioral Ecology', 'Scallop Biology', 'Sea Star Dynamics'],
+    highlights: [
+      { label: 'Location', value: 'Brunswick, Maine' },
+      { label: 'Institution', value: 'Bowdoin College' },
+      { label: 'Duration', value: '6 months' },
+      { label: 'Focus', value: 'Behavioral & Fisheries Ecology' },
+    ],
+    overview: `<p>This research position focused on two interconnected questions: whether scallops could be harvested using light-based methods as an alternative to dredging, and how changing sea star populations are affecting bivalve dynamics in the warming Gulf of Maine.</p><p>Both projects required careful experimental design, daily specimen care, and rigorous behavioral observation.</p>`,
+    responsibilities: [
+      'Monitored scallop behavioral responses (swimming, valve movement, mantle retraction) under varying light intensities to evaluate feasibility of light-based harvest',
+      'Recorded and analyzed feeding rates and prey consumption of two sea star species under controlled laboratory conditions',
+      'Observed and documented growth rates of sea stars over the study period to assess population recovery dynamics',
+      'Checked all specimens daily, maintaining tank water quality and animal welfare throughout the study',
+      'Maintained detailed field notebooks and contributed to data analysis and reporting',
+      'Supported lab operations including tank maintenance, feeding schedules, and equipment calibration',
+    ],
+    context: `<p>The Gulf of Maine is warming faster than nearly any other ocean region on Earth. Understanding how species like sea stars and scallops respond to these changes is critical for managing sustainable fisheries. This research gave me a deep appreciation for the patience and precision that rigorous behavioral ecology demands.</p>`
+  },
+
+  duke: {
+    org: 'Duke University Marine Lab',
+    title: 'Microbial Oceanography Researcher',
+    date: 'June 2022 — August 2022',
+    tags: ['Microbial Ecology', 'Gene Sequencing', 'Marine Chemistry', 'Labyrinthulomycetes', 'Organic Matter Cycling', 'Pure Culture Isolation'],
+    highlights: [
+      { label: 'Location', value: 'Beaufort, North Carolina' },
+      { label: 'Institution', value: 'Duke University Marine Lab' },
+      { label: 'Duration', value: '3 months' },
+      { label: 'Focus', value: 'Microbial Oceanography' },
+    ],
+    overview: `<p>This summer research position introduced me to the hidden world of marine microbes — specifically the Labyrinthulomycetes, a group of protists that play important but poorly understood roles in breaking down organic matter in coastal ocean systems.</p><p>Working at the Pivers Island Coastal Observatory (PICO) long-term time series site provided a unique window into how microbial communities shift seasonally in a dynamic estuary.</p>`,
+    responsibilities: [
+      'Isolated Labyrinthulomycetes from seawater and sediment samples using pollen grain baiting techniques',
+      'Cultured isolates on antibiotic-containing marine agar media to obtain pure cultures',
+      'Extracted DNA from pure culture isolates and prepared samples for gene sequencing',
+      'Analyzed sequencing results to identify and classify novel isolates at the species level',
+      'Maintained lab cultures and performed sterile technique protocols daily',
+      'Contributed to documentation of isolate collection and maintained organized strain libraries',
+    ],
+    context: `<p>Labyrinthulomycetes are often overlooked in marine microbial ecology, yet they may play significant roles in the marine carbon cycle by degrading complex organic compounds that bacteria alone cannot efficiently break down. Obtaining pure culture isolates opens the door to controlled experiments on their metabolic capabilities — a necessary step toward understanding their ecological function.</p><p>This experience sparked my interest in the intersection of microbiology, biogeochemistry, and ecosystem science.</p>`
   }
+};
 
-  pane.addEventListener('scroll', updateNav, { passive: true });
-  updateNav();
+// ── Navigation ──
+const pane = document.getElementById('pane');
+const mainView = document.getElementById('main-view');
+const detailView = document.getElementById('detail-view');
+const detailContent = document.getElementById('detail-content');
 
-  // Smooth-scroll nav clicks into the pane
-  links.forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
+function openDetail(key) {
+  const r = roles[key];
+  if (!r) return;
+
+  const tagsHtml = r.tags.map(t => `<span class="tag">${t}</span>`).join('');
+  const highlightsHtml = r.highlights.map(h => `
+    <div class="highlight-card">
+      <div class="highlight-card-label">${h.label}</div>
+      <div class="highlight-card-value">${h.value}</div>
+    </div>`).join('');
+  const responsibilitiesHtml = r.responsibilities.map(x => `<li>${x}</li>`).join('');
+
+  detailContent.innerHTML = `
+    <div class="detail-header">
+      <div class="detail-org">${r.org}</div>
+      <div class="detail-title">${r.title}</div>
+      <div class="detail-date">${r.date}</div>
+      <div class="detail-tags">${tagsHtml}</div>
+    </div>
+
+    <div class="detail-section-title">Overview</div>
+    <div class="detail-body">${r.overview}</div>
+
+    <div class="detail-divider"></div>
+
+    <div class="detail-section-title">At a glance</div>
+    <div class="detail-highlights">${highlightsHtml}</div>
+
+    <div class="detail-divider"></div>
+
+    <div class="detail-section-title">Responsibilities</div>
+    <div class="detail-body"><ul>${responsibilitiesHtml}</ul></div>
+
+    <div class="detail-divider"></div>
+
+    <div class="detail-section-title">Context</div>
+    <div class="detail-body">${r.context}</div>
+  `;
+
+  mainView.style.display = 'none';
+  detailView.style.display = 'block';
+  detailView.classList.add('visible');
+  pane.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closeDetail() {
+  detailView.style.display = 'none';
+  detailView.classList.remove('visible');
+  mainView.style.display = 'block';
+  // Scroll back to experience section
+  const expSection = mainView.querySelector('#experience');
+  if (expSection) pane.scrollTo({ top: expSection.offsetTop - 40, behavior: 'smooth' });
+}
+
+// ── Nav active highlight ──
+const secs  = Array.from(document.querySelectorAll('section[id]'));
+const links = Array.from(document.querySelectorAll('.s-nav a'));
+
+function updateNav() {
+  if (detailView.style.display === 'block') return;
+  const st = pane.scrollTop + 80;
+  let active = secs[0]?.id;
+  secs.forEach(s => { if (s.offsetTop <= st) active = s.id; });
+  links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + active));
+}
+
+pane.addEventListener('scroll', updateNav, { passive: true });
+updateNav();
+
+links.forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    if (detailView.style.display === 'block') closeDetail();
+    setTimeout(() => {
       const target = pane.querySelector(a.getAttribute('href'));
       if (target) pane.scrollTo({ top: target.offsetTop - 40, behavior: 'smooth' });
-    });
+    }, 50);
   });
+});
+
+// ── Cursor glow ──
+const glow = document.getElementById('glow');
+document.addEventListener('mousemove', e => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top  = e.clientY + 'px';
+});
 </script>
 </body>
 </html>

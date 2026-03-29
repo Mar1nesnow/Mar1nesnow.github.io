@@ -1,1 +1,1 @@
-# JBgithub.io
+# JB.github.io

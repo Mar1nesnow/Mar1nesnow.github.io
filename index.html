@@ -3,494 +3,186 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>James Benavides — Portfolio</title>
+<title>James Benavides</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0e1621;--surface:#1a2540;--surface2:#1f2d4a;
+  --accent:#7eb8f7;--accent-dim:rgba(126,184,247,0.1);--accent2:#93c5fd;--sky:#bae6fd;
+  --mist:#94a3c4;--faint:#3d5070;--bright:#dde8f8;
+  --border:rgba(126,184,247,0.1);--border-h:rgba(126,184,247,0.25);
+  --sans:'Outfit',sans-serif;--mono:'DM Mono',monospace;
+}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--bright);font-family:var(--sans);font-size:15px;line-height:1.7}
 
-:root {
-  --bg:          #0e1621;
-  --bg2:         #131d2e;
-  --surface:     #1a2540;
-  --surface2:    #1f2d4a;
-  --accent:      #7eb8f7;
-  --accent-dim:  rgba(126,184,247,0.1);
-  --accent2:     #93c5fd;
-  --sky:         #bae6fd;
-  --mist:        #94a3c4;
-  --faint:       #3d5070;
-  --bright:      #dde8f8;
-  --border:      rgba(126,184,247,0.1);
-  --border-h:    rgba(126,184,247,0.25);
-  --sidebar-w:   360px;
-  --sans:        'Outfit', sans-serif;
-  --mono:        'DM Mono', monospace;
+/* SHELL */
+.shell{display:flex;height:100vh;max-width:1160px;margin:0 auto;padding:0 32px}
+
+/* SIDEBAR */
+.sidebar{width:360px;flex-shrink:0;height:100vh;display:flex;flex-direction:column;padding:72px 48px 56px 0;position:relative}
+.sidebar::after{content:'';position:absolute;right:0;top:80px;bottom:80px;width:1px;background:linear-gradient(to bottom,transparent,var(--border) 20%,var(--border) 80%,transparent)}
+.s-name{font-size:2rem;font-weight:600;color:var(--bright);letter-spacing:-0.3px;line-height:1.15;margin-bottom:7px}
+.s-title{font-size:0.88rem;font-weight:500;color:var(--accent);letter-spacing:0.6px;margin-bottom:16px}
+.s-bio{font-size:0.82rem;color:var(--mist);line-height:1.65;max-width:230px}
+.s-divider{height:1px;background:var(--border);margin:28px 0}
+.s-nav{display:flex;flex-direction:column;gap:2px;flex:1}
+.s-nav a{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--mist);font-size:0.71rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;padding:8px 0;transition:color .22s}
+.s-nav a .nl{display:block;height:1px;width:24px;background:var(--faint);transition:width .28s ease,background .28s;flex-shrink:0}
+.s-nav a:hover,.s-nav a.active{color:var(--bright)}
+.s-nav a:hover .nl,.s-nav a.active .nl{width:48px;background:var(--accent)}
+.s-socials{display:flex;gap:16px;margin-top:4px}
+.s-socials a{color:var(--faint);display:flex;transition:color .2s,transform .2s}
+.s-socials a:hover{color:var(--accent);transform:translateY(-2px)}
+.s-socials svg{width:18px;height:18px;fill:currentColor}
+
+/* PANE */
+.pane{flex:1;height:100vh;overflow-y:auto;overflow-x:hidden;padding:72px 0 120px 64px;scrollbar-width:thin;scrollbar-color:var(--faint) transparent;min-width:0}
+.pane::-webkit-scrollbar{width:4px}
+.pane::-webkit-scrollbar-thumb{background:var(--faint);border-radius:2px}
+
+/* VIEWS */
+#main-view,#detail-view{width:100%}
+#detail-view{display:none}
+
+/* SECTIONS */
+section{margin-bottom:96px;scroll-margin-top:40px}
+.sec-label{font-family:var(--mono);font-size:0.66rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:28px;display:flex;align-items:center;gap:12px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ABOUT */
+.about-text p{color:var(--mist);font-size:0.88rem;margin-bottom:13px}
+.about-text a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+.about-text a:hover{border-color:var(--accent)}
+.about-text strong{color:var(--bright);font-weight:500}
+
+/* EXPERIENCE LIST */
+.exp-item{display:grid;grid-template-columns:92px 1fr;gap:0 20px;padding:18px 16px;border-radius:10px;border:1px solid transparent;transition:background .2s,border-color .2s;margin-bottom:2px;cursor:pointer}
+.exp-item:hover{background:var(--accent-dim);border-color:var(--border-h)}
+.exp-date{font-family:var(--mono);font-size:0.65rem;color:var(--faint);text-transform:uppercase;padding-top:3px;line-height:1.5}
+.exp-role{font-size:0.9rem;font-weight:600;color:var(--bright);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.arrow{font-size:0.72rem;color:var(--faint);display:inline-block;transition:color .2s,transform .2s;flex-shrink:0}
+.exp-item:hover .arrow{color:var(--accent);transform:translate(2px,-2px)}
+.exp-desc{font-size:0.82rem;color:var(--mist);line-height:1.6;margin-bottom:10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{font-family:var(--mono);font-size:0.65rem;background:rgba(126,184,247,0.09);color:var(--accent2);border-radius:20px;padding:3px 10px}
+.resume-link{display:inline-flex;align-items:center;gap:6px;margin-top:16px;margin-left:16px;font-family:var(--mono);font-size:0.72rem;color:var(--mist);text-decoration:none;transition:color .2s}
+.resume-link:hover{color:var(--accent)}
+
+/* DETAIL PAGE */
+.detail-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:0.72rem;color:var(--mist);cursor:pointer;margin-bottom:40px;transition:color .2s;border:none;background:none;padding:0}
+.detail-back:hover{color:var(--accent)}
+.detail-back svg{width:14px;height:14px;fill:currentColor}
+.detail-org{font-family:var(--mono);font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.detail-title{font-size:1.6rem;font-weight:600;color:var(--bright);line-height:1.2;margin-bottom:10px}
+.detail-date{font-family:var(--mono);font-size:0.7rem;color:var(--faint);margin-bottom:20px}
+.detail-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:36px}
+.detail-divider{height:1px;background:var(--border);margin-bottom:36px}
+.detail-section-title{font-size:0.72rem;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--sky);margin-bottom:14px}
+.detail-body{font-size:0.88rem;color:var(--mist);line-height:1.8;margin-bottom:32px}
+.detail-body p{margin-bottom:12px}
+.detail-body ul{padding-left:18px;display:flex;flex-direction:column;gap:7px}
+.detail-body ul li::marker{color:var(--accent)}
+
+/* SLIDESHOW */
+.slideshow{position:relative;width:100%;border-radius:12px;overflow:hidden;background:var(--surface);border:1px solid var(--border);margin-bottom:36px}
+.slides-track{position:relative;width:100%;aspect-ratio:16/9;background:var(--surface2)}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease}
+.slide.active{opacity:1}
+.slide img{width:100%;height:100%;object-fit:cover;display:block}
+.slide-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.slide-placeholder svg{width:40px;height:40px;opacity:0.15;fill:var(--accent)}
+.slide-placeholder span{font-family:var(--mono);font-size:0.67rem;color:var(--faint);text-align:center;padding:0 24px}
+.slide-caption-bar{padding:14px 20px;background:var(--surface);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px}
+.slide-caption-text{font-size:0.82rem;color:var(--mist);line-height:1.5;flex:1;font-style:italic}
+.slide-controls{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.slide-btn{background:none;border:1px solid var(--border);color:var(--mist);border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s,color .2s,background .2s;flex-shrink:0}
+.slide-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.slide-btn svg{width:12px;height:12px;fill:currentColor}
+.slide-dots{display:flex;gap:5px;align-items:center}
+.slide-dot{width:5px;height:5px;border-radius:50%;background:var(--faint);cursor:pointer;transition:background .2s,transform .2s;border:none;padding:0}
+.slide-dot.active{background:var(--accent);transform:scale(1.4)}
+
+/* ORG LINK */
+.detail-org-link{display:inline-flex;align-items:center;gap:8px;font-size:0.83rem;font-weight:500;color:var(--accent);text-decoration:none;border:1px solid rgba(126,184,247,0.25);padding:11px 20px;border-radius:8px;margin-top:28px;transition:background .2s,border-color .2s}
+.detail-org-link:hover{background:var(--accent-dim);border-color:var(--accent)}
+.detail-org-link svg{width:13px;height:13px;fill:currentColor}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px}
+.skill-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:border-color .2s,background .2s}
+.skill-box:hover{background:var(--surface2);border-color:var(--border-h)}
+.skill-cat{font-size:0.68rem;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--sky);margin-bottom:10px}
+.skill-list{list-style:none;display:flex;flex-direction:column;gap:4px}
+.skill-list li{font-size:0.79rem;color:var(--mist);display:flex;align-items:center;gap:7px}
+.skill-list li::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--accent);opacity:.45;flex-shrink:0}
+
+/* PROJECTS */
+.project-card{display:grid;grid-template-columns:114px 1fr;gap:0 18px;padding:18px 16px;border-radius:10px;border:1px solid transparent;text-decoration:none;transition:background .2s,border-color .2s;margin-bottom:2px}
+.project-card:hover{background:var(--accent-dim);border-color:var(--border-h)}
+.proj-thumb{width:108px;height:72px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.proj-thumb svg{width:26px;height:26px;opacity:.28}
+.proj-name{font-size:0.88rem;font-weight:600;color:var(--bright);margin-bottom:5px;display:inline-flex;align-items:center;gap:5px}
+.project-card:hover .proj-name .arrow{color:var(--accent);transform:translate(2px,-2px)}
+.proj-desc{font-size:0.81rem;color:var(--mist);line-height:1.6}
+
+/* ART */
+.art-intro{font-size:0.86rem;color:var(--mist);margin-bottom:26px;line-height:1.75}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:12px}
+.art-card{border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--surface);transition:border-color .25s,transform .25s;cursor:pointer;position:relative}
+.art-card:hover{border-color:var(--border-h);transform:translateY(-3px)}
+.art-placeholder{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.art-placeholder::before{content:'';position:absolute;inset:0;opacity:.5}
+.art-placeholder.ap1{background:#0d1b35}.art-placeholder.ap1::before{background:radial-gradient(circle at 30% 40%,#1e4d8c 0%,transparent 65%),radial-gradient(circle at 75% 70%,#0d3060 0%,transparent 55%)}
+.art-placeholder.ap2{background:#101a2a}.art-placeholder.ap2::before{background:radial-gradient(circle at 65% 35%,#163a6b 0%,transparent 60%),radial-gradient(circle at 20% 75%,#0a2548 0%,transparent 50%)}
+.art-placeholder.ap3{background:#0c1e38}.art-placeholder.ap3::before{background:radial-gradient(circle at 50% 20%,#1b4880 0%,transparent 55%),radial-gradient(circle at 80% 80%,#0e2d5a 0%,transparent 50%)}
+.art-placeholder.ap4{background:#0e1e34}.art-placeholder.ap4::before{background:radial-gradient(circle at 20% 30%,#2a5298 0%,transparent 50%),radial-gradient(circle at 70% 60%,#112d5c 0%,transparent 60%)}
+.art-placeholder.ap5{background:#0b1a30}.art-placeholder.ap5::before{background:radial-gradient(circle at 55% 55%,#1a4275 0%,transparent 60%),radial-gradient(circle at 25% 80%,#0c2547 0%,transparent 45%)}
+.art-placeholder.ap6{background:#0f1e38}.art-placeholder.ap6::before{background:radial-gradient(circle at 75% 25%,#1d4a85 0%,transparent 55%),radial-gradient(circle at 30% 65%,#0e2b54 0%,transparent 50%)}
+.art-placeholder svg{position:relative;z-index:1;opacity:.18;width:36px;height:36px}
+.art-overlay{position:absolute;inset:0;background:rgba(10,18,32,.78);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .22s;padding:12px;text-align:center;z-index:2}
+.art-card:hover .art-overlay{opacity:1}
+.art-ov-title{font-size:0.77rem;font-weight:600;color:var(--bright);margin-bottom:4px}
+.art-ov-meta{font-family:var(--mono);font-size:0.62rem;color:var(--accent);letter-spacing:.5px}
+.art-caption{padding:10px 12px}
+.art-caption-title{font-size:0.77rem;font-weight:500;color:var(--bright);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.art-caption-sub{font-family:var(--mono);font-size:0.62rem;color:var(--faint);margin-top:2px}
+.art-hint{margin-top:18px;padding:13px 16px;border:1px dashed var(--faint);border-radius:10px;font-size:0.78rem;color:var(--faint);text-align:center;line-height:1.65}
+.art-hint code{font-family:var(--mono);font-size:0.68rem;color:var(--accent)}
+
+/* CONTACT */
+.contact-intro{font-size:0.87rem;color:var(--mist);max-width:480px;margin-bottom:26px;line-height:1.75}
+.contact-btn{display:inline-flex;align-items:center;gap:10px;font-size:0.87rem;font-weight:500;color:var(--accent);text-decoration:none;border:1px solid rgba(126,184,247,0.28);padding:13px 26px;border-radius:8px;transition:background .2s,border-color .2s}
+.contact-btn:hover{background:var(--accent-dim);border-color:var(--accent)}
+
+/* FOOTER */
+.footer{font-family:var(--mono);font-size:0.68rem;color:var(--faint);line-height:1.9}
+.footer a{color:var(--mist);text-decoration:none}
+.footer a:hover{color:var(--accent)}
+
+/* CURSOR GLOW */
+#glow{position:fixed;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(126,184,247,0.04) 0%,transparent 70%);pointer-events:none;transform:translate(-50%,-50%);z-index:0}
+
+/* RESPONSIVE */
+@media(max-width:860px){
+  html,body{overflow:auto;height:auto}
+  .shell{flex-direction:column;height:auto;padding:0 20px}
+  .sidebar{position:static;width:100%;height:auto;padding:48px 0 0}
+  .sidebar::after{display:none}
+  .s-nav{display:none}
+  .pane{height:auto;overflow:visible;padding:40px 0 80px}
+  .exp-item,.project-card{grid-template-columns:1fr}
+  .exp-date{margin-bottom:4px}
+  .proj-thumb{display:none}
 }
 
-html, body { height: 100%; overflow: hidden; }
-
-body {
-  background: var(--bg);
-  color: var(--bright);
-  font-family: var(--sans);
-  font-size: 15px;
-  line-height: 1.7;
-}
-
-/* ── SHELL ── */
-.shell {
-  display: flex;
-  height: 100vh;
-  max-width: 1160px;
-  margin: 0 auto;
-  padding: 0 32px;
-}
-
-/* ── SIDEBAR ── */
-.sidebar {
-  width: var(--sidebar-w);
-  flex-shrink: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding: 72px 48px 56px 0;
-  position: relative;
-}
-
-.sidebar::after {
-  content: '';
-  position: absolute;
-  right: 0; top: 80px; bottom: 80px;
-  width: 1px;
-  background: linear-gradient(to bottom, transparent, var(--border) 20%, var(--border) 80%, transparent);
-}
-
-.s-name { font-size: 2rem; font-weight: 600; color: var(--bright); letter-spacing: -0.3px; line-height: 1.15; margin-bottom: 7px; }
-.s-title { font-size: 0.88rem; font-weight: 500; color: var(--accent); letter-spacing: 0.6px; margin-bottom: 16px; }
-.s-bio { font-size: 0.82rem; color: var(--mist); line-height: 1.65; max-width: 230px; }
-.s-divider { height: 1px; background: var(--border); margin: 28px 0; }
-
-.s-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-
-.s-nav a {
-  display: flex; align-items: center; gap: 14px;
-  text-decoration: none; color: var(--mist);
-  font-size: 0.71rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
-  padding: 8px 0; transition: color 0.22s;
-}
-
-.s-nav a .nl {
-  display: block; height: 1px; width: 24px;
-  background: var(--faint);
-  transition: width 0.28s ease, background 0.28s;
-  flex-shrink: 0;
-}
-
-.s-nav a:hover, .s-nav a.active { color: var(--bright); }
-.s-nav a:hover .nl, .s-nav a.active .nl { width: 48px; background: var(--accent); }
-
-.s-socials { display: flex; gap: 16px; margin-top: 4px; }
-.s-socials a { color: var(--faint); display: flex; transition: color 0.2s, transform 0.2s; }
-.s-socials a:hover { color: var(--accent); transform: translateY(-2px); }
-.s-socials svg { width: 18px; height: 18px; fill: currentColor; }
-
-/* ── SCROLL PANE ── */
-.pane {
-  flex: 1; height: 100vh;
-  overflow-y: auto; overflow-x: hidden;
-  padding: 72px 0 120px 64px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--faint) transparent;
-  min-width: 0;
-}
-
-.pane::-webkit-scrollbar { width: 4px; }
-.pane::-webkit-scrollbar-thumb { background: var(--faint); border-radius: 2px; }
-
-/* ── VIEWS ── */
-#main-view, #detail-view { width: 100%; }
-#detail-view { display: none; }
-
-/* ── SECTIONS ── */
-section { margin-bottom: 96px; scroll-margin-top: 40px; }
-
-.sec-label {
-  font-family: var(--mono); font-size: 0.66rem; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--accent);
-  margin-bottom: 28px; display: flex; align-items: center; gap: 12px;
-}
-.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-/* ── ABOUT ── */
-.about-text p { color: var(--mist); font-size: 0.88rem; margin-bottom: 13px; }
-.about-text a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
-.about-text a:hover { border-color: var(--accent); }
-.about-text strong { color: var(--bright); font-weight: 500; }
-
-/* ── EXPERIENCE LIST ── */
-.exp-item {
-  display: grid; grid-template-columns: 92px 1fr;
-  gap: 0 20px; padding: 18px 16px;
-  border-radius: 10px; border: 1px solid transparent;
-  transition: background 0.2s, border-color 0.2s;
-  margin-bottom: 2px; cursor: pointer;
-}
-
-.exp-item:hover { background: var(--accent-dim); border-color: var(--border-h); }
-
-.exp-date {
-  font-family: var(--mono); font-size: 0.65rem; color: var(--faint);
-  text-transform: uppercase; padding-top: 3px; line-height: 1.5;
-}
-
-.exp-role { font-size: 0.9rem; font-weight: 600; color: var(--bright); margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
-
-.arrow {
-  font-size: 0.72rem; color: var(--faint); display: inline-block;
-  transition: color 0.2s, transform 0.2s; flex-shrink: 0;
-}
-
-.exp-item:hover .arrow { color: var(--accent); transform: translate(2px, -2px); }
-
-.exp-desc { font-size: 0.82rem; color: var(--mist); line-height: 1.6; margin-bottom: 10px; }
-
-.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-.tag { font-family: var(--mono); font-size: 0.65rem; background: rgba(126,184,247,0.09); color: var(--accent2); border-radius: 20px; padding: 3px 10px; }
-
-.resume-link {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 16px; margin-left: 16px;
-  font-family: var(--mono); font-size: 0.72rem; color: var(--mist);
-  text-decoration: none; transition: color 0.2s;
-}
-.resume-link:hover { color: var(--accent); }
-
-/* ── DETAIL PAGE ── */
-.detail-back {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: 0.72rem; color: var(--mist);
-  cursor: pointer; margin-bottom: 40px;
-  transition: color 0.2s; border: none; background: none; padding: 0;
-}
-.detail-back:hover { color: var(--accent); }
-.detail-back svg { width: 14px; height: 14px; fill: currentColor; }
-
-.detail-header { margin-bottom: 36px; }
-
-.detail-org {
-  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
-}
-
-.detail-title {
-  font-size: 1.6rem; font-weight: 600; color: var(--bright);
-  line-height: 1.2; margin-bottom: 10px;
-}
-
-.detail-date {
-  font-family: var(--mono); font-size: 0.7rem; color: var(--faint); margin-bottom: 20px;
-}
-
-.detail-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 36px; }
-
-.detail-divider { height: 1px; background: var(--border); margin-bottom: 36px; }
-
-.detail-section-title {
-  font-size: 0.72rem; font-weight: 600; letter-spacing: 1.8px;
-  text-transform: uppercase; color: var(--sky); margin-bottom: 14px;
-}
-
-.detail-body { font-size: 0.88rem; color: var(--mist); line-height: 1.8; margin-bottom: 32px; }
-.detail-body p { margin-bottom: 12px; }
-.detail-body ul { padding-left: 18px; display: flex; flex-direction: column; gap: 7px; }
-.detail-body ul li::marker { color: var(--accent); }
-
-.detail-highlights {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 10px; margin-bottom: 32px;
-}
-
-.highlight-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; padding: 14px 16px;
-}
-
-.highlight-card-label {
-  font-family: var(--mono); font-size: 0.63rem; letter-spacing: 1px;
-  text-transform: uppercase; color: var(--faint); margin-bottom: 5px;
-}
-
-.highlight-card-value { font-size: 0.85rem; color: var(--bright); font-weight: 500; }
-
-/* ── SLIDESHOW ── */
-.slideshow {
-  position: relative;
-  width: 100%;
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  margin-bottom: 36px;
-  user-select: none;
-}
-
-.slides-track {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-}
-
-.slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.9s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.slide.active { opacity: 1; }
-
-.slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* placeholder shown when no real photo yet */
-.slide-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: var(--surface2);
-}
-
-.slide-placeholder svg { width: 36px; height: 36px; opacity: 0.2; color: var(--accent); fill: currentColor; }
-.slide-placeholder span { font-family: var(--mono); font-size: 0.68rem; color: var(--faint); }
-
-.slide-caption {
-  padding: 14px 20px;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  min-height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.slide-caption-text {
-  font-size: 0.82rem;
-  color: var(--mist);
-  line-height: 1.5;
-  flex: 1;
-  font-style: italic;
-}
-
-.slide-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-.slide-btn {
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--mist);
-  border-radius: 6px;
-  width: 28px; height: 28px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
-  flex-shrink: 0;
-}
-
-.slide-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
-.slide-btn svg { width: 12px; height: 12px; fill: currentColor; }
-
-.slide-counter {
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  color: var(--faint);
-  min-width: 36px;
-  text-align: center;
-}
-
-.slide-dots {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
-
-.slide-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--faint);
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-}
-
-.slide-dot.active { background: var(--accent); transform: scale(1.3); }
-
-/* org link */
-.detail-org-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--accent);
-  text-decoration: none;
-  border: 1px solid rgba(126,184,247,0.25);
-  padding: 10px 18px;
-  border-radius: 8px;
-  margin-top: 32px;
-  transition: background 0.2s, border-color 0.2s;
-}
-.detail-org-link:hover { background: var(--accent-dim); border-color: var(--accent); }
-.detail-org-link svg { width: 13px; height: 13px; fill: currentColor; }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.sidebar { animation: fadeUp 0.65s ease both; }
-section  { animation: fadeUp 0.5s ease both; }
-#detail-view.visible { animation: fadeUp 0.35s ease both; }
-
-/* ── SKILLS ── */
-.skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 10px; }
-
-.skill-box {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; padding: 14px 16px;
-  transition: border-color 0.2s, background 0.2s;
-}
-.skill-box:hover { background: var(--surface2); border-color: var(--border-h); }
-
-.skill-cat { font-size: 0.68rem; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); margin-bottom: 10px; }
-
-.skill-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-.skill-list li { font-size: 0.79rem; color: var(--mist); display: flex; align-items: center; gap: 7px; }
-.skill-list li::before { content: ''; width: 3px; height: 3px; border-radius: 50%; background: var(--accent); opacity: 0.45; flex-shrink: 0; }
-
-/* ── PROJECTS ── */
-.project-card {
-  display: grid; grid-template-columns: 114px 1fr;
-  gap: 0 18px; padding: 18px 16px;
-  border-radius: 10px; border: 1px solid transparent;
-  text-decoration: none; transition: background 0.2s, border-color 0.2s;
-  margin-bottom: 2px;
-}
-.project-card:hover { background: var(--accent-dim); border-color: var(--border-h); }
-
-.proj-thumb {
-  width: 108px; height: 72px; border-radius: 6px;
-  background: var(--surface2); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.proj-thumb svg { width: 26px; height: 26px; opacity: 0.28; }
-
-.proj-name { font-size: 0.88rem; font-weight: 600; color: var(--bright); margin-bottom: 5px; display: inline-flex; align-items: center; gap: 5px; }
-.project-card:hover .proj-name .arrow { color: var(--accent); transform: translate(2px,-2px); }
-.proj-desc { font-size: 0.81rem; color: var(--mist); line-height: 1.6; }
-
-/* ── ART ── */
-.art-intro { font-size: 0.86rem; color: var(--mist); margin-bottom: 26px; line-height: 1.75; }
-
-.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 12px; }
-
-.art-card {
-  border-radius: 10px; overflow: hidden;
-  border: 1px solid var(--border); background: var(--surface);
-  transition: border-color 0.25s, transform 0.25s; cursor: pointer; position: relative;
-}
-.art-card:hover { border-color: var(--border-h); transform: translateY(-3px); }
-
-.art-placeholder {
-  width: 100%; aspect-ratio: 1 / 1;
-  display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
-}
-.art-placeholder::before { content: ''; position: absolute; inset: 0; opacity: 0.5; }
-
-.art-placeholder.ap1 { background: #0d1b35; }
-.art-placeholder.ap1::before { background: radial-gradient(circle at 30% 40%, #1e4d8c 0%, transparent 65%), radial-gradient(circle at 75% 70%, #0d3060 0%, transparent 55%); }
-.art-placeholder.ap2 { background: #101a2a; }
-.art-placeholder.ap2::before { background: radial-gradient(circle at 65% 35%, #163a6b 0%, transparent 60%), radial-gradient(circle at 20% 75%, #0a2548 0%, transparent 50%); }
-.art-placeholder.ap3 { background: #0c1e38; }
-.art-placeholder.ap3::before { background: radial-gradient(circle at 50% 20%, #1b4880 0%, transparent 55%), radial-gradient(circle at 80% 80%, #0e2d5a 0%, transparent 50%); }
-.art-placeholder.ap4 { background: #0e1e34; }
-.art-placeholder.ap4::before { background: radial-gradient(circle at 20% 30%, #2a5298 0%, transparent 50%), radial-gradient(circle at 70% 60%, #112d5c 0%, transparent 60%); }
-.art-placeholder.ap5 { background: #0b1a30; }
-.art-placeholder.ap5::before { background: radial-gradient(circle at 55% 55%, #1a4275 0%, transparent 60%), radial-gradient(circle at 25% 80%, #0c2547 0%, transparent 45%); }
-.art-placeholder.ap6 { background: #0f1e38; }
-.art-placeholder.ap6::before { background: radial-gradient(circle at 75% 25%, #1d4a85 0%, transparent 55%), radial-gradient(circle at 30% 65%, #0e2b54 0%, transparent 50%); }
-
-.art-placeholder svg { position: relative; z-index: 1; opacity: 0.18; width: 36px; height: 36px; }
-
-.art-overlay {
-  position: absolute; inset: 0;
-  background: rgba(10,18,32,0.78);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  opacity: 0; transition: opacity 0.22s; padding: 12px; text-align: center; z-index: 2;
-}
-.art-card:hover .art-overlay { opacity: 1; }
-.art-ov-title { font-size: 0.77rem; font-weight: 600; color: var(--bright); margin-bottom: 4px; }
-.art-ov-meta { font-family: var(--mono); font-size: 0.62rem; color: var(--accent); letter-spacing: 0.5px; }
-
-.art-caption { padding: 10px 12px; }
-.art-caption-title { font-size: 0.77rem; font-weight: 500; color: var(--bright); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.art-caption-sub { font-family: var(--mono); font-size: 0.62rem; color: var(--faint); margin-top: 2px; }
-
-.art-hint { margin-top: 18px; padding: 13px 16px; border: 1px dashed var(--faint); border-radius: 10px; font-size: 0.78rem; color: var(--faint); text-align: center; line-height: 1.65; }
-.art-hint code { font-family: var(--mono); font-size: 0.68rem; color: var(--accent); }
-
-/* ── CONTACT ── */
-.contact-intro { font-size: 0.87rem; color: var(--mist); max-width: 480px; margin-bottom: 26px; line-height: 1.75; }
-
-.contact-btn {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-size: 0.87rem; font-weight: 500; color: var(--accent);
-  text-decoration: none; border: 1px solid rgba(126,184,247,0.28);
-  padding: 13px 26px; border-radius: 8px; transition: background 0.2s, border-color 0.2s;
-}
-.contact-btn:hover { background: var(--accent-dim); border-color: var(--accent); }
-
-/* ── FOOTER ── */
-.footer { font-family: var(--mono); font-size: 0.68rem; color: var(--faint); line-height: 1.9; }
-.footer a { color: var(--mist); text-decoration: none; }
-.footer a:hover { color: var(--accent); }
-
-/* ── CURSOR GLOW ── */
-#glow {
-  position: fixed; width: 500px; height: 500px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(126,184,247,0.04) 0%, transparent 70%);
-  pointer-events: none; transform: translate(-50%,-50%); z-index: 0;
-}
-
-/* ── RESPONSIVE ── */
-@media (max-width: 860px) {
-  html, body { overflow: auto; height: auto; }
-  .shell { flex-direction: column; height: auto; padding: 0 20px; }
-  .sidebar { position: static; width: 100%; height: auto; padding: 48px 0 0; }
-  .sidebar::after { display: none; }
-  .s-nav { display: none; }
-  .pane { height: auto; overflow: visible; padding: 40px 0 80px; }
-  .exp-item, .project-card { grid-template-columns: 1fr; }
-  .exp-date { margin-bottom: 4px; }
-  .proj-thumb { display: none; }
-}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sidebar{animation:fadeUp .65s ease both}
+section{animation:fadeUp .5s ease both}
+#detail-view.visible{animation:fadeUp .35s ease both}
 </style>
 </head>
 <body>
@@ -499,16 +191,14 @@ section  { animation: fadeUp 0.5s ease both; }
 
 <div class="shell">
 
-  <!-- ══ SIDEBAR ══ -->
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div>
       <div class="s-name">James Benavides</div>
       <div class="s-title">Land Operations and Outreach Support</div>
       <p class="s-bio">Nature has a way of reeling me in! My work in oyster aquaculture, coastal fisheries, and invasive species management have fueled my passion for conservation.</p>
     </div>
-
     <div class="s-divider"></div>
-
     <nav class="s-nav">
       <a href="#about"><span class="nl"></span>About</a>
       <a href="#experience"><span class="nl"></span>Experience</a>
@@ -517,7 +207,6 @@ section  { animation: fadeUp 0.5s ease both; }
       <a href="#art"><span class="nl"></span>Art</a>
       <a href="#contact"><span class="nl"></span>Contact</a>
     </nav>
-
     <div class="s-socials">
       <a href="https://github.com" target="_blank" title="GitHub">
         <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
@@ -525,29 +214,26 @@ section  { animation: fadeUp 0.5s ease both; }
       <a href="https://linkedin.com" target="_blank" title="LinkedIn">
         <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
       </a>
-      <a href="https://twitter.com" target="_blank" title="Twitter / X">
-        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.261 5.632 5.903-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      </a>
       <a href="https://instagram.com" target="_blank" title="Instagram">
         <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
       </a>
-      <a href="/cdn-cgi/l/email-protection#037a6c767143666e626a6f2d606c6e" title="Email">
+      <a href="mailto:your@email.com" title="Email">
         <svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 11.366l9.615-7.545h.749A1.636 1.636 0 0 1 24 5.457z"/></svg>
       </a>
     </div>
   </aside>
 
-  <!-- ══ SCROLLABLE PANE ══ -->
+  <!-- PANE -->
   <div class="pane" id="pane">
 
-    <!-- ═══ MAIN VIEW ═══ -->
+    <!-- MAIN VIEW -->
     <div id="main-view">
 
       <section id="about">
         <div class="sec-label">About</div>
         <div class="about-text">
-          <p>I'm an <strong>entry-level scientist</strong> with a passion for <strong>coastal ecosystems and land stewardship</strong>. I thrive at the intersection of field science and community outreach, where hands-on research meets public engagement.</p>
-          <p>Currently serving as a <a href="#">2025–2026 AmeriCorps Green Iowa member</a> at <a href="#">Whiterock Conservancy</a>, supporting prescribed burns, invasive species mitigation, and volunteer programs. Before that I worked with <a href="#">Texas Parks and Wildlife</a>, the <a href="#">Darling Marine Center</a>, and <a href="#">Duke University Marine Lab</a> — each shaping how I think about conservation science and communication.</p>
+          <p>I'm a <strong>conservation professional</strong> with a passion for <strong>coastal ecosystems and land stewardship</strong>. I thrive at the intersection of field science and community outreach, where hands-on research meets public engagement.</p>
+          <p>Currently serving as a 2025–2026 AmeriCorps Green Iowa member at <a href="https://www.whiterockconservancy.org" target="_blank">Whiterock Conservancy</a>, supporting prescribed burns, invasive species mitigation, and volunteer programs. Before that I worked with <a href="https://tpwd.texas.gov" target="_blank">Texas Parks and Wildlife</a>, the <a href="https://dmc.umaine.edu" target="_blank">Darling Marine Center</a>, and <a href="https://marinelab.duke.edu" target="_blank">Duke University Marine Lab</a>.</p>
           <p>Outside of work, I make art. I believe the best work blurs the line between function and feeling.</p>
         </div>
       </section>
@@ -555,58 +241,48 @@ section  { animation: fadeUp 0.5s ease both; }
       <section id="experience">
         <div class="sec-label">Experience</div>
 
-        <div class="exp-item" onclick="openDetail('whiterock')">
-          <div class="exp-date">Dec 2025 — Current</div>
+        <div class="exp-item" id="exp-whiterock">
+          <div class="exp-date">Dec 2025 — Now</div>
           <div>
             <div class="exp-role">Land Operations and Outreach Support · Whiterock Conservancy <span class="arrow">↗</span></div>
-            <p class="exp-desc">AmeriCorps Green Iowa member supporting land management projects including prescribed burns, invasive species mitigation, and volunteer outreach programs.</p>
-            <div class="tags">
-              <span class="tag">Wildland Fire</span><span class="tag">Invasive Species</span><span class="tag">Agriculture</span><span class="tag">Soil Sampling</span>
-            </div>
+            <p class="exp-desc">AmeriCorps Green Iowa member supporting prescribed burns, invasive species mitigation, and volunteer outreach programs across 5,500+ acres.</p>
+            <div class="tags"><span class="tag">Wildland Fire</span><span class="tag">Invasive Species</span><span class="tag">Agriculture</span><span class="tag">Soil Sampling</span></div>
           </div>
         </div>
 
-        <div class="exp-item" onclick="openDetail('tpwd')">
-          <div class="exp-date">June 2025 — Sept 2025</div>
+        <div class="exp-item" id="exp-tpwd">
+          <div class="exp-date">June–Sept 2025</div>
           <div>
             <div class="exp-role">Coastal Fisheries Intern · Texas Parks and Wildlife Department <span class="arrow">↗</span></div>
-            <p class="exp-desc">Conducted bay system habitat assessments via sonar scanning, gained field experience in fisheries sampling, and led public educational programs on harmful algal blooms.</p>
-            <div class="tags">
-              <span class="tag">Environmental Permitting</span><span class="tag">Oyster Reef Restoration</span><span class="tag">Harmful Algal Blooms</span><span class="tag">Fisheries Sampling</span>
-            </div>
+            <p class="exp-desc">Bay habitat assessments via sonar scanning, fisheries sampling, and educational programs on harmful algal blooms at Galveston Bay.</p>
+            <div class="tags"><span class="tag">Oyster Reef Restoration</span><span class="tag">Harmful Algal Blooms</span><span class="tag">Fisheries Sampling</span></div>
           </div>
         </div>
 
-        <div class="exp-item" onclick="openDetail('darling')">
-          <div class="exp-date">June 2024 — Aug 2024</div>
+        <div class="exp-item" id="exp-darling">
+          <div class="exp-date">June–Aug 2024</div>
           <div>
             <div class="exp-role">Aquaculture Researcher · Darling Marine Center <span class="arrow">↗</span></div>
-            <p class="exp-desc">Fellowship weaving Indigenous Knowledge and Western Science to research tidal-energy oyster tumbling as a low-cost alternative to traditional aquaculture methods.</p>
-            <div class="tags">
-              <span class="tag">Oyster Aquaculture</span><span class="tag">Science Communication</span><span class="tag">Decolonized Science</span>
-            </div>
+            <p class="exp-desc">Fellowship weaving Indigenous Knowledge and Western Science to research tidal-energy oyster tumbling as a low-cost aquaculture alternative.</p>
+            <div class="tags"><span class="tag">Oyster Aquaculture</span><span class="tag">Decolonized Science</span><span class="tag">Tidal Energy</span></div>
           </div>
         </div>
 
-        <div class="exp-item" onclick="openDetail('bowdoin')">
-          <div class="exp-date">June 2023 — Dec 2023</div>
+        <div class="exp-item" id="exp-bowdoin">
+          <div class="exp-date">June–Dec 2023</div>
           <div>
             <div class="exp-role">Animal Behavior Researcher · Bowdoin College <span class="arrow">↗</span></div>
-            <p class="exp-desc">Monitored scallop behavior under varying light intensities and observed sea star feeding/growth rates to inform fisheries management in warming Gulf waters.</p>
-            <div class="tags">
-              <span class="tag">Bivalve Research</span><span class="tag">Research Design</span><span class="tag">Animal Welfare</span>
-            </div>
+            <p class="exp-desc">Monitored scallop responses to light and sea star feeding rates to inform fisheries management in the warming Gulf of Maine.</p>
+            <div class="tags"><span class="tag">Bivalve Research</span><span class="tag">Behavioral Ecology</span><span class="tag">Research Design</span></div>
           </div>
         </div>
 
-        <div class="exp-item" onclick="openDetail('duke')">
-          <div class="exp-date">June 2022 — Aug 2022</div>
+        <div class="exp-item" id="exp-duke">
+          <div class="exp-date">June–Aug 2022</div>
           <div>
             <div class="exp-role">Microbial Oceanography Researcher · Duke University Marine Lab <span class="arrow">↗</span></div>
             <p class="exp-desc">Isolated Labyrinthulomycetes from the PICO time series using pollen baiting and gene sequencing to study marine organic matter decomposition.</p>
-            <div class="tags">
-              <span class="tag">Microbial Ecology</span><span class="tag">Gene Sequencing</span><span class="tag">Marine Chemistry</span>
-            </div>
+            <div class="tags"><span class="tag">Gene Sequencing</span><span class="tag">Microbial Ecology</span><span class="tag">Marine Chemistry</span></div>
           </div>
         </div>
 
@@ -616,51 +292,27 @@ section  { animation: fadeUp 0.5s ease both; }
       <section id="skills">
         <div class="sec-label">Skills</div>
         <div class="skills-grid">
-          <div class="skill-box">
-            <div class="skill-cat">Field Science</div>
-            <ul class="skill-list"><li>Prescribed Burns</li><li>Sonar Scanning</li><li>Bag Seining</li><li>Soil Sampling</li><li>Water Quality</li></ul>
-          </div>
-          <div class="skill-box">
-            <div class="skill-cat">Research</div>
-            <ul class="skill-list"><li>Experimental Design</li><li>Gene Sequencing</li><li>Habitat Assessment</li><li>Species Monitoring</li></ul>
-          </div>
-          <div class="skill-box">
-            <div class="skill-cat">Conservation</div>
-            <ul class="skill-list"><li>Invasive Species Mgmt</li><li>Oyster Reef Restoration</li><li>Land Stewardship</li><li>Wildland Firefighting</li></ul>
-          </div>
-          <div class="skill-box">
-            <div class="skill-cat">Outreach</div>
-            <ul class="skill-list"><li>Public Programming</li><li>Volunteer Coordination</li><li>Science Communication</li><li>Event Facilitation</li></ul>
-          </div>
-          <div class="skill-box">
-            <div class="skill-cat">Tools</div>
-            <ul class="skill-list"><li>GIS / Mapping</li><li>Transport Boat Nav</li><li>Vertical Longlines</li><li>Microscopy</li></ul>
-          </div>
-          <div class="skill-box">
-            <div class="skill-cat">Soft Skills</div>
-            <ul class="skill-list"><li>Collaboration</li><li>Adaptability</li><li>Communication</li><li>Curiosity</li></ul>
-          </div>
+          <div class="skill-box"><div class="skill-cat">Field Science</div><ul class="skill-list"><li>Prescribed Burns</li><li>Sonar Scanning</li><li>Bag Seining</li><li>Soil Sampling</li><li>Water Quality</li></ul></div>
+          <div class="skill-box"><div class="skill-cat">Research</div><ul class="skill-list"><li>Experimental Design</li><li>Gene Sequencing</li><li>Habitat Assessment</li><li>Species Monitoring</li></ul></div>
+          <div class="skill-box"><div class="skill-cat">Conservation</div><ul class="skill-list"><li>Invasive Species Mgmt</li><li>Oyster Reef Restoration</li><li>Land Stewardship</li><li>Wildland Firefighting</li></ul></div>
+          <div class="skill-box"><div class="skill-cat">Outreach</div><ul class="skill-list"><li>Public Programming</li><li>Volunteer Coordination</li><li>Science Communication</li><li>Event Facilitation</li></ul></div>
+          <div class="skill-box"><div class="skill-cat">Tools</div><ul class="skill-list"><li>GIS / Mapping</li><li>Boat Navigation</li><li>Vertical Longlines</li><li>Microscopy</li></ul></div>
+          <div class="skill-box"><div class="skill-cat">Soft Skills</div><ul class="skill-list"><li>Collaboration</li><li>Adaptability</li><li>Communication</li><li>Curiosity</li></ul></div>
         </div>
       </section>
 
       <section id="projects">
         <div class="sec-label">Projects</div>
-
         <a class="project-card" href="#" target="_blank">
-          <div class="proj-thumb">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-          </div>
+          <div class="proj-thumb"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
           <div>
             <div class="proj-name">Project Alpha <span class="arrow">↗</span></div>
             <p class="proj-desc">A concise description of what this project does and what makes it meaningful.</p>
             <div class="tags"><span class="tag">Ecology</span><span class="tag">Field Research</span></div>
           </div>
         </a>
-
         <a class="project-card" href="#" target="_blank">
-          <div class="proj-thumb">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
-          </div>
+          <div class="proj-thumb"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg></div>
           <div>
             <div class="proj-name">Project Beta <span class="arrow">↗</span></div>
             <p class="proj-desc">What you built and why it matters. Mention notable outcomes or recognition if applicable.</p>
@@ -671,62 +323,22 @@ section  { animation: fadeUp 0.5s ease both; }
 
       <section id="art">
         <div class="sec-label">Art</div>
-        <p class="art-intro">Beyond the field, I create [describe your art practice — illustration, painting, photography, etc.]. Art is how I explore ideas that don't fit neatly into data or fieldwork. This is a small window into that world.</p>
-
+        <p class="art-intro">Beyond the field, I create [describe your art practice]. Art is how I explore ideas that don't fit neatly into data or fieldwork.</p>
         <div class="gallery">
-          <div class="art-card">
-            <div class="art-placeholder ap1">
-              <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-              <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
-            </div>
-            <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
-          </div>
-          <div class="art-card">
-            <div class="art-placeholder ap2">
-              <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-              <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
-            </div>
-            <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
-          </div>
-          <div class="art-card">
-            <div class="art-placeholder ap3">
-              <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-              <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
-            </div>
-            <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
-          </div>
-          <div class="art-card">
-            <div class="art-placeholder ap4">
-              <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-              <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
-            </div>
-            <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
-          </div>
-          <div class="art-card">
-            <div class="art-placeholder ap5">
-              <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-              <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
-            </div>
-            <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
-          </div>
-          <div class="art-card">
-            <div class="art-placeholder ap6">
-              <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-              <div class="art-overlay"><div class="art-ov-title">Piece Title Here</div><div class="art-ov-meta">Medium · Year</div></div>
-            </div>
-            <div class="art-caption"><div class="art-caption-title">Piece Title Here</div><div class="art-caption-sub">Medium · Year</div></div>
-          </div>
+          <div class="art-card"><div class="art-placeholder ap1"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><div class="art-overlay"><div class="art-ov-title">Piece Title</div><div class="art-ov-meta">Medium · Year</div></div></div><div class="art-caption"><div class="art-caption-title">Piece Title</div><div class="art-caption-sub">Medium · Year</div></div></div>
+          <div class="art-card"><div class="art-placeholder ap2"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><div class="art-overlay"><div class="art-ov-title">Piece Title</div><div class="art-ov-meta">Medium · Year</div></div></div><div class="art-caption"><div class="art-caption-title">Piece Title</div><div class="art-caption-sub">Medium · Year</div></div></div>
+          <div class="art-card"><div class="art-placeholder ap3"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><div class="art-overlay"><div class="art-ov-title">Piece Title</div><div class="art-ov-meta">Medium · Year</div></div></div><div class="art-caption"><div class="art-caption-title">Piece Title</div><div class="art-caption-sub">Medium · Year</div></div></div>
+          <div class="art-card"><div class="art-placeholder ap4"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><div class="art-overlay"><div class="art-ov-title">Piece Title</div><div class="art-ov-meta">Medium · Year</div></div></div><div class="art-caption"><div class="art-caption-title">Piece Title</div><div class="art-caption-sub">Medium · Year</div></div></div>
+          <div class="art-card"><div class="art-placeholder ap5"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><div class="art-overlay"><div class="art-ov-title">Piece Title</div><div class="art-ov-meta">Medium · Year</div></div></div><div class="art-caption"><div class="art-caption-title">Piece Title</div><div class="art-caption-sub">Medium · Year</div></div></div>
+          <div class="art-card"><div class="art-placeholder ap6"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><div class="art-overlay"><div class="art-ov-title">Piece Title</div><div class="art-ov-meta">Medium · Year</div></div></div><div class="art-caption"><div class="art-caption-title">Piece Title</div><div class="art-caption-sub">Medium · Year</div></div></div>
         </div>
-
-        <div class="art-hint">
-          Replace each <code>.art-placeholder</code> div with an <code>&lt;img src="your-image.jpg"&gt;</code> to show your actual artwork. Recommended: square crop, at least 600×600 px.
-        </div>
+        <div class="art-hint">Replace each <code>.art-placeholder</code> div with <code>&lt;img src="your-image.jpg"&gt;</code> to display your artwork.</div>
       </section>
 
       <section id="contact">
         <div class="sec-label">Contact</div>
-        <p class="contact-intro">I'm open to new opportunities, collaborations, and interesting conversations. Whether you have a project in mind, a question, or just want to say hello — feel free to reach out.</p>
-        <a class="contact-btn" href="/cdn-cgi/l/email-protection#057c6a7077456068646c692b666a68">
+        <p class="contact-intro">I'm open to new opportunities, collaborations, and interesting conversations. Whether you have a project in mind or just want to say hello — feel free to reach out.</p>
+        <a class="contact-btn" href="mailto:your@email.com">
           <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 11.366l9.615-7.545h.749A1.636 1.636 0 0 1 24 5.457z"/></svg>
           Say Hello
         </a>
@@ -737,292 +349,305 @@ section  { animation: fadeUp 0.5s ease both; }
         <p>HTML · CSS · Vanilla JS</p>
       </footer>
 
-    </div><!-- /main-view -->
+    </div>
 
-    <!-- ═══ DETAIL VIEW ═══ -->
+    <!-- DETAIL VIEW -->
     <div id="detail-view">
-
-      <button class="detail-back" onclick="closeDetail()">
+      <button class="detail-back" id="back-btn">
         <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
         Back to Experience
       </button>
-
       <div id="detail-content"></div>
-
-    </div><!-- /detail-view -->
-
-  </div><!-- /pane -->
-</div><!-- /shell -->
-
-<!-- ═══ EXPERIENCE DETAIL DATA ═══ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-const roles = {
-  whiterock: {
-    org: 'Whiterock Conservancy · AmeriCorps Green Iowa',
-    orgUrl: 'https://www.whiterockconservancy.org',
-    orgLabel: 'Visit Whiterock Conservancy',
-    title: 'Land Operations and Outreach Support',
-    date: 'December 2025 — Present',
-    tags: ['Wildland Firefighting', 'Invasive Species Removal', 'Agriculture', 'Soil Sampling', 'Volunteer Coordination', 'Public Programming'],
-    overview: `<p>As a 2025–2026 AmeriCorps Green Iowa member, I serve at Whiterock Conservancy supporting a wide range of land management and conservation activities across one of Iowa's most ecologically diverse landscapes.</p><p>Whiterock protects over 5,500 acres in the Raccoon River watershed — prairies, forests, wetlands, and working agricultural lands. This role sits at the intersection of hands-on field work and community engagement, two areas I'm deeply passionate about.</p>`,
-    slides: [
-      { src: '', caption: 'Add your photo here — replace src with a file path or URL. Example: photos/burn1.jpg' },
-      { src: '', caption: 'Photo 2 caption — describe what\'s happening, where, and when.' },
-      { src: '', caption: 'Photo 3 caption — field work, volunteer events, landscapes, anything from your time here.' },
-    ],
-    responsibilities: [
-      'Supporting prescribed burns, including planning, execution, and post-burn monitoring',
-      'Conducting invasive species mitigation through mechanical removal, herbicide application, and monitoring',
-      'Performing habitat assessments, species monitoring, and vegetation mapping',
-      'Facilitating volunteer stewardship projects and training community members in conservation techniques',
-      'Leading public programs and educational events for diverse audiences',
-      'Assisting with soil sampling, research data collection, and GIS mapping',
-    ],
-  },
-
-  tpwd: {
-    org: 'Texas Parks and Wildlife Department',
-    orgUrl: 'https://tpwd.texas.gov/fisheries/coastal',
-    orgLabel: 'Visit TPWD Coastal Fisheries',
-    title: 'Coastal Fisheries Intern',
-    date: 'June 2025 — September 2025',
-    tags: ['Environmental Permitting', 'Oyster Reef Restoration', 'Harmful Algal Blooms', 'Fisheries Sampling', 'Sonar Scanning', 'Water Quality'],
-    overview: `<p>This internship placed me in the field alongside Texas Parks and Wildlife's Coastal Fisheries team, conducting habitat assessments and fisheries sampling across Galveston Bay's complex estuary system.</p><p>Galveston Bay is Texas's largest estuary and one of the most productive in the nation. Working here gave me direct exposure to real-world fisheries management challenges including water quality degradation, habitat loss, and harmful algal blooms.</p>`,
-    slides: [
-      { src: '', caption: 'Add your photo here — replace src with a file path or URL.' },
-      { src: '', caption: 'Photo 2 caption — on the water, sampling, equipment, team.' },
-      { src: '', caption: 'Photo 3 caption — Galveston Bay, oyster reefs, field sites.' },
-    ],
-    responsibilities: [
-      'Conducted bay system habitat assessments using sonar scanning technology from a transport boat navigating shallow waters',
-      'Gained hands-on experience with bag seining, vertical longlines, and trawl sampling for fish and invertebrate surveys',
-      'Performed water quality assessments including dissolved oxygen, salinity, temperature, and turbidity measurements',
-      'Assisted with oyster reef restoration site evaluation and environmental permitting documentation',
-      'Presented an educational field program on harmful algal blooms (HABs) to Friends of Galveston Island State Park',
-      'Compiled field data and contributed to habitat assessment reports',
-    ],
-  },
-
-  darling: {
-    org: 'Darling Marine Center · University of Maine',
-    orgUrl: 'https://dmc.umaine.edu',
-    orgLabel: 'Visit Darling Marine Center',
-    title: 'Aquaculture Researcher',
-    date: 'June 2024 — August 2024',
-    tags: ['Oyster Aquaculture', 'Science Communication', 'Decolonized Science', 'Indigenous Knowledge', 'Tidal Energy', 'Research Design'],
-    overview: `<p>This fellowship wove together Indigenous Knowledge and Western Science — an approach known as Two-Eyed Seeing — to produce research that is more holistic, community-centered, and applicable to local needs.</p><p>My project investigated whether tidal energy could replace powered tumblers for oyster aquaculture in intertidal and subtidal settings, potentially lowering the cost and labor barrier for small-scale and Indigenous-owned operations.</p>`,
-    slides: [
-      { src: '', caption: 'Add your photo here — replace src with a file path or URL.' },
-      { src: '', caption: 'Photo 2 caption — oyster cages, tidal flats, lab work, Maine coast.' },
-      { src: '', caption: 'Photo 3 caption — community meetings, research presentations, fieldwork.' },
-    ],
-    responsibilities: [
-      'Designed and implemented an experiment comparing tidal-tumbled oysters to traditionally managed controls across intertidal and subtidal environments',
-      'Monitored oyster growth rates, shell shape, and survival across treatment groups over the summer season',
-      'Recorded and analyzed tidal cycle data to quantify tumbling frequency and energy exposure',
-      'Collaborated with Indigenous community members and knowledge holders to integrate traditional ecological knowledge into research design',
-      'Presented research findings to the Darling Marine Center community and visiting stakeholders',
-      'Contributed to a final report assessing the viability of tidal tumbling as a low-cost aquaculture method',
-    ],
-  },
-
-  bowdoin: {
-    org: 'Bowdoin College — Marine Science Program',
-    orgUrl: 'https://www.bowdoin.edu/biology/marine-science/',
-    orgLabel: 'Visit Bowdoin Marine Science',
-    title: 'Animal Behavior Researcher',
-    date: 'June 2023 — December 2023',
-    tags: ['Bivalve Research', 'Research Design', 'Animal Welfare', 'Behavioral Ecology', 'Scallop Biology', 'Sea Star Dynamics'],
-    overview: `<p>This research position focused on two interconnected questions: whether scallops could be harvested using light-based methods as an alternative to dredging, and how shifting sea star populations are affecting bivalve dynamics in the warming Gulf of Maine.</p><p>The Gulf of Maine is warming faster than nearly any other ocean region on Earth — understanding how species like scallops and sea stars respond is critical for sustainable fisheries management.</p>`,
-    slides: [
-      { src: '', caption: 'Add your photo here — replace src with a file path or URL.' },
-      { src: '', caption: 'Photo 2 caption — lab tanks, scallops, sea stars, Brunswick, Maine.' },
-      { src: '', caption: 'Photo 3 caption — behavioral observation setup, field collection, results.' },
-    ],
-    responsibilities: [
-      'Monitored scallop behavioral responses (swimming, valve movement, mantle retraction) under varying light intensities to evaluate feasibility of light-based harvest',
-      'Recorded and analyzed feeding rates and prey consumption of two sea star species under controlled laboratory conditions',
-      'Observed and documented growth rates of sea stars over the study period to assess population recovery dynamics',
-      'Checked all specimens daily, maintaining tank water quality and animal welfare throughout the study',
-      'Maintained detailed field notebooks and contributed to data analysis and reporting',
-      'Supported lab operations including tank maintenance, feeding schedules, and equipment calibration',
-    ],
-  },
-
-  duke: {
-    org: 'Duke University Marine Lab',
-    orgUrl: 'https://marinelab.duke.edu',
-    orgLabel: 'Visit Duke Marine Lab',
-    title: 'Microbial Oceanography Researcher',
-    date: 'June 2022 — August 2022',
-    tags: ['Microbial Ecology', 'Gene Sequencing', 'Marine Chemistry', 'Labyrinthulomycetes', 'Organic Matter Cycling', 'Pure Culture Isolation'],
-    overview: `<p>This summer research position introduced me to the hidden world of marine microbes — specifically the Labyrinthulomycetes, a group of protists that play important but poorly understood roles in breaking down organic matter in coastal ocean systems.</p><p>Working at the Pivers Island Coastal Observatory (PICO) long-term time series site gave me a window into how microbial communities shift seasonally — and sparked a lasting interest in the intersection of microbiology, biogeochemistry, and ecosystem science.</p>`,
-    slides: [
-      { src: '', caption: 'Add your photo here — replace src with a file path or URL.' },
-      { src: '', caption: 'Photo 2 caption — lab bench, Beaufort NC, PICO time series site.' },
-      { src: '', caption: 'Photo 3 caption — culture plates, microscopy, Duke Marine Lab campus.' },
-    ],
-    responsibilities: [
-      'Isolated Labyrinthulomycetes from seawater and sediment samples using pollen grain baiting techniques',
-      'Cultured isolates on antibiotic-containing marine agar media to obtain pure cultures',
-      'Extracted DNA from pure culture isolates and prepared samples for gene sequencing',
-      'Analyzed sequencing results to identify and classify novel isolates at the species level',
-      'Maintained lab cultures and performed sterile technique protocols daily',
-      'Contributed to documentation of isolate collection and maintained organized strain libraries',
-    ],
-  }
-};
-
-// ── Navigation ──
-const pane = document.getElementById('pane');
-const mainView = document.getElementById('main-view');
-const detailView = document.getElementById('detail-view');
-const detailContent = document.getElementById('detail-content');
-
-let slideshowTimer = null;
-
-function buildSlideshow(slides) {
-  if (!slides || slides.length === 0) return '';
-
-  const slidesHtml = slides.map((s, i) => {
-    const inner = s.src
-      ? `<img src="${s.src}" alt="${s.caption}" loading="lazy" />`
-      : `<div class="slide-placeholder">
-           <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-           <span>Add photo: replace src="" with your image path</span>
-         </div>`;
-    return `<div class="slide${i === 0 ? ' active' : ''}" data-index="${i}">${inner}</div>`;
-  }).join('');
-
-  const dotsHtml = slides.map((_, i) =>
-    `<span class="slide-dot${i === 0 ? ' active' : ''}" data-dot="${i}"></span>`
-  ).join('');
-
-  return `
-    <div class="slideshow" id="slideshow">
-      <div class="slides-track">${slidesHtml}</div>
-      <div class="slide-caption">
-        <span class="slide-caption-text" id="slide-caption-text">${slides[0].caption}</span>
-        <div class="slide-controls">
-          <button class="slide-btn" id="slide-prev" title="Previous">
-            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-          </button>
-          <div class="slide-dots" id="slide-dots">${dotsHtml}</div>
-          <button class="slide-btn" id="slide-next" title="Next">
-            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>`;
-}
-
-function initSlideshow(slides) {
-  if (!slides || slides.length === 0) return;
-  let current = 0;
-
-  const allSlides = detailContent.querySelectorAll('.slide');
-  const allDots   = detailContent.querySelectorAll('.slide-dot');
-  const captionEl = detailContent.querySelector('#slide-caption-text');
-  const prevBtn   = detailContent.querySelector('#slide-prev');
-  const nextBtn   = detailContent.querySelector('#slide-next');
-
-  function goTo(n) {
-    allSlides[current].classList.remove('active');
-    allDots[current].classList.remove('active');
-    current = (n + slides.length) % slides.length;
-    allSlides[current].classList.add('active');
-    allDots[current].classList.add('active');
-    captionEl.textContent = slides[current].caption;
-  }
-
-  prevBtn.addEventListener('click', () => { clearInterval(slideshowTimer); goTo(current - 1); });
-  nextBtn.addEventListener('click', () => { clearInterval(slideshowTimer); goTo(current + 1); });
-  allDots.forEach(dot => dot.addEventListener('click', () => { clearInterval(slideshowTimer); goTo(+dot.dataset.dot); }));
-
-  // Auto-advance every 5s
-  slideshowTimer = setInterval(() => goTo(current + 1), 5000);
-}
-
-function openDetail(key) {
-  const r = roles[key];
-  if (!r) return;
-  clearInterval(slideshowTimer);
-
-  const tagsHtml = r.tags.map(t => `<span class="tag">${t}</span>`).join('');
-  const responsibilitiesHtml = r.responsibilities.map(x => `<li>${x}</li>`).join('');
-  const slideshowHtml = buildSlideshow(r.slides);
-  const orgLinkHtml = r.orgUrl ? `
-    <a class="detail-org-link" href="${r.orgUrl}" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-      ${r.orgLabel || 'Visit Organization'}
-    </a>` : '';
-
-  detailContent.innerHTML = `
-    <div class="detail-header">
-      <div class="detail-org">${r.org}</div>
-      <div class="detail-title">${r.title}</div>
-      <div class="detail-date">${r.date}</div>
-      <div class="detail-tags">${tagsHtml}</div>
     </div>
 
-    <div class="detail-section-title">Overview</div>
-    <div class="detail-body">${r.overview}</div>
+  </div>
+</div>
 
-    <div class="detail-divider"></div>
+<script>
+(function() {
 
-    <div class="detail-section-title">Photos</div>
-    ${slideshowHtml}
+  var roles = {
+    whiterock: {
+      org: 'Whiterock Conservancy · AmeriCorps Green Iowa',
+      orgUrl: 'https://www.whiterockconservancy.org',
+      orgLabel: 'Visit Whiterock Conservancy',
+      title: 'Land Operations and Outreach Support',
+      date: 'December 2025 — Present',
+      tags: ['Wildland Firefighting','Invasive Species Removal','Agriculture','Soil Sampling','Volunteer Coordination','Public Programming'],
+      overview: '<p>As a 2025–2026 AmeriCorps Green Iowa member, I serve at Whiterock Conservancy supporting a wide range of land management and conservation activities across one of Iowa\'s most ecologically diverse landscapes.</p><p>Whiterock protects over 5,500 acres in the Raccoon River watershed — prairies, forests, wetlands, and working agricultural lands. This role sits at the intersection of hands-on field work and community engagement, two areas I\'m deeply passionate about.</p>',
+      slides: [
+        { src: '', caption: 'Replace src="" with your image path, e.g. photos/burn1.jpg — prescribed burn, invasive removal, or landscape.' },
+        { src: '', caption: 'Photo 2 — volunteer events, public programs, or field work.' },
+        { src: '', caption: 'Photo 3 — Whiterock landscapes, soil sampling, or mapping work.' }
+      ],
+      responsibilities: [
+        'Supporting prescribed burns, including planning, execution, and post-burn monitoring',
+        'Conducting invasive species mitigation through mechanical removal, herbicide application, and monitoring',
+        'Performing habitat assessments, species monitoring, and vegetation mapping',
+        'Facilitating volunteer stewardship projects and training community members in conservation techniques',
+        'Leading public programs and educational events for diverse audiences',
+        'Assisting with soil sampling, research data collection, and GIS mapping'
+      ]
+    },
+    tpwd: {
+      org: 'Texas Parks and Wildlife Department',
+      orgUrl: 'https://tpwd.texas.gov/fisheries/coastal',
+      orgLabel: 'Visit TPWD Coastal Fisheries',
+      title: 'Coastal Fisheries Intern',
+      date: 'June 2025 — September 2025',
+      tags: ['Environmental Permitting','Oyster Reef Restoration','Harmful Algal Blooms','Fisheries Sampling','Sonar Scanning','Water Quality'],
+      overview: '<p>This internship placed me in the field alongside Texas Parks and Wildlife\'s Coastal Fisheries team, conducting habitat assessments and fisheries sampling across Galveston Bay\'s complex estuary system.</p><p>Galveston Bay is Texas\'s largest estuary and one of the most productive in the nation. Working here gave me direct exposure to real-world fisheries management challenges including water quality degradation, habitat loss, and harmful algal blooms.</p>',
+      slides: [
+        { src: '', caption: 'Replace src="" with your image path — on the water, sonar scanning, or bay views.' },
+        { src: '', caption: 'Photo 2 — fisheries sampling, seining, or oyster reef sites.' },
+        { src: '', caption: 'Photo 3 — HABs program, Galveston Island State Park, or team field work.' }
+      ],
+      responsibilities: [
+        'Conducted bay system habitat assessments using sonar scanning from a transport boat navigating shallow waters',
+        'Gained hands-on experience with bag seining, vertical longlines, and trawl sampling for fish and invertebrate surveys',
+        'Performed water quality assessments including dissolved oxygen, salinity, temperature, and turbidity measurements',
+        'Assisted with oyster reef restoration site evaluation and environmental permitting documentation',
+        'Presented an educational field program on harmful algal blooms (HABs) to Friends of Galveston Island State Park',
+        'Compiled field data and contributed to habitat assessment reports'
+      ]
+    },
+    darling: {
+      org: 'Darling Marine Center · University of Maine',
+      orgUrl: 'https://dmc.umaine.edu',
+      orgLabel: 'Visit Darling Marine Center',
+      title: 'Aquaculture Researcher',
+      date: 'June 2024 — August 2024',
+      tags: ['Oyster Aquaculture','Science Communication','Decolonized Science','Indigenous Knowledge','Tidal Energy','Research Design'],
+      overview: '<p>This fellowship wove together Indigenous Knowledge and Western Science — an approach known as Two-Eyed Seeing — to produce research that is more holistic, community-centered, and applicable to local needs.</p><p>My project investigated whether tidal energy could replace powered tumblers for oyster aquaculture in intertidal and subtidal settings, potentially lowering the cost and labor barrier for small-scale and Indigenous-owned operations.</p>',
+      slides: [
+        { src: '', caption: 'Replace src="" with your image path — oyster cages, tidal flats, or Maine coast.' },
+        { src: '', caption: 'Photo 2 — lab work, cage monitoring, or tidal measurements.' },
+        { src: '', caption: 'Photo 3 — community meetings, presentations, or Damariscotta River.' }
+      ],
+      responsibilities: [
+        'Designed and implemented an experiment comparing tidal-tumbled oysters to traditionally managed controls across intertidal and subtidal environments',
+        'Monitored oyster growth rates, shell shape, and survival across treatment groups over the summer season',
+        'Recorded and analyzed tidal cycle data to quantify tumbling frequency and energy exposure',
+        'Collaborated with Indigenous community members and knowledge holders to integrate traditional ecological knowledge into research design',
+        'Presented research findings to the Darling Marine Center community and visiting stakeholders',
+        'Contributed to a final report assessing the viability of tidal tumbling as a low-cost aquaculture method'
+      ]
+    },
+    bowdoin: {
+      org: 'Bowdoin College — Marine Science Program',
+      orgUrl: 'https://www.bowdoin.edu/biology/',
+      orgLabel: 'Visit Bowdoin Biology',
+      title: 'Animal Behavior Researcher',
+      date: 'June 2023 — December 2023',
+      tags: ['Bivalve Research','Research Design','Animal Welfare','Behavioral Ecology','Scallop Biology','Sea Star Dynamics'],
+      overview: '<p>This research position focused on two interconnected questions: whether scallops could be harvested using light-based methods as an alternative to dredging, and how shifting sea star populations are affecting bivalve dynamics in the warming Gulf of Maine.</p><p>The Gulf of Maine is warming faster than nearly any other ocean region on Earth — understanding how species respond is critical for sustainable fisheries management.</p>',
+      slides: [
+        { src: '', caption: 'Replace src="" with your image path — lab tanks, scallops, or sea stars.' },
+        { src: '', caption: 'Photo 2 — behavioral observation setup or experimental design.' },
+        { src: '', caption: 'Photo 3 — Brunswick Maine, field collection, or results.' }
+      ],
+      responsibilities: [
+        'Monitored scallop behavioral responses (swimming, valve movement, mantle retraction) under varying light intensities to evaluate feasibility of light-based harvest',
+        'Recorded and analyzed feeding rates and prey consumption of two sea star species under controlled laboratory conditions',
+        'Observed and documented growth rates of sea stars over the study period to assess population recovery dynamics',
+        'Checked all specimens daily, maintaining tank water quality and animal welfare throughout the study',
+        'Maintained detailed field notebooks and contributed to data analysis and reporting',
+        'Supported lab operations including tank maintenance, feeding schedules, and equipment calibration'
+      ]
+    },
+    duke: {
+      org: 'Duke University Marine Lab',
+      orgUrl: 'https://marinelab.duke.edu',
+      orgLabel: 'Visit Duke Marine Lab',
+      title: 'Microbial Oceanography Researcher',
+      date: 'June 2022 — August 2022',
+      tags: ['Microbial Ecology','Gene Sequencing','Marine Chemistry','Labyrinthulomycetes','Organic Matter Cycling','Pure Culture Isolation'],
+      overview: '<p>This summer research position introduced me to the hidden world of marine microbes — specifically the Labyrinthulomycetes, a group of protists that play important but poorly understood roles in breaking down organic matter in coastal ocean systems.</p><p>Working at the Pivers Island Coastal Observatory (PICO) long-term time series site gave me a window into how microbial communities shift seasonally — sparking a lasting interest in the intersection of microbiology, biogeochemistry, and ecosystem science.</p>',
+      slides: [
+        { src: '', caption: 'Replace src="" with your image path — lab bench, Beaufort NC, or PICO site.' },
+        { src: '', caption: 'Photo 2 — culture plates, microscopy, or Duke Marine Lab campus.' },
+        { src: '', caption: 'Photo 3 — field sampling, gene sequencing work, or coastal scenery.' }
+      ],
+      responsibilities: [
+        'Isolated Labyrinthulomycetes from seawater and sediment samples using pollen grain baiting techniques',
+        'Cultured isolates on antibiotic-containing marine agar media to obtain pure cultures',
+        'Extracted DNA from pure culture isolates and prepared samples for gene sequencing',
+        'Analyzed sequencing results to identify and classify novel isolates at the species level',
+        'Maintained lab cultures and performed sterile technique protocols daily',
+        'Contributed to documentation of isolate collection and maintained organized strain libraries'
+      ]
+    }
+  };
 
-    <div class="detail-divider"></div>
+  var pane        = document.getElementById('pane');
+  var mainView    = document.getElementById('main-view');
+  var detailView  = document.getElementById('detail-view');
+  var detailCont  = document.getElementById('detail-content');
+  var backBtn     = document.getElementById('back-btn');
+  var timer       = null;
+  var currentKey  = null;
 
-    <div class="detail-section-title">Responsibilities</div>
-    <div class="detail-body"><ul>${responsibilitiesHtml}</ul></div>
+  // Attach clicks to experience items
+  var expMap = {
+    'exp-whiterock': 'whiterock',
+    'exp-tpwd':      'tpwd',
+    'exp-darling':   'darling',
+    'exp-bowdoin':   'bowdoin',
+    'exp-duke':      'duke'
+  };
 
-    ${orgLinkHtml}
-  `;
-
-  initSlideshow(r.slides);
-
-  mainView.style.display = 'none';
-  detailView.style.display = 'block';
-  detailView.classList.add('visible');
-  pane.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function closeDetail() {
-  detailView.style.display = 'none';
-  detailView.classList.remove('visible');
-  mainView.style.display = 'block';
-  // Scroll back to experience section
-  const expSection = mainView.querySelector('#experience');
-  if (expSection) pane.scrollTo({ top: expSection.offsetTop - 40, behavior: 'smooth' });
-}
-
-// ── Nav active highlight ──
-const secs  = Array.from(document.querySelectorAll('section[id]'));
-const links = Array.from(document.querySelectorAll('.s-nav a'));
-
-function updateNav() {
-  if (detailView.style.display === 'block') return;
-  const st = pane.scrollTop + 80;
-  let active = secs[0]?.id;
-  secs.forEach(s => { if (s.offsetTop <= st) active = s.id; });
-  links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + active));
-}
-
-pane.addEventListener('scroll', updateNav, { passive: true });
-updateNav();
-
-links.forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    if (detailView.style.display === 'block') closeDetail();
-    setTimeout(() => {
-      const target = pane.querySelector(a.getAttribute('href'));
-      if (target) pane.scrollTo({ top: target.offsetTop - 40, behavior: 'smooth' });
-    }, 50);
+  Object.keys(expMap).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('click', function() {
+        openDetail(expMap[id]);
+      });
+    }
   });
-});
 
-// ── Cursor glow ──
-const glow = doc
+  backBtn.addEventListener('click', closeDetail);
+
+  function openDetail(key) {
+    var r = roles[key];
+    if (!r) return;
+    clearInterval(timer);
+    currentKey = key;
+
+    var tagsHtml = r.tags.map(function(t) {
+      return '<span class="tag">' + t + '</span>';
+    }).join('');
+
+    var slidesHtml = r.slides.map(function(s, i) {
+      var inner = s.src
+        ? '<img src="' + s.src + '" alt="' + s.caption + '" loading="lazy">'
+        : '<div class="slide-placeholder"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>Add photo: set src to your image file path</span></div>';
+      return '<div class="slide' + (i === 0 ? ' active' : '') + '" data-i="' + i + '">' + inner + '</div>';
+    }).join('');
+
+    var dotsHtml = r.slides.map(function(_, i) {
+      return '<button class="slide-dot' + (i === 0 ? ' active' : '') + '" data-d="' + i + '"></button>';
+    }).join('');
+
+    var respHtml = r.responsibilities.map(function(x) {
+      return '<li>' + x + '</li>';
+    }).join('');
+
+    detailCont.innerHTML =
+      '<div style="margin-bottom:36px">' +
+        '<div class="detail-org">' + r.org + '</div>' +
+        '<div class="detail-title">' + r.title + '</div>' +
+        '<div class="detail-date">' + r.date + '</div>' +
+        '<div class="detail-tags">' + tagsHtml + '</div>' +
+      '</div>' +
+
+      '<div class="detail-section-title">Overview</div>' +
+      '<div class="detail-body">' + r.overview + '</div>' +
+
+      '<div class="detail-divider"></div>' +
+
+      '<div class="detail-section-title">Photos</div>' +
+      '<div class="slideshow">' +
+        '<div class="slides-track">' + slidesHtml + '</div>' +
+        '<div class="slide-caption-bar">' +
+          '<span class="slide-caption-text" id="scaption">' + r.slides[0].caption + '</span>' +
+          '<div class="slide-controls">' +
+            '<button class="slide-btn" id="sprev"><svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>' +
+            '<div class="slide-dots" id="sdots">' + dotsHtml + '</div>' +
+            '<button class="slide-btn" id="snext"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="detail-divider"></div>' +
+
+      '<div class="detail-section-title">Responsibilities</div>' +
+      '<div class="detail-body"><ul>' + respHtml + '</ul></div>' +
+
+      '<a class="detail-org-link" href="' + r.orgUrl + '" target="_blank" rel="noopener">' +
+        '<svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>' +
+        r.orgLabel +
+      '</a>';
+
+    // Wire up slideshow
+    var slides  = detailCont.querySelectorAll('.slide');
+    var dots    = detailCont.querySelectorAll('.slide-dot');
+    var caption = detailCont.querySelector('#scaption');
+    var prevBtn = detailCont.querySelector('#sprev');
+    var nextBtn = detailCont.querySelector('#snext');
+    var cur = 0;
+
+    function goTo(n) {
+      slides[cur].classList.remove('active');
+      dots[cur].classList.remove('active');
+      cur = (n + r.slides.length) % r.slides.length;
+      slides[cur].classList.add('active');
+      dots[cur].classList.add('active');
+      caption.textContent = r.slides[cur].caption;
+    }
+
+    prevBtn.addEventListener('click', function() { clearInterval(timer); goTo(cur - 1); });
+    nextBtn.addEventListener('click', function() { clearInterval(timer); goTo(cur + 1); });
+    dots.forEach(function(d) {
+      d.addEventListener('click', function() { clearInterval(timer); goTo(+d.getAttribute('data-d')); });
+    });
+
+    timer = setInterval(function() { goTo(cur + 1); }, 5000);
+
+    // Show detail view
+    mainView.style.display = 'none';
+    detailView.style.display = 'block';
+    detailView.classList.add('visible');
+    pane.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function closeDetail() {
+    clearInterval(timer);
+    detailView.style.display = 'none';
+    detailView.classList.remove('visible');
+    mainView.style.display = 'block';
+    var expSec = mainView.querySelector('#experience');
+    if (expSec) pane.scrollTo({ top: expSec.offsetTop - 40, behavior: 'smooth' });
+  }
+
+  // Nav highlight
+  var secs  = Array.from(document.querySelectorAll('section[id]'));
+  var links = Array.from(document.querySelectorAll('.s-nav a'));
+
+  function updateNav() {
+    if (detailView.style.display === 'block') return;
+    var st = pane.scrollTop + 80;
+    var active = secs[0] ? secs[0].id : '';
+    secs.forEach(function(s) { if (s.offsetTop <= st) active = s.id; });
+    links.forEach(function(a) { a.classList.toggle('active', a.getAttribute('href') === '#' + active); });
+  }
+
+  pane.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+
+  links.forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (detailView.style.display === 'block') {
+        closeDetail();
+        setTimeout(function() {
+          var t = pane.querySelector(a.getAttribute('href'));
+          if (t) pane.scrollTo({ top: t.offsetTop - 40, behavior: 'smooth' });
+        }, 60);
+      } else {
+        var t = pane.querySelector(a.getAttribute('href'));
+        if (t) pane.scrollTo({ top: t.offsetTop - 40, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Cursor glow
+  var glow = document.getElementById('glow');
+  document.addEventListener('mousemove', function(e) {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top  = e.clientY + 'px';
+  });
+
+})();
+</script>
+</body>
+</html>

@@ -224,6 +224,141 @@ section { margin-bottom: 96px; scroll-margin-top: 40px; }
 
 .highlight-card-value { font-size: 0.85rem; color: var(--bright); font-weight: 500; }
 
+/* ── SLIDESHOW ── */
+.slideshow {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-bottom: 36px;
+  user-select: none;
+}
+
+.slides-track {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide.active { opacity: 1; }
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* placeholder shown when no real photo yet */
+.slide-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--surface2);
+}
+
+.slide-placeholder svg { width: 36px; height: 36px; opacity: 0.2; color: var(--accent); fill: currentColor; }
+.slide-placeholder span { font-family: var(--mono); font-size: 0.68rem; color: var(--faint); }
+
+.slide-caption {
+  padding: 14px 20px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.slide-caption-text {
+  font-size: 0.82rem;
+  color: var(--mist);
+  line-height: 1.5;
+  flex: 1;
+  font-style: italic;
+}
+
+.slide-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.slide-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--mist);
+  border-radius: 6px;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+
+.slide-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+.slide-btn svg { width: 12px; height: 12px; fill: currentColor; }
+
+.slide-counter {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--faint);
+  min-width: 36px;
+  text-align: center;
+}
+
+.slide-dots {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.slide-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--faint);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.slide-dot.active { background: var(--accent); transform: scale(1.3); }
+
+/* org link */
+.detail-org-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid rgba(126,184,247,0.25);
+  padding: 10px 18px;
+  border-radius: 8px;
+  margin-top: 32px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.detail-org-link:hover { background: var(--accent-dim); border-color: var(--accent); }
+.detail-org-link svg { width: 13px; height: 13px; fill: currentColor; }
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -396,7 +531,7 @@ section  { animation: fadeUp 0.5s ease both; }
       <a href="https://instagram.com" target="_blank" title="Instagram">
         <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
       </a>
-      <a href="mailto:your@email.com" title="Email">
+      <a href="/cdn-cgi/l/email-protection#037a6c767143666e626a6f2d606c6e" title="Email">
         <svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 11.366l9.615-7.545h.749A1.636 1.636 0 0 1 24 5.457z"/></svg>
       </a>
     </div>
@@ -591,7 +726,7 @@ section  { animation: fadeUp 0.5s ease both; }
       <section id="contact">
         <div class="sec-label">Contact</div>
         <p class="contact-intro">I'm open to new opportunities, collaborations, and interesting conversations. Whether you have a project in mind, a question, or just want to say hello — feel free to reach out.</p>
-        <a class="contact-btn" href="mailto:your@email.com">
+        <a class="contact-btn" href="/cdn-cgi/l/email-protection#057c6a7077456068646c692b666a68">
           <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 11.366l9.615-7.545h.749A1.636 1.636 0 0 1 24 5.457z"/></svg>
           Say Hello
         </a>
@@ -620,20 +755,21 @@ section  { animation: fadeUp 0.5s ease both; }
 </div><!-- /shell -->
 
 <!-- ═══ EXPERIENCE DETAIL DATA ═══ -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const roles = {
   whiterock: {
     org: 'Whiterock Conservancy · AmeriCorps Green Iowa',
+    orgUrl: 'https://www.whiterockconservancy.org',
+    orgLabel: 'Visit Whiterock Conservancy',
     title: 'Land Operations and Outreach Support',
     date: 'December 2025 — Present',
     tags: ['Wildland Firefighting', 'Invasive Species Removal', 'Agriculture', 'Soil Sampling', 'Volunteer Coordination', 'Public Programming'],
-    highlights: [
-      { label: 'Program', value: 'AmeriCorps Green Iowa 2025–2026' },
-      { label: 'Location', value: 'Coon Rapids, Iowa' },
-      { label: 'Focus', value: 'Land Stewardship & Outreach' },
-      { label: 'Type', value: 'Service Year' },
+    overview: `<p>As a 2025–2026 AmeriCorps Green Iowa member, I serve at Whiterock Conservancy supporting a wide range of land management and conservation activities across one of Iowa's most ecologically diverse landscapes.</p><p>Whiterock protects over 5,500 acres in the Raccoon River watershed — prairies, forests, wetlands, and working agricultural lands. This role sits at the intersection of hands-on field work and community engagement, two areas I'm deeply passionate about.</p>`,
+    slides: [
+      { src: '', caption: 'Add your photo here — replace src with a file path or URL. Example: photos/burn1.jpg' },
+      { src: '', caption: 'Photo 2 caption — describe what\'s happening, where, and when.' },
+      { src: '', caption: 'Photo 3 caption — field work, volunteer events, landscapes, anything from your time here.' },
     ],
-    overview: `<p>As a 2025–2026 AmeriCorps Green Iowa member, I serve at Whiterock Conservancy supporting a wide range of land management and conservation activities across one of Iowa's most ecologically diverse landscapes.</p><p>This role sits at the intersection of hands-on field work and community engagement — two areas I'm deeply passionate about.</p>`,
     responsibilities: [
       'Supporting prescribed burns, including planning, execution, and post-burn monitoring',
       'Conducting invasive species mitigation through mechanical removal, herbicide application, and monitoring',
@@ -642,21 +778,21 @@ const roles = {
       'Leading public programs and educational events for diverse audiences',
       'Assisting with soil sampling, research data collection, and GIS mapping',
     ],
-    context: `<p>Whiterock Conservancy protects over 5,500 acres in the Raccoon River watershed, encompassing prairies, forests, wetlands, and working agricultural lands. My work here has deepened my understanding of integrated land management and the role of conservation organizations in bridging science and community.</p>`
   },
 
   tpwd: {
     org: 'Texas Parks and Wildlife Department',
+    orgUrl: 'https://tpwd.texas.gov/fisheries/coastal',
+    orgLabel: 'Visit TPWD Coastal Fisheries',
     title: 'Coastal Fisheries Intern',
     date: 'June 2025 — September 2025',
     tags: ['Environmental Permitting', 'Oyster Reef Restoration', 'Harmful Algal Blooms', 'Fisheries Sampling', 'Sonar Scanning', 'Water Quality'],
-    highlights: [
-      { label: 'Location', value: 'Galveston Bay, Texas' },
-      { label: 'Division', value: 'Coastal Fisheries' },
-      { label: 'Duration', value: '3 months' },
-      { label: 'Type', value: 'Field Internship' },
+    overview: `<p>This internship placed me in the field alongside Texas Parks and Wildlife's Coastal Fisheries team, conducting habitat assessments and fisheries sampling across Galveston Bay's complex estuary system.</p><p>Galveston Bay is Texas's largest estuary and one of the most productive in the nation. Working here gave me direct exposure to real-world fisheries management challenges including water quality degradation, habitat loss, and harmful algal blooms.</p>`,
+    slides: [
+      { src: '', caption: 'Add your photo here — replace src with a file path or URL.' },
+      { src: '', caption: 'Photo 2 caption — on the water, sampling, equipment, team.' },
+      { src: '', caption: 'Photo 3 caption — Galveston Bay, oyster reefs, field sites.' },
     ],
-    overview: `<p>This internship placed me in the field alongside Texas Parks and Wildlife's Coastal Fisheries team, conducting habitat assessments and fisheries sampling across Galveston Bay's complex estuary system.</p><p>Working in one of the most ecologically and economically important coastal regions in the country gave me direct exposure to real-world fisheries management challenges.</p>`,
     responsibilities: [
       'Conducted bay system habitat assessments using sonar scanning technology from a transport boat navigating shallow waters',
       'Gained hands-on experience with bag seining, vertical longlines, and trawl sampling for fish and invertebrate surveys',
@@ -665,21 +801,21 @@ const roles = {
       'Presented an educational field program on harmful algal blooms (HABs) to Friends of Galveston Island State Park',
       'Compiled field data and contributed to habitat assessment reports',
     ],
-    context: `<p>Galveston Bay is Texas's largest estuary and one of the most productive in the nation. The bay faces ongoing pressures from water quality degradation, habitat loss, and harmful algal blooms — making this role a direct education in applied coastal conservation.</p><p>Presenting the HABs program strengthened my science communication skills and reinforced my interest in public environmental education.</p>`
   },
 
   darling: {
     org: 'Darling Marine Center · University of Maine',
+    orgUrl: 'https://dmc.umaine.edu',
+    orgLabel: 'Visit Darling Marine Center',
     title: 'Aquaculture Researcher',
     date: 'June 2024 — August 2024',
     tags: ['Oyster Aquaculture', 'Science Communication', 'Decolonized Science', 'Indigenous Knowledge', 'Tidal Energy', 'Research Design'],
-    highlights: [
-      { label: 'Location', value: 'Damariscotta, Maine' },
-      { label: 'Fellowship', value: 'Two-Eyed Seeing Program' },
-      { label: 'Duration', value: '3 months' },
-      { label: 'Focus', value: 'Sustainable Aquaculture' },
+    overview: `<p>This fellowship wove together Indigenous Knowledge and Western Science — an approach known as Two-Eyed Seeing — to produce research that is more holistic, community-centered, and applicable to local needs.</p><p>My project investigated whether tidal energy could replace powered tumblers for oyster aquaculture in intertidal and subtidal settings, potentially lowering the cost and labor barrier for small-scale and Indigenous-owned operations.</p>`,
+    slides: [
+      { src: '', caption: 'Add your photo here — replace src with a file path or URL.' },
+      { src: '', caption: 'Photo 2 caption — oyster cages, tidal flats, lab work, Maine coast.' },
+      { src: '', caption: 'Photo 3 caption — community meetings, research presentations, fieldwork.' },
     ],
-    overview: `<p>This fellowship brought together Indigenous Knowledge and Western Science frameworks — an approach known as Two-Eyed Seeing — to produce research that is more holistic, community-centered, and applicable to local needs.</p><p>My project investigated whether tidal energy could be harnessed to tumble oysters in intertidal and subtidal farm settings, potentially reducing the cost and labor burden on small-scale aquaculture producers.</p>`,
     responsibilities: [
       'Designed and implemented an experiment comparing tidal-tumbled oysters to traditionally managed controls across intertidal and subtidal environments',
       'Monitored oyster growth rates, shell shape, and survival across treatment groups over the summer season',
@@ -688,21 +824,21 @@ const roles = {
       'Presented research findings to the Darling Marine Center community and visiting stakeholders',
       'Contributed to a final report assessing the viability of tidal tumbling as a low-cost aquaculture method',
     ],
-    context: `<p>Oyster aquaculture is a growing industry in coastal Maine, but the cost of powered tumblers remains a significant barrier for small-scale and Indigenous-owned operations. By exploring tidal energy as a natural alternative, this project aimed to lower that barrier while keeping the research process grounded in community values.</p><p>This fellowship fundamentally shaped how I think about the relationship between science, culture, and conservation.</p>`
   },
 
   bowdoin: {
     org: 'Bowdoin College — Marine Science Program',
+    orgUrl: 'https://www.bowdoin.edu/biology/marine-science/',
+    orgLabel: 'Visit Bowdoin Marine Science',
     title: 'Animal Behavior Researcher',
     date: 'June 2023 — December 2023',
     tags: ['Bivalve Research', 'Research Design', 'Animal Welfare', 'Behavioral Ecology', 'Scallop Biology', 'Sea Star Dynamics'],
-    highlights: [
-      { label: 'Location', value: 'Brunswick, Maine' },
-      { label: 'Institution', value: 'Bowdoin College' },
-      { label: 'Duration', value: '6 months' },
-      { label: 'Focus', value: 'Behavioral & Fisheries Ecology' },
+    overview: `<p>This research position focused on two interconnected questions: whether scallops could be harvested using light-based methods as an alternative to dredging, and how shifting sea star populations are affecting bivalve dynamics in the warming Gulf of Maine.</p><p>The Gulf of Maine is warming faster than nearly any other ocean region on Earth — understanding how species like scallops and sea stars respond is critical for sustainable fisheries management.</p>`,
+    slides: [
+      { src: '', caption: 'Add your photo here — replace src with a file path or URL.' },
+      { src: '', caption: 'Photo 2 caption — lab tanks, scallops, sea stars, Brunswick, Maine.' },
+      { src: '', caption: 'Photo 3 caption — behavioral observation setup, field collection, results.' },
     ],
-    overview: `<p>This research position focused on two interconnected questions: whether scallops could be harvested using light-based methods as an alternative to dredging, and how changing sea star populations are affecting bivalve dynamics in the warming Gulf of Maine.</p><p>Both projects required careful experimental design, daily specimen care, and rigorous behavioral observation.</p>`,
     responsibilities: [
       'Monitored scallop behavioral responses (swimming, valve movement, mantle retraction) under varying light intensities to evaluate feasibility of light-based harvest',
       'Recorded and analyzed feeding rates and prey consumption of two sea star species under controlled laboratory conditions',
@@ -711,21 +847,21 @@ const roles = {
       'Maintained detailed field notebooks and contributed to data analysis and reporting',
       'Supported lab operations including tank maintenance, feeding schedules, and equipment calibration',
     ],
-    context: `<p>The Gulf of Maine is warming faster than nearly any other ocean region on Earth. Understanding how species like sea stars and scallops respond to these changes is critical for managing sustainable fisheries. This research gave me a deep appreciation for the patience and precision that rigorous behavioral ecology demands.</p>`
   },
 
   duke: {
     org: 'Duke University Marine Lab',
+    orgUrl: 'https://marinelab.duke.edu',
+    orgLabel: 'Visit Duke Marine Lab',
     title: 'Microbial Oceanography Researcher',
     date: 'June 2022 — August 2022',
     tags: ['Microbial Ecology', 'Gene Sequencing', 'Marine Chemistry', 'Labyrinthulomycetes', 'Organic Matter Cycling', 'Pure Culture Isolation'],
-    highlights: [
-      { label: 'Location', value: 'Beaufort, North Carolina' },
-      { label: 'Institution', value: 'Duke University Marine Lab' },
-      { label: 'Duration', value: '3 months' },
-      { label: 'Focus', value: 'Microbial Oceanography' },
+    overview: `<p>This summer research position introduced me to the hidden world of marine microbes — specifically the Labyrinthulomycetes, a group of protists that play important but poorly understood roles in breaking down organic matter in coastal ocean systems.</p><p>Working at the Pivers Island Coastal Observatory (PICO) long-term time series site gave me a window into how microbial communities shift seasonally — and sparked a lasting interest in the intersection of microbiology, biogeochemistry, and ecosystem science.</p>`,
+    slides: [
+      { src: '', caption: 'Add your photo here — replace src with a file path or URL.' },
+      { src: '', caption: 'Photo 2 caption — lab bench, Beaufort NC, PICO time series site.' },
+      { src: '', caption: 'Photo 3 caption — culture plates, microscopy, Duke Marine Lab campus.' },
     ],
-    overview: `<p>This summer research position introduced me to the hidden world of marine microbes — specifically the Labyrinthulomycetes, a group of protists that play important but poorly understood roles in breaking down organic matter in coastal ocean systems.</p><p>Working at the Pivers Island Coastal Observatory (PICO) long-term time series site provided a unique window into how microbial communities shift seasonally in a dynamic estuary.</p>`,
     responsibilities: [
       'Isolated Labyrinthulomycetes from seawater and sediment samples using pollen grain baiting techniques',
       'Cultured isolates on antibiotic-containing marine agar media to obtain pure cultures',
@@ -734,7 +870,6 @@ const roles = {
       'Maintained lab cultures and performed sterile technique protocols daily',
       'Contributed to documentation of isolate collection and maintained organized strain libraries',
     ],
-    context: `<p>Labyrinthulomycetes are often overlooked in marine microbial ecology, yet they may play significant roles in the marine carbon cycle by degrading complex organic compounds that bacteria alone cannot efficiently break down. Obtaining pure culture isolates opens the door to controlled experiments on their metabolic capabilities — a necessary step toward understanding their ecological function.</p><p>This experience sparked my interest in the intersection of microbiology, biogeochemistry, and ecosystem science.</p>`
   }
 };
 
@@ -744,17 +879,83 @@ const mainView = document.getElementById('main-view');
 const detailView = document.getElementById('detail-view');
 const detailContent = document.getElementById('detail-content');
 
+let slideshowTimer = null;
+
+function buildSlideshow(slides) {
+  if (!slides || slides.length === 0) return '';
+
+  const slidesHtml = slides.map((s, i) => {
+    const inner = s.src
+      ? `<img src="${s.src}" alt="${s.caption}" loading="lazy" />`
+      : `<div class="slide-placeholder">
+           <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+           <span>Add photo: replace src="" with your image path</span>
+         </div>`;
+    return `<div class="slide${i === 0 ? ' active' : ''}" data-index="${i}">${inner}</div>`;
+  }).join('');
+
+  const dotsHtml = slides.map((_, i) =>
+    `<span class="slide-dot${i === 0 ? ' active' : ''}" data-dot="${i}"></span>`
+  ).join('');
+
+  return `
+    <div class="slideshow" id="slideshow">
+      <div class="slides-track">${slidesHtml}</div>
+      <div class="slide-caption">
+        <span class="slide-caption-text" id="slide-caption-text">${slides[0].caption}</span>
+        <div class="slide-controls">
+          <button class="slide-btn" id="slide-prev" title="Previous">
+            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <div class="slide-dots" id="slide-dots">${dotsHtml}</div>
+          <button class="slide-btn" id="slide-next" title="Next">
+            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function initSlideshow(slides) {
+  if (!slides || slides.length === 0) return;
+  let current = 0;
+
+  const allSlides = detailContent.querySelectorAll('.slide');
+  const allDots   = detailContent.querySelectorAll('.slide-dot');
+  const captionEl = detailContent.querySelector('#slide-caption-text');
+  const prevBtn   = detailContent.querySelector('#slide-prev');
+  const nextBtn   = detailContent.querySelector('#slide-next');
+
+  function goTo(n) {
+    allSlides[current].classList.remove('active');
+    allDots[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    allSlides[current].classList.add('active');
+    allDots[current].classList.add('active');
+    captionEl.textContent = slides[current].caption;
+  }
+
+  prevBtn.addEventListener('click', () => { clearInterval(slideshowTimer); goTo(current - 1); });
+  nextBtn.addEventListener('click', () => { clearInterval(slideshowTimer); goTo(current + 1); });
+  allDots.forEach(dot => dot.addEventListener('click', () => { clearInterval(slideshowTimer); goTo(+dot.dataset.dot); }));
+
+  // Auto-advance every 5s
+  slideshowTimer = setInterval(() => goTo(current + 1), 5000);
+}
+
 function openDetail(key) {
   const r = roles[key];
   if (!r) return;
+  clearInterval(slideshowTimer);
 
   const tagsHtml = r.tags.map(t => `<span class="tag">${t}</span>`).join('');
-  const highlightsHtml = r.highlights.map(h => `
-    <div class="highlight-card">
-      <div class="highlight-card-label">${h.label}</div>
-      <div class="highlight-card-value">${h.value}</div>
-    </div>`).join('');
   const responsibilitiesHtml = r.responsibilities.map(x => `<li>${x}</li>`).join('');
+  const slideshowHtml = buildSlideshow(r.slides);
+  const orgLinkHtml = r.orgUrl ? `
+    <a class="detail-org-link" href="${r.orgUrl}" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+      ${r.orgLabel || 'Visit Organization'}
+    </a>` : '';
 
   detailContent.innerHTML = `
     <div class="detail-header">
@@ -769,19 +970,18 @@ function openDetail(key) {
 
     <div class="detail-divider"></div>
 
-    <div class="detail-section-title">At a glance</div>
-    <div class="detail-highlights">${highlightsHtml}</div>
+    <div class="detail-section-title">Photos</div>
+    ${slideshowHtml}
 
     <div class="detail-divider"></div>
 
     <div class="detail-section-title">Responsibilities</div>
     <div class="detail-body"><ul>${responsibilitiesHtml}</ul></div>
 
-    <div class="detail-divider"></div>
-
-    <div class="detail-section-title">Context</div>
-    <div class="detail-body">${r.context}</div>
+    ${orgLinkHtml}
   `;
+
+  initSlideshow(r.slides);
 
   mainView.style.display = 'none';
   detailView.style.display = 'block';
@@ -825,11 +1025,4 @@ links.forEach(a => {
 });
 
 // ── Cursor glow ──
-const glow = document.getElementById('glow');
-document.addEventListener('mousemove', e => {
-  glow.style.left = e.clientX + 'px';
-  glow.style.top  = e.clientY + 'px';
-});
-</script>
-</body>
-</html>
+const glow = doc

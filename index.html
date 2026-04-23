@@ -110,7 +110,26 @@ section{margin-bottom:96px;scroll-margin-top:40px}
 .detail-org-link{display:inline-flex;align-items:center;gap:8px;font-size:0.83rem;font-weight:500;color:var(--accent);text-decoration:none;border:1px solid rgba(126,184,247,0.25);padding:11px 20px;border-radius:8px;margin-top:28px;transition:background .2s,border-color .2s}
 .detail-org-link:hover{background:var(--accent-dim);border-color:var(--accent)}
 .detail-org-link svg{width:13px;height:13px;fill:currentColor}
-  
+
+/* MAP SECTION */
+.map-shell{position:relative;width:100%;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--surface)}
+.map-zoom-btns{position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;z-index:5}
+.map-zoom-btns button{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--mist);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:border-color .2s,color .2s,background .2s}
+.map-zoom-btns button:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.map-zoom-btns button.rst{font-family:var(--mono);font-size:8px;letter-spacing:0.5px}
+#map-tooltip{position:absolute;pointer-events:none;opacity:0;background:var(--surface);border:1px solid var(--border-h);border-radius:8px;padding:8px 12px;font-size:0.82rem;transition:opacity .15s;max-width:240px;z-index:10;white-space:nowrap}
+#map-tooltip .tt-name{font-weight:600;color:var(--bright);margin-bottom:2px}
+#map-tooltip .tt-job{color:var(--mist);font-size:0.75rem;line-height:1.4;white-space:normal}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px}
+.skill-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:border-color .2s,background .2s}
+.skill-box:hover{background:var(--surface2);border-color:var(--border-h)}
+.skill-cat{font-size:0.68rem;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--sky);margin-bottom:10px}
+.skill-list{list-style:none;display:flex;flex-direction:column;gap:4px}
+.skill-list li{font-size:0.79rem;color:var(--mist);display:flex;align-items:center;gap:7px}
+.skill-list li::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--accent);opacity:.45;flex-shrink:0}
+
 /* PROJECTS */
 .project-card{display:grid;grid-template-columns:114px 1fr;gap:0 18px;padding:18px 16px;border-radius:10px;border:1px solid transparent;text-decoration:none;transition:background .2s,border-color .2s;margin-bottom:2px}
 .project-card:hover{background:var(--accent-dim);border-color:var(--border-h)}
@@ -193,6 +212,7 @@ section{animation:fadeUp .5s ease both}
     <nav class="s-nav">
       <a href="#about"><span class="nl"></span>About</a>
       <a href="#experience"><span class="nl"></span>Experience</a>
+      <a href="#map"><span class="nl"></span>Field Map</a>
       <a href="#skills"><span class="nl"></span>Skills</a>
       <a href="#projects"><span class="nl"></span>Projects</a>
       <a href="#art"><span class="nl"></span>Art</a>
@@ -280,6 +300,24 @@ section{animation:fadeUp .5s ease both}
         <a class="resume-link" href="#">View Full Résumé <span class="arrow" style="font-size:0.85rem">↗</span></a>
       </section>
 
+      <!-- ═══════════════════════════════════════════ FIELD MAP ═══ -->
+      <section id="map">
+        <div class="sec-label">Field Locations</div>
+        <div class="map-shell" id="map-shell">
+          <div id="map-svg-wrap"></div>
+          <div class="map-zoom-btns">
+            <button id="mzoom-in"  title="Zoom in">+</button>
+            <button id="mzoom-out" title="Zoom out">−</button>
+            <button id="mzoom-rst" class="rst" title="Reset">RST</button>
+          </div>
+          <div id="map-tooltip">
+            <div class="tt-name" id="mtt-name"></div>
+            <div class="tt-job"  id="mtt-job"></div>
+          </div>
+        </div>
+      </section>
+      <!-- ══════════════════════════════════════════════════════════ -->
+
       <section id="skills">
         <div class="sec-label">Skills</div>
         <div class="skills-grid">
@@ -354,7 +392,174 @@ section{animation:fadeUp .5s ease both}
   </div>
 </div>
 
+<!-- D3 + TopoJSON for the map -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+
 <script>
+/* ─────────────────────────────────────────────────────────────
+   FIELD MAP
+───────────────────────────────────────────────────────────── */
+(function() {
+  var PINS = [
+    { name: 'Coon Rapids, Iowa',       job: 'Land Operations · Whiterock Conservancy',      lon: -94.678, lat: 41.873 },
+    { name: 'Galveston, Texas',        job: 'Coastal Fisheries Intern · TPWD',              lon: -94.797, lat: 29.301 },
+    { name: 'Walpole, Maine',          job: 'Aquaculture Researcher · Darling Marine Center',lon: -69.548, lat: 43.963 },
+    { name: 'Brunswick, Maine',        job: 'Animal Behavior Researcher · Bowdoin College',  lon: -69.965, lat: 43.914 },
+    { name: 'Beaufort, North Carolina',job: 'Microbial Oceanography · Duke Marine Lab',      lon: -76.657, lat: 34.718 }
+  ];
+
+  var STAR_FILL   = '#D4537E';
+  var STAR_HOVER  = '#F4C0D1';
+  var LAND_FILL   = '#1e2d45';
+  var LAND_STROKE = '#3d5570';
+  var BORDER_CLR  = '#5a7fa8';
+  var WATER_FILL  = '#0e1621';
+
+  var wrap = document.getElementById('map-svg-wrap');
+  var shell = document.getElementById('map-shell');
+  var tip   = document.getElementById('map-tooltip');
+  var ttName = document.getElementById('mtt-name');
+  var ttJob  = document.getElementById('mtt-job');
+
+  var W = wrap.offsetWidth || 600;
+  var H = Math.round(W * 0.60);
+
+  var svg = d3.select('#map-svg-wrap').append('svg')
+    .attr('viewBox', '0 0 ' + W + ' ' + H)
+    .attr('width', '100%')
+    .style('display', 'block')
+    .style('cursor', 'grab');
+
+  svg.append('rect').attr('width', W).attr('height', H).attr('fill', WATER_FILL);
+
+  var projection = d3.geoAlbersUsa().scale(W * 1.25).translate([W / 2, H / 2]);
+  var pathGen    = d3.geoPath(projection);
+  var mapG       = svg.append('g');
+  var pinG       = svg.append('g');
+
+  /* Zoom behaviour */
+  var zoom = d3.zoom()
+    .scaleExtent([1, 10])
+    .translateExtent([[0, 0], [W, H]])
+    .on('zoom', function(event) {
+      var t = event.transform;
+      mapG.attr('transform', t);
+      pinG.attr('transform', t);
+      svg.style('cursor', t.k > 1 ? 'grabbing' : 'grab');
+      /* keep stars constant size */
+      var s = 1 / t.k;
+      pinG.selectAll('polygon').each(function(d) {
+        d3.select(this).attr('points', starPoints(d.cx, d.cy, d.r * s));
+      });
+    });
+
+  svg.call(zoom);
+
+  document.getElementById('mzoom-in').addEventListener('click',  function(){ svg.transition().duration(280).call(zoom.scaleBy, 1.6); });
+  document.getElementById('mzoom-out').addEventListener('click', function(){ svg.transition().duration(280).call(zoom.scaleBy, 0.625); });
+  document.getElementById('mzoom-rst').addEventListener('click', function(){ svg.transition().duration(380).call(zoom.transform, d3.zoomIdentity); });
+
+  /* Star helper */
+  function starPoints(cx, cy, r) {
+    var pts = [];
+    for (var i = 0; i < 10; i++) {
+      var a = (i * Math.PI / 5) - Math.PI / 2;
+      var rad = (i % 2 === 0) ? r : r * 0.42;
+      pts.push((cx + rad * Math.cos(a)).toFixed(2) + ',' + (cy + rad * Math.sin(a)).toFixed(2));
+    }
+    return pts.join(' ');
+  }
+
+  /* Load US atlas */
+  d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(function(us) {
+    var states = topojson.feature(us, us.objects.states);
+    var mesh   = topojson.mesh(us, us.objects.states, function(a, b){ return a !== b; });
+    var nation = topojson.feature(us, us.objects.nation);
+
+    /* State fills */
+    mapG.selectAll('path.state')
+      .data(states.features)
+      .join('path')
+      .attr('class', 'state')
+      .attr('d', pathGen)
+      .attr('fill', LAND_FILL)
+      .attr('stroke', 'none');
+
+    /* Interior borders */
+    mapG.append('path')
+      .datum(mesh)
+      .attr('d', pathGen)
+      .attr('fill', 'none')
+      .attr('stroke', LAND_STROKE)
+      .attr('stroke-width', 0.55);
+
+    /* Outer nation border */
+    var nationFeat = nation.features ? nation.features[0] : nation;
+    mapG.append('path')
+      .datum(nationFeat)
+      .attr('d', pathGen)
+      .attr('fill', 'none')
+      .attr('stroke', BORDER_CLR)
+      .attr('stroke-width', 1.6);
+
+    /* Stars */
+    var R = Math.max(7, W * 0.013);
+
+    PINS.forEach(function(p) {
+      var proj = projection([p.lon, p.lat]);
+      if (!proj) return;
+      var cx = proj[0], cy = proj[1];
+
+      var poly = pinG.append('polygon')
+        .datum({ cx: cx, cy: cy, r: R, pin: p })
+        .attr('points', starPoints(cx, cy, R))
+        .attr('fill', STAR_FILL)
+        .attr('stroke', 'rgba(212,83,126,0.45)')
+        .attr('stroke-width', 1)
+        .style('cursor', 'pointer')
+        .style('filter', 'drop-shadow(0 0 3px rgba(212,83,126,0.5))');
+
+      poly
+        .on('mouseenter', function(event, d) {
+          var k = d3.zoomTransform(svg.node()).k;
+          d3.select(this).attr('points', starPoints(d.cx, d.cy, d.r * 1.5 / k)).attr('fill', STAR_HOVER);
+          ttName.textContent = d.pin.name;
+          ttJob.textContent  = d.pin.job;
+          tip.style.opacity  = '1';
+          moveTip(event);
+        })
+        .on('mousemove', moveTip)
+        .on('mouseleave', function(event, d) {
+          var k = d3.zoomTransform(svg.node()).k;
+          d3.select(this).attr('points', starPoints(d.cx, d.cy, d.r / k)).attr('fill', STAR_FILL);
+          tip.style.opacity = '0';
+        });
+    });
+
+  }).catch(function() {
+    mapG.append('text')
+      .attr('x', W / 2).attr('y', H / 2)
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#94a3c4').attr('font-size', 13)
+      .text('Map data could not be loaded.');
+  });
+
+  /* Tooltip position */
+  function moveTip(event) {
+    var box = shell.getBoundingClientRect();
+    var x = event.clientX - box.left + 14;
+    var y = event.clientY - box.top  - 28;
+    if (x + 250 > box.width) x = event.clientX - box.left - 260;
+    if (y < 4) y = event.clientY - box.top + 16;
+    tip.style.left = x + 'px';
+    tip.style.top  = y + 'px';
+  }
+})();
+
+/* ─────────────────────────────────────────────────────────────
+   EXPERIENCE DETAIL + NAV (unchanged from original)
+───────────────────────────────────────────────────────────── */
 (function() {
 
   var roles = {
@@ -365,7 +570,7 @@ section{animation:fadeUp .5s ease both}
       title: 'Land Operations and Outreach Support',
       date: 'December 2025 — Present',
       tags: ['Wildland Firefighting','Invasive Species Removal','Agriculture','Soil Sampling','Volunteer Coordination','Public Programming'],
-      overview: '<p>As a 2025–2026 AmeriCorps Green Iowa member, I serve at Whiterock Conservancy supporting a wide range of land management and conservation activities across one of Iowa\'s most ecologically diverse landscapes.</p><p>Whiterock protects over 5,500 acres in the Raccoon River watershed: prairies, forests, wetlands, and working agricultural lands. </p>',
+      overview: '<p>As a 2025–2026 AmeriCorps Green Iowa member, I serve at Whiterock Conservancy supporting a wide range of land management and conservation activities across one of Iowa\'s most ecologically diverse landscapes.</p><p>Whiterock protects over 5,500 acres in the Raccoon River watershed: prairies, forests, wetlands, and working agricultural lands.</p>',
       slides: [
         { src: 'Whiterock3', caption: 'Teaching 2nd graders about ecosystem energy transfer' },
         { src: 'Whiterock2', caption: 'Running the torch during a prescribed fire' },
@@ -435,7 +640,6 @@ section{animation:fadeUp .5s ease both}
         { src: 'Schiller2.jpg', caption: 'Sea stars were held in flow-through tanks' },
         { src: 'Schiller3.jpg', caption: 'Observing sea star behavior in both species' },
         { src: 'Schiller5.png', caption: 'GoPro recording scallop swimming behavior in response to a light gradient' }
-
       ],
       responsibilities: [
         'Monitored scallop behavioral responses (swimming, valve movement, mantle retraction) under varying light intensities to evaluate feasibility of light-based harvest',
@@ -468,15 +672,13 @@ section{animation:fadeUp .5s ease both}
     }
   };
 
-  var pane        = document.getElementById('pane');
-  var mainView    = document.getElementById('main-view');
-  var detailView  = document.getElementById('detail-view');
-  var detailCont  = document.getElementById('detail-content');
-  var backBtn     = document.getElementById('back-btn');
-  var timer       = null;
-  var currentKey  = null;
+  var pane       = document.getElementById('pane');
+  var mainView   = document.getElementById('main-view');
+  var detailView = document.getElementById('detail-view');
+  var detailCont = document.getElementById('detail-content');
+  var backBtn    = document.getElementById('back-btn');
+  var timer      = null;
 
-  // Attach clicks to experience items
   var expMap = {
     'exp-whiterock': 'whiterock',
     'exp-tpwd':      'tpwd',
@@ -487,11 +689,7 @@ section{animation:fadeUp .5s ease both}
 
   Object.keys(expMap).forEach(function(id) {
     var el = document.getElementById(id);
-    if (el) {
-      el.addEventListener('click', function() {
-        openDetail(expMap[id]);
-      });
-    }
+    if (el) el.addEventListener('click', function() { openDetail(expMap[id]); });
   });
 
   backBtn.addEventListener('click', closeDetail);
@@ -500,64 +698,52 @@ section{animation:fadeUp .5s ease both}
     var r = roles[key];
     if (!r) return;
     clearInterval(timer);
-    currentKey = key;
 
-    var tagsHtml = r.tags.map(function(t) {
-      return '<span class="tag">' + t + '</span>';
-    }).join('');
+    var tagsHtml = r.tags.map(function(t){ return '<span class="tag">'+t+'</span>'; }).join('');
 
     var slidesHtml = r.slides.map(function(s, i) {
       var inner = s.src
-        ? '<img src="' + s.src + '" alt="' + s.caption + '" loading="lazy">'
+        ? '<img src="'+s.src+'" alt="'+s.caption+'" loading="lazy">'
         : '<div class="slide-placeholder"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>Add photo: set src to your image file path</span></div>';
-      return '<div class="slide' + (i === 0 ? ' active' : '') + '" data-i="' + i + '">' + inner + '</div>';
+      return '<div class="slide'+(i===0?' active':'')+'" data-i="'+i+'">'+inner+'</div>';
     }).join('');
 
-    var dotsHtml = r.slides.map(function(_, i) {
-      return '<button class="slide-dot' + (i === 0 ? ' active' : '') + '" data-d="' + i + '"></button>';
+    var dotsHtml = r.slides.map(function(_,i){
+      return '<button class="slide-dot'+(i===0?' active':'')+'" data-d="'+i+'"></button>';
     }).join('');
 
-    var respHtml = r.responsibilities.map(function(x) {
-      return '<li>' + x + '</li>';
-    }).join('');
+    var respHtml = r.responsibilities.map(function(x){ return '<li>'+x+'</li>'; }).join('');
 
     detailCont.innerHTML =
-      '<div style="margin-bottom:36px">' +
-        '<div class="detail-org">' + r.org + '</div>' +
-        '<div class="detail-title">' + r.title + '</div>' +
-        '<div class="detail-date">' + r.date + '</div>' +
-        '<div class="detail-tags">' + tagsHtml + '</div>' +
-      '</div>' +
-
-      '<div class="detail-section-title">Overview</div>' +
-      '<div class="detail-body">' + r.overview + '</div>' +
-
-      '<div class="detail-divider"></div>' +
-
-      '<div class="detail-section-title">Photos</div>' +
-      '<div class="slideshow">' +
-        '<div class="slides-track">' + slidesHtml + '</div>' +
-        '<div class="slide-caption-bar">' +
-          '<span class="slide-caption-text" id="scaption">' + r.slides[0].caption + '</span>' +
-          '<div class="slide-controls">' +
-            '<button class="slide-btn" id="sprev"><svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>' +
-            '<div class="slide-dots" id="sdots">' + dotsHtml + '</div>' +
-            '<button class="slide-btn" id="snext"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>' +
-          '</div>' +
-        '</div>' +
-      '</div>' +
-
-      '<div class="detail-divider"></div>' +
-
-      '<div class="detail-section-title">Responsibilities</div>' +
-      '<div class="detail-body"><ul>' + respHtml + '</ul></div>' +
-
-      '<a class="detail-org-link" href="' + r.orgUrl + '" target="_blank" rel="noopener">' +
-        '<svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>' +
-        r.orgLabel +
+      '<div style="margin-bottom:36px">'+
+        '<div class="detail-org">'+r.org+'</div>'+
+        '<div class="detail-title">'+r.title+'</div>'+
+        '<div class="detail-date">'+r.date+'</div>'+
+        '<div class="detail-tags">'+tagsHtml+'</div>'+
+      '</div>'+
+      '<div class="detail-section-title">Overview</div>'+
+      '<div class="detail-body">'+r.overview+'</div>'+
+      '<div class="detail-divider"></div>'+
+      '<div class="detail-section-title">Photos</div>'+
+      '<div class="slideshow">'+
+        '<div class="slides-track">'+slidesHtml+'</div>'+
+        '<div class="slide-caption-bar">'+
+          '<span class="slide-caption-text" id="scaption">'+r.slides[0].caption+'</span>'+
+          '<div class="slide-controls">'+
+            '<button class="slide-btn" id="sprev"><svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>'+
+            '<div class="slide-dots" id="sdots">'+dotsHtml+'</div>'+
+            '<button class="slide-btn" id="snext"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>'+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="detail-divider"></div>'+
+      '<div class="detail-section-title">Responsibilities</div>'+
+      '<div class="detail-body"><ul>'+respHtml+'</ul></div>'+
+      '<a class="detail-org-link" href="'+r.orgUrl+'" target="_blank" rel="noopener">'+
+        '<svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>'+
+        r.orgLabel+
       '</a>';
 
-    // Wire up slideshow
     var slides  = detailCont.querySelectorAll('.slide');
     var dots    = detailCont.querySelectorAll('.slide-dot');
     var caption = detailCont.querySelector('#scaption');
@@ -566,23 +752,17 @@ section{animation:fadeUp .5s ease both}
     var cur = 0;
 
     function goTo(n) {
-      slides[cur].classList.remove('active');
-      dots[cur].classList.remove('active');
+      slides[cur].classList.remove('active'); dots[cur].classList.remove('active');
       cur = (n + r.slides.length) % r.slides.length;
-      slides[cur].classList.add('active');
-      dots[cur].classList.add('active');
+      slides[cur].classList.add('active'); dots[cur].classList.add('active');
       caption.textContent = r.slides[cur].caption;
     }
 
-    prevBtn.addEventListener('click', function() { clearInterval(timer); goTo(cur - 1); });
-    nextBtn.addEventListener('click', function() { clearInterval(timer); goTo(cur + 1); });
-    dots.forEach(function(d) {
-      d.addEventListener('click', function() { clearInterval(timer); goTo(+d.getAttribute('data-d')); });
-    });
+    prevBtn.addEventListener('click', function(){ clearInterval(timer); goTo(cur-1); });
+    nextBtn.addEventListener('click', function(){ clearInterval(timer); goTo(cur+1); });
+    dots.forEach(function(d){ d.addEventListener('click', function(){ clearInterval(timer); goTo(+d.getAttribute('data-d')); }); });
+    timer = setInterval(function(){ goTo(cur+1); }, 5000);
 
-    timer = setInterval(function() { goTo(cur + 1); }, 5000);
-
-    // Show detail view
     mainView.style.display = 'none';
     detailView.style.display = 'block';
     detailView.classList.add('visible');
@@ -598,7 +778,7 @@ section{animation:fadeUp .5s ease both}
     if (expSec) pane.scrollTo({ top: expSec.offsetTop - 40, behavior: 'smooth' });
   }
 
-  // Nav highlight
+  /* Nav highlight */
   var secs  = Array.from(document.querySelectorAll('section[id]'));
   var links = Array.from(document.querySelectorAll('.s-nav a'));
 
@@ -606,8 +786,8 @@ section{animation:fadeUp .5s ease both}
     if (detailView.style.display === 'block') return;
     var st = pane.scrollTop + 80;
     var active = secs[0] ? secs[0].id : '';
-    secs.forEach(function(s) { if (s.offsetTop <= st) active = s.id; });
-    links.forEach(function(a) { a.classList.toggle('active', a.getAttribute('href') === '#' + active); });
+    secs.forEach(function(s){ if (s.offsetTop <= st) active = s.id; });
+    links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#'+active); });
   }
 
   pane.addEventListener('scroll', updateNav, { passive: true });
@@ -618,7 +798,7 @@ section{animation:fadeUp .5s ease both}
       e.preventDefault();
       if (detailView.style.display === 'block') {
         closeDetail();
-        setTimeout(function() {
+        setTimeout(function(){
           var t = pane.querySelector(a.getAttribute('href'));
           if (t) pane.scrollTo({ top: t.offsetTop - 40, behavior: 'smooth' });
         }, 60);
@@ -629,7 +809,7 @@ section{animation:fadeUp .5s ease both}
     });
   });
 
-  // Cursor glow
+  /* Cursor glow */
   var glow = document.getElementById('glow');
   document.addEventListener('mousemove', function(e) {
     glow.style.left = e.clientX + 'px';

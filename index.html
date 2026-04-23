@@ -121,6 +121,7 @@ section{margin-bottom:96px;scroll-margin-top:40px}
 #map-tooltip .tt-name{font-weight:600;color:var(--bright);margin-bottom:2px}
 #map-tooltip .tt-job{color:var(--mist);font-size:0.75rem;line-height:1.4;white-space:normal}
 
+
 /* PROJECTS */
 .project-card{display:grid;grid-template-columns:114px 1fr;gap:0 18px;padding:18px 16px;border-radius:10px;border:1px solid transparent;text-decoration:none;transition:background .2s,border-color .2s;margin-bottom:2px}
 .project-card:hover{background:var(--accent-dim);border-color:var(--border-h)}
@@ -184,9 +185,275 @@ section{margin-bottom:96px;scroll-margin-top:40px}
 .sidebar{animation:fadeUp .65s ease both}
 section{animation:fadeUp .5s ease both}
 #detail-view.visible{animation:fadeUp .35s ease both}
+
+/* ═══════════════════════════════════════════════
+   ACCESSIBILITY PANEL
+═══════════════════════════════════════════════ */
+#a11y-toggle{
+  position:fixed;right:0;top:50%;transform:translateY(-50%);
+  z-index:200;width:36px;height:64px;
+  background:var(--surface);border:1px solid var(--border-h);
+  border-right:none;border-radius:10px 0 0 10px;
+  cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  transition:background .2s,border-color .2s;
+}
+#a11y-toggle:hover{background:var(--surface2);border-color:rgba(126,184,247,0.4)}
+#a11y-toggle svg{width:16px;height:16px;fill:var(--accent);flex-shrink:0}
+#a11y-toggle span{font-size:7px;font-family:var(--mono);letter-spacing:0.5px;color:var(--mist);writing-mode:vertical-lr;transform:rotate(180deg);line-height:1}
+
+#a11y-panel{
+  position:fixed;right:-300px;top:0;width:280px;height:100vh;
+  background:var(--surface);border-left:1px solid var(--border-h);
+  z-index:199;transition:right .35s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+#a11y-panel.open{right:0}
+
+/* bubbles background */
+#a11y-panel::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(circle 40px at 20% 15%,rgba(126,184,247,0.05) 0%,transparent 100%),
+    radial-gradient(circle 25px at 75% 28%,rgba(186,230,253,0.06) 0%,transparent 100%),
+    radial-gradient(circle 55px at 50% 60%,rgba(126,184,247,0.04) 0%,transparent 100%),
+    radial-gradient(circle 30px at 15% 70%,rgba(147,197,253,0.05) 0%,transparent 100%),
+    radial-gradient(circle 20px at 85% 82%,rgba(186,230,253,0.06) 0%,transparent 100%),
+    radial-gradient(circle 45px at 60% 92%,rgba(126,184,247,0.04) 0%,transparent 100%);
+}
+
+.a11y-header{
+  position:relative;z-index:1;
+  padding:24px 20px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.a11y-header-left{display:flex;align-items:center;gap:10px}
+.a11y-fish-icon{font-size:1.3rem;animation:fishSwim 3s ease-in-out infinite}
+@keyframes fishSwim{0%,100%{transform:translateX(0) rotate(0deg)}40%{transform:translateX(4px) rotate(3deg)}70%{transform:translateX(-2px) rotate(-2deg)}}
+.a11y-title{font-size:0.78rem;font-weight:600;color:var(--bright);letter-spacing:0.5px}
+.a11y-subtitle{font-size:0.62rem;font-family:var(--mono);color:var(--mist);margin-top:1px}
+.a11y-close{background:none;border:none;color:var(--mist);cursor:pointer;padding:4px;border-radius:6px;display:flex;transition:color .15s,background .15s;font-size:1rem;line-height:1}
+.a11y-close:hover{color:var(--bright);background:var(--accent-dim)}
+
+.a11y-body{
+  position:relative;z-index:1;
+  flex:1;overflow-y:auto;padding:20px;
+  scrollbar-width:thin;scrollbar-color:var(--faint) transparent;
+  display:flex;flex-direction:column;gap:22px;
+}
+
+/* floating bubbles decoration */
+.a11y-bubbles{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bubble{position:absolute;border-radius:50%;border:1px solid rgba(126,184,247,0.12);animation:bubbleFloat linear infinite}
+@keyframes bubbleFloat{0%{transform:translateY(0) scale(1);opacity:0.6}50%{opacity:0.3}100%{transform:translateY(-120px) scale(0.7);opacity:0}}
+
+.a11y-group{display:flex;flex-direction:column;gap:10px}
+.a11y-group-label{
+  font-size:0.62rem;font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);display:flex;align-items:center;gap:8px;
+}
+.a11y-group-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* FISH SLIDER */
+.fish-slider-wrap{position:relative;padding:8px 0 4px}
+.fish-track{
+  position:relative;width:100%;height:28px;
+  background:linear-gradient(to right,var(--surface2),var(--surface2));
+  border-radius:14px;border:1px solid var(--border);overflow:visible;
+  cursor:pointer;
+}
+.fish-track::before{
+  content:'';position:absolute;top:50%;left:8px;right:8px;height:3px;
+  transform:translateY(-50%);
+  background:linear-gradient(to right,rgba(126,184,247,0.2),rgba(186,230,253,0.4));
+  border-radius:2px;
+}
+.fish-fill{
+  position:absolute;top:50%;left:8px;height:3px;transform:translateY(-50%);
+  background:linear-gradient(to right,var(--accent),var(--sky));
+  border-radius:2px;transition:width .1s;pointer-events:none;
+}
+.fish-thumb{
+  position:absolute;top:50%;transform:translate(-50%,-50%);
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;cursor:grab;user-select:none;
+  filter:drop-shadow(0 1px 4px rgba(126,184,247,0.4));
+  transition:filter .15s,transform .15s;
+  z-index:2;
+}
+.fish-thumb:active{cursor:grabbing;transform:translate(-50%,-50%) scale(1.2)}
+.fish-thumb:hover{filter:drop-shadow(0 2px 8px rgba(126,184,247,0.6))}
+
+.fish-labels{display:flex;justify-content:space-between;margin-top:6px}
+.fish-label{font-size:0.6rem;font-family:var(--mono);color:var(--faint)}
+
+/* COLOR THEME SWATCHES */
+.color-swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.swatch{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:pointer;padding:8px 4px;border-radius:8px;border:1px solid transparent;
+  transition:border-color .18s,background .18s;
+}
+.swatch:hover{background:var(--accent-dim)}
+.swatch.active{border-color:var(--accent)}
+.swatch-dot{width:24px;height:24px;border-radius:50%;flex-shrink:0;border:2px solid rgba(255,255,255,0.12);box-shadow:0 0 6px rgba(0,0,0,0.3)}
+.swatch-name{font-size:0.6rem;font-family:var(--mono);color:var(--mist);text-align:center;line-height:1.3}
+
+/* CONTRAST toggle */
+.a11y-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0}
+.a11y-toggle-label{font-size:0.78rem;color:var(--mist);display:flex;align-items:center;gap:7px}
+.a11y-toggle-label span{font-size:1rem}
+.pill-toggle{
+  position:relative;width:36px;height:20px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;cursor:pointer;transition:background .2s,border-color .2s;flex-shrink:0;
+}
+.pill-toggle.on{background:var(--accent);border-color:var(--accent)}
+.pill-toggle::after{
+  content:'';position:absolute;top:2px;left:2px;
+  width:14px;height:14px;border-radius:50%;
+  background:#fff;transition:transform .2s;
+}
+.pill-toggle.on::after{transform:translateX(16px)}
+
+/* reset btn */
+.a11y-reset{
+  width:100%;padding:9px;background:none;border:1px solid var(--border);
+  border-radius:8px;color:var(--mist);font-family:var(--mono);font-size:0.68rem;
+  letter-spacing:1px;cursor:pointer;transition:border-color .2s,color .2s,background .2s;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.a11y-reset:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+/* footer fish parade */
+.a11y-footer{
+  position:relative;z-index:1;
+  padding:12px 20px;border-top:1px solid var(--border);
+  overflow:hidden;height:38px;
+}
+.fish-parade{display:flex;gap:6px;animation:parade 8s linear infinite;white-space:nowrap;font-size:0.9rem}
+@keyframes parade{0%{transform:translateX(280px)}100%{transform:translateX(-200px)}}
+
+/* HIGH CONTRAST mode */
+body.hc{--bg:#000;--surface:#0a0a0a;--surface2:#111;--bright:#fff;--mist:#e0e0e0;--faint:#666;--border:rgba(255,255,255,0.2);--border-h:rgba(255,255,255,0.4)}
 </style>
+
 </head>
 <body>
+
+<!-- ═══════════════════ ACCESSIBILITY TAB ═══════════════════ -->
+<button id="a11y-toggle" aria-label="Open accessibility settings" aria-expanded="false">
+  <svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 110 4 2 2 0 010-4zm8 7h-5v13h-2v-6h-2v6H9V9H4V7h16v2z"/></svg>
+  <span>A11Y</span>
+</button>
+
+<aside id="a11y-panel" role="dialog" aria-label="Accessibility settings">
+  <div class="a11y-bubbles" id="bubble-canvas"></div>
+
+  <div class="a11y-header">
+    <div class="a11y-header-left">
+      <span class="a11y-fish-icon">🐟</span>
+      <div>
+        <div class="a11y-title">Accessibility</div>
+        <div class="a11y-subtitle">make it yours</div>
+      </div>
+    </div>
+    <button class="a11y-close" id="a11y-close" aria-label="Close accessibility panel">✕</button>
+  </div>
+
+  <div class="a11y-body">
+
+    <!-- FONT SIZE -->
+    <div class="a11y-group">
+      <div class="a11y-group-label">🐠 Text Size</div>
+      <div class="fish-slider-wrap">
+        <div class="fish-track" id="size-track">
+          <div class="fish-fill" id="size-fill"></div>
+          <div class="fish-thumb" id="size-thumb" role="slider" aria-valuemin="12" aria-valuemax="22" aria-valuenow="15" aria-label="Font size" tabindex="0">🐟</div>
+        </div>
+        <div class="fish-labels">
+          <span class="fish-label">small</span>
+          <span class="fish-label" id="size-val">15px</span>
+          <span class="fish-label">large</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LINE HEIGHT -->
+    <div class="a11y-group">
+      <div class="a11y-group-label">🫧 Line Spacing</div>
+      <div class="fish-slider-wrap">
+        <div class="fish-track" id="lh-track">
+          <div class="fish-fill" id="lh-fill"></div>
+          <div class="fish-thumb" id="lh-thumb" role="slider" aria-valuemin="1.2" aria-valuemax="2.4" aria-valuenow="1.7" aria-label="Line height" tabindex="0">🐡</div>
+        </div>
+        <div class="fish-labels">
+          <span class="fish-label">tight</span>
+          <span class="fish-label" id="lh-val">1.7</span>
+          <span class="fish-label">airy</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLOR THEMES -->
+    <div class="a11y-group">
+      <div class="a11y-group-label">🌊 Text Color</div>
+      <div class="color-swatches" id="color-swatches">
+        <div class="swatch active" data-color="default" tabindex="0" role="button" aria-pressed="true">
+          <div class="swatch-dot" style="background:#dde8f8"></div>
+          <span class="swatch-name">Ocean<br>Blue</span>
+        </div>
+        <div class="swatch" data-color="warm" tabindex="0" role="button" aria-pressed="false">
+          <div class="swatch-dot" style="background:#f5e6c8"></div>
+          <span class="swatch-name">Sandy<br>Warm</span>
+        </div>
+        <div class="swatch" data-color="sage" tabindex="0" role="button" aria-pressed="false">
+          <div class="swatch-dot" style="background:#c8e6d4"></div>
+          <span class="swatch-name">Kelp<br>Green</span>
+        </div>
+        <div class="swatch" data-color="coral" tabindex="0" role="button" aria-pressed="false">
+          <div class="swatch-dot" style="background:#ffd6d6"></div>
+          <span class="swatch-name">Coral<br>Soft</span>
+        </div>
+        <div class="swatch" data-color="lavender" tabindex="0" role="button" aria-pressed="false">
+          <div class="swatch-dot" style="background:#e0d4f5"></div>
+          <span class="swatch-name">Deep<br>Tide</span>
+        </div>
+        <div class="swatch" data-color="white" tabindex="0" role="button" aria-pressed="false">
+          <div class="swatch-dot" style="background:#ffffff;border-color:rgba(0,0,0,0.15)"></div>
+          <span class="swatch-name">Bright<br>White</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOGGLES -->
+    <div class="a11y-group">
+      <div class="a11y-group-label">🐙 Options</div>
+      <div class="a11y-toggle-row">
+        <label class="a11y-toggle-label" for="toggle-contrast"><span>🔆</span> High Contrast</label>
+        <div class="pill-toggle" id="toggle-contrast" role="switch" aria-checked="false" tabindex="0"></div>
+      </div>
+      <div class="a11y-toggle-row">
+        <label class="a11y-toggle-label" for="toggle-dyslexia"><span>📖</span> Dyslexia Font</label>
+        <div class="pill-toggle" id="toggle-dyslexia" role="switch" aria-checked="false" tabindex="0"></div>
+      </div>
+      <div class="a11y-toggle-row">
+        <label class="a11y-toggle-label" for="toggle-motion"><span>🌀</span> Reduce Motion</label>
+        <div class="pill-toggle" id="toggle-motion" role="switch" aria-checked="false" tabindex="0"></div>
+      </div>
+    </div>
+
+    <button class="a11y-reset" id="a11y-reset">
+      🐚 Reset to defaults
+    </button>
+
+  </div>
+
+  <div class="a11y-footer">
+    <div class="fish-parade" aria-hidden="true">🐟 🫧 🐠 🐡 🦀 🫧 🐟 🐚 🐡 🫧 🐠 🐟 🦑 🫧 🐟</div>
+  </div>
+</aside>
+<!-- ════════════════════════════════════════════════════════════ -->
 
 <div id="glow"></div>
 
@@ -234,7 +501,7 @@ section{animation:fadeUp .5s ease both}
       <section id="about">
         <div class="sec-label">About</div>
         <div class="about-text">
-          <p>I'm a <strong>early career conservationist </strong> with a passion for <strong>coastal ecosystems and land stewardship</strong>. I thrive at the intersection of field science and community outreach, where hands-on research meets public engagement.</p>
+          <p>I'm a <strong> early career conservationist </strong> with a passion for <strong>coastal ecosystems and land stewardship</strong>. I thrive at the intersection of field science and community outreach, where hands-on research meets public engagement.</p>
           <p>Currently serving as a 2025–2026 AmeriCorps Green Iowa member at <a href="https://www.whiterockconservancy.org" target="_blank">Whiterock Conservancy</a>, supporting prescribed burns, invasive species mitigation, and volunteer programs. Before that I worked with <a href="https://tpwd.texas.gov" target="_blank">Texas Parks and Wildlife</a>, the <a href="https://dmc.umaine.edu" target="_blank">Darling Marine Center</a>, and <a href="https://marinelab.duke.edu" target="_blank">Duke University Marine Lab</a>.</p>
         </div>
       </section>
@@ -792,6 +1059,190 @@ section{animation:fadeUp .5s ease both}
   document.addEventListener('mousemove', function(e) {
     glow.style.left = e.clientX + 'px';
     glow.style.top  = e.clientY + 'px';
+  });
+
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   ACCESSIBILITY PANEL
+═══════════════════════════════════════════════════════════ */
+(function() {
+
+  var panel    = document.getElementById('a11y-panel');
+  var tabBtn   = document.getElementById('a11y-toggle');
+  var closeBtn = document.getElementById('a11y-close');
+  var root     = document.documentElement;
+
+  /* ── open / close ── */
+  function openPanel()  { panel.classList.add('open');    tabBtn.setAttribute('aria-expanded','true');  }
+  function closePanel() { panel.classList.remove('open'); tabBtn.setAttribute('aria-expanded','false'); }
+  tabBtn.addEventListener('click',  openPanel);
+  closeBtn.addEventListener('click', closePanel);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closePanel(); });
+
+  /* ── floating bubbles ── */
+  var canvas = document.getElementById('bubble-canvas');
+  for (var b = 0; b < 12; b++) {
+    (function(i){
+      var bub = document.createElement('div');
+      bub.className = 'bubble';
+      var size = 8 + Math.random() * 28;
+      bub.style.cssText = [
+        'width:'+size+'px','height:'+size+'px',
+        'left:'+(5+Math.random()*85)+'%',
+        'bottom:'+(-size)+'px',
+        'animation-duration:'+(6+Math.random()*8)+'s',
+        'animation-delay:'+(Math.random()*6)+'s'
+      ].join(';');
+      canvas.appendChild(bub);
+    })(b);
+  }
+
+  /* ── generic fish slider ── */
+  function makeFishSlider(trackId, thumbId, fillId, valId, min, max, initial, decimals, unit, onUpdate) {
+    var track = document.getElementById(trackId);
+    var thumb = document.getElementById(thumbId);
+    var fill  = document.getElementById(fillId);
+    var valEl = document.getElementById(valId);
+    var current = initial;
+
+    function pct(v){ return (v - min) / (max - min); }
+    function fromPct(p){ return min + p * (max - min); }
+
+    function setVal(v) {
+      current = Math.max(min, Math.min(max, v));
+      var p = pct(current);
+      var trackW = track.offsetWidth - 16; // 8px padding each side
+      var px = 8 + p * trackW;
+      thumb.style.left = px + 'px';
+      fill.style.width = (p * trackW) + 'px';
+      valEl.textContent = current.toFixed(decimals) + (unit||'');
+      thumb.setAttribute('aria-valuenow', current.toFixed(decimals));
+      onUpdate(current);
+    }
+
+    function posFromEvent(e) {
+      var rect = track.getBoundingClientRect();
+      var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      var p = Math.max(0, Math.min(1, (clientX - rect.left - 8) / (rect.width - 16)));
+      return fromPct(p);
+    }
+
+    var dragging = false;
+    thumb.addEventListener('mousedown', function(e){ dragging=true; e.preventDefault(); });
+    thumb.addEventListener('touchstart', function(e){ dragging=true; }, {passive:true});
+    document.addEventListener('mousemove', function(e){ if(dragging) setVal(posFromEvent(e)); });
+    document.addEventListener('touchmove', function(e){ if(dragging) setVal(posFromEvent(e)); }, {passive:true});
+    document.addEventListener('mouseup',  function(){ dragging=false; });
+    document.addEventListener('touchend', function(){ dragging=false; });
+    track.addEventListener('click', function(e){ if(e.target===thumb) return; setVal(posFromEvent(e)); });
+
+    /* keyboard */
+    var step = (max - min) / 20;
+    thumb.addEventListener('keydown', function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowUp')   { setVal(current+step); e.preventDefault(); }
+      if(e.key==='ArrowLeft' ||e.key==='ArrowDown')  { setVal(current-step); e.preventDefault(); }
+    });
+
+    setVal(initial); // init position
+    return { setVal: setVal, getCurrent: function(){ return current; } };
+  }
+
+  /* ── font size slider ── */
+  var BASE_SIZE = 15;
+  var sizeCtrl = makeFishSlider('size-track','size-thumb','size-fill','size-val', 12, 22, BASE_SIZE, 0, 'px', function(v){
+    root.style.setProperty('font-size', v + 'px');
+    document.body.style.fontSize = v + 'px';
+  });
+
+  /* ── line height slider ── */
+  var lhCtrl = makeFishSlider('lh-track','lh-thumb','lh-fill','lh-val', 1.2, 2.4, 1.7, 1, '', function(v){
+    document.body.style.lineHeight = v;
+  });
+
+  /* ── color themes ── */
+  var COLOR_THEMES = {
+    default:   { bright:'#dde8f8', mist:'#94a3c4', faint:'#3d5070' },
+    warm:      { bright:'#f5e6c8', mist:'#c8a87a', faint:'#7a6040' },
+    sage:      { bright:'#c8e6d4', mist:'#7ab896', faint:'#3a6050' },
+    coral:     { bright:'#ffd6d6', mist:'#e89494', faint:'#8a5050' },
+    lavender:  { bright:'#e0d4f5', mist:'#a894d4', faint:'#5a4880' },
+    white:     { bright:'#ffffff', mist:'#cccccc', faint:'#666666' }
+  };
+
+  document.getElementById('color-swatches').addEventListener('click', function(e){
+    var sw = e.target.closest('.swatch');
+    if (!sw) return;
+    var col = sw.getAttribute('data-color');
+    var theme = COLOR_THEMES[col];
+    if (!theme) return;
+    document.querySelectorAll('.swatch').forEach(function(s){
+      s.classList.remove('active');
+      s.setAttribute('aria-pressed','false');
+    });
+    sw.classList.add('active');
+    sw.setAttribute('aria-pressed','true');
+    root.style.setProperty('--bright', theme.bright);
+    root.style.setProperty('--mist',   theme.mist);
+    root.style.setProperty('--faint',  theme.faint);
+  });
+
+  /* ── pill toggles ── */
+  function makePillToggle(id, onToggle) {
+    var el = document.getElementById(id);
+    var state = false;
+    function toggle() {
+      state = !state;
+      el.classList.toggle('on', state);
+      el.setAttribute('aria-checked', state ? 'true' : 'false');
+      onToggle(state);
+    }
+    el.addEventListener('click', toggle);
+    el.addEventListener('keydown', function(e){ if(e.key===' '||e.key==='Enter'){ toggle(); e.preventDefault(); } });
+    return { setState: function(v){ if(v!==state) toggle(); } };
+  }
+
+  var contrastCtrl = makePillToggle('toggle-contrast', function(on){
+    document.body.classList.toggle('hc', on);
+  });
+
+  var dyslexiaCtrl = makePillToggle('toggle-dyslexia', function(on){
+    document.body.style.fontFamily = on ? "'OpenDyslexic', 'Comic Sans MS', cursive" : '';
+  });
+
+  var motionCtrl = makePillToggle('toggle-motion', function(on){
+    if (on) {
+      var s = document.createElement('style');
+      s.id = 'reduce-motion-style';
+      s.textContent = '*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}';
+      document.head.appendChild(s);
+    } else {
+      var ex = document.getElementById('reduce-motion-style');
+      if (ex) ex.remove();
+    }
+  });
+
+  /* ── reset ── */
+  document.getElementById('a11y-reset').addEventListener('click', function(){
+    sizeCtrl.setVal(BASE_SIZE);
+    lhCtrl.setVal(1.7);
+    root.style.removeProperty('--bright');
+    root.style.removeProperty('--mist');
+    root.style.removeProperty('--faint');
+    document.body.style.fontSize   = '';
+    document.body.style.lineHeight = '';
+    document.body.style.fontFamily = '';
+    document.body.classList.remove('hc');
+    document.querySelectorAll('.swatch').forEach(function(s){
+      var isDefault = s.getAttribute('data-color') === 'default';
+      s.classList.toggle('active', isDefault);
+      s.setAttribute('aria-pressed', isDefault ? 'true' : 'false');
+    });
+    var rms = document.getElementById('reduce-motion-style');
+    if (rms) rms.remove();
+    contrastCtrl.setState(false);
+    dyslexiaCtrl.setState(false);
+    motionCtrl.setState(false);
   });
 
 })();

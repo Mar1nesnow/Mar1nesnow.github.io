@@ -1,1342 +1,864 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>James Benavides</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>James Benavides — Environmental Scientist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0e1621;--surface:#1a2540;--surface2:#1f2d4a;
-  --accent:#7eb8f7;--accent-dim:rgba(126,184,247,0.1);--accent2:#93c5fd;--sky:#bae6fd;
-  --mist:#94a3c4;--faint:#3d5070;--bright:#dde8f8;
-  --border:rgba(126,184,247,0.1);--border-h:rgba(126,184,247,0.25);
-  --sans:'Outfit',sans-serif;--mono:'DM Mono',monospace;
+  --bg:#0d1b2e;--surface:#152237;--surface2:#1a2b42;--surface3:#1f3350;
+  --accent:#5b9bd5;--accent-dim:rgba(91,155,213,0.12);--accent-glow:rgba(91,155,213,0.25);
+  --sky:#93c5e8;--pale:#d4e8f7;--bright:#e8f2fb;--mist:#7a9ab8;--fog:#4d6a85;--faint:#2a3d55;
+  --border:rgba(91,155,213,0.15);--border-h:rgba(91,155,213,0.35);
+  --serif:'Playfair Display',Georgia,serif;--sans:'Source Sans 3',sans-serif;--mono:'DM Mono',monospace;
+  --shadow:0 2px 20px rgba(0,0,0,0.3);--shadow-md:0 6px 40px rgba(0,0,0,0.4);
 }
-html,body{height:100%;overflow:hidden}
-body{background:var(--bg);color:var(--bright);font-family:var(--sans);font-size:15px;line-height:1.7}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--bright);font-size:15px;line-height:1.75;overflow-x:hidden}
 
-/* SHELL */
-.shell{display:flex;height:100vh;max-width:1160px;margin:0 auto;padding:0 32px}
+/* ══ VIEWS ══ */
+.view{display:none;min-height:100vh}
+.view.active{display:block;animation:fadeUp .4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-/* SIDEBAR */
-.sidebar{width:360px;flex-shrink:0;height:100vh;display:flex;flex-direction:column;padding:72px 48px 56px 0;position:relative}
-.sidebar::after{content:'';position:absolute;right:0;top:80px;bottom:80px;width:1px;background:linear-gradient(to bottom,transparent,var(--border) 20%,var(--border) 80%,transparent)}
-.s-name{font-size:2rem;font-weight:600;color:var(--bright);letter-spacing:-0.3px;line-height:1.15;margin-bottom:7px}
-.s-title{font-size:0.88rem;font-weight:500;color:var(--accent);letter-spacing:0.6px;margin-bottom:16px}
-.s-bio{font-size:0.82rem;color:var(--mist);line-height:1.65;max-width:230px}
-.s-divider{height:1px;background:var(--border);margin:28px 0}
-.s-nav{display:flex;flex-direction:column;gap:2px;flex:1}
-.s-nav a{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--mist);font-size:0.71rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;padding:8px 0;transition:color .22s}
-.s-nav a .nl{display:block;height:1px;width:24px;background:var(--faint);transition:width .28s ease,background .28s;flex-shrink:0}
-.s-nav a:hover,.s-nav a.active{color:var(--bright)}
-.s-nav a:hover .nl,.s-nav a.active .nl{width:48px;background:var(--accent)}
-.s-socials{display:flex;gap:16px;margin-top:4px}
-.s-socials a{color:var(--faint);display:flex;transition:color .2s,transform .2s}
-.s-socials a:hover{color:var(--accent);transform:translateY(-2px)}
-.s-socials svg{width:18px;height:18px;fill:currentColor}
-
-/* PANE */
-.pane{flex:1;height:100vh;overflow-y:auto;overflow-x:hidden;padding:72px 0 120px 64px;scrollbar-width:thin;scrollbar-color:var(--faint) transparent;min-width:0}
-.pane::-webkit-scrollbar{width:4px}
-.pane::-webkit-scrollbar-thumb{background:var(--faint);border-radius:2px}
-
-/* VIEWS */
-#main-view,#detail-view{width:100%}
-#detail-view{display:none}
-
-/* SECTIONS */
-section{margin-bottom:96px;scroll-margin-top:40px}
-.sec-label{font-family:var(--mono);font-size:0.66rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:28px;display:flex;align-items:center;gap:12px}
-.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* ABOUT */
-.about-text p{color:var(--mist);font-size:0.88rem;margin-bottom:13px}
-.about-text a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
-.about-text a:hover{border-color:var(--accent)}
-.about-text strong{color:var(--bright);font-weight:500}
-
-/* EXPERIENCE LIST */
-.exp-item{display:grid;grid-template-columns:92px 1fr;gap:0 20px;padding:18px 16px;border-radius:10px;border:1px solid transparent;transition:background .2s,border-color .2s;margin-bottom:2px;cursor:pointer}
-.exp-item:hover{background:var(--accent-dim);border-color:var(--border-h)}
-.exp-date{font-family:var(--mono);font-size:0.65rem;color:var(--faint);text-transform:uppercase;padding-top:3px;line-height:1.5}
-.exp-role{font-size:0.9rem;font-weight:600;color:var(--bright);margin-bottom:5px;display:flex;align-items:center;gap:6px}
-.arrow{font-size:0.72rem;color:var(--faint);display:inline-block;transition:color .2s,transform .2s;flex-shrink:0}
-.exp-item:hover .arrow{color:var(--accent);transform:translate(2px,-2px)}
-.exp-desc{font-size:0.82rem;color:var(--mist);line-height:1.6;margin-bottom:10px}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.tag{font-family:var(--mono);font-size:0.65rem;background:rgba(126,184,247,0.09);color:var(--accent2);border-radius:20px;padding:3px 10px}
-.resume-link{display:inline-flex;align-items:center;gap:6px;margin-top:16px;margin-left:16px;font-family:var(--mono);font-size:0.72rem;color:var(--mist);text-decoration:none;transition:color .2s}
-.resume-link:hover{color:var(--accent)}
-
-/* DETAIL PAGE */
-.detail-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:0.72rem;color:var(--mist);cursor:pointer;margin-bottom:40px;transition:color .2s;border:none;background:none;padding:0}
-.detail-back:hover{color:var(--accent)}
-.detail-back svg{width:14px;height:14px;fill:currentColor}
-.detail-org{font-family:var(--mono);font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
-.detail-title{font-size:1.6rem;font-weight:600;color:var(--bright);line-height:1.2;margin-bottom:10px}
-.detail-date{font-family:var(--mono);font-size:0.7rem;color:var(--faint);margin-bottom:20px}
-.detail-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:36px}
-.detail-divider{height:1px;background:var(--border);margin-bottom:36px}
-.detail-section-title{font-size:0.72rem;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--sky);margin-bottom:14px}
-.detail-body{font-size:0.88rem;color:var(--mist);line-height:1.8;margin-bottom:32px}
-.detail-body p{margin-bottom:12px}
-.detail-body ul{padding-left:18px;display:flex;flex-direction:column;gap:7px}
-.detail-body ul li::marker{color:var(--accent)}
-
-/* SLIDESHOW */
-.slideshow{position:relative;width:100%;border-radius:12px;overflow:hidden;background:var(--surface);border:1px solid var(--border);margin-bottom:36px}
-.slides-track{position:relative;width:100%;aspect-ratio:16/9;background:var(--surface2)}
-.slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease}
-.slide.active{opacity:1}
-.slide img{width:100%;height:100%;object-fit:cover;display:block}
-.slide-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
-.slide-placeholder svg{width:40px;height:40px;opacity:0.15;fill:var(--accent)}
-.slide-placeholder span{font-family:var(--mono);font-size:0.67rem;color:var(--faint);text-align:center;padding:0 24px}
-.slide-caption-bar{padding:14px 20px;background:var(--surface);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px}
-.slide-caption-text{font-size:0.82rem;color:var(--mist);line-height:1.5;flex:1;font-style:italic}
-.slide-controls{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.slide-btn{background:none;border:1px solid var(--border);color:var(--mist);border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s,color .2s,background .2s;flex-shrink:0}
-.slide-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
-.slide-btn svg{width:12px;height:12px;fill:currentColor}
-.slide-dots{display:flex;gap:5px;align-items:center}
-.slide-dot{width:5px;height:5px;border-radius:50%;background:var(--faint);cursor:pointer;transition:background .2s,transform .2s;border:none;padding:0}
-.slide-dot.active{background:var(--accent);transform:scale(1.4)}
-
-/* ORG LINK */
-.detail-org-link{display:inline-flex;align-items:center;gap:8px;font-size:0.83rem;font-weight:500;color:var(--accent);text-decoration:none;border:1px solid rgba(126,184,247,0.25);padding:11px 20px;border-radius:8px;margin-top:28px;transition:background .2s,border-color .2s}
-.detail-org-link:hover{background:var(--accent-dim);border-color:var(--accent)}
-.detail-org-link svg{width:13px;height:13px;fill:currentColor}
-
-/* MAP SECTION */
-.map-shell{position:relative;width:100%;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--surface)}
-.map-zoom-btns{position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;z-index:5}
-.map-zoom-btns button{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--mist);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:border-color .2s,color .2s,background .2s}
-.map-zoom-btns button:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
-.map-zoom-btns button.rst{font-family:var(--mono);font-size:8px;letter-spacing:0.5px}
-#map-tooltip{position:absolute;pointer-events:none;opacity:0;background:var(--surface);border:1px solid var(--border-h);border-radius:8px;padding:8px 12px;font-size:0.82rem;transition:opacity .15s;max-width:240px;z-index:10;white-space:nowrap}
-#map-tooltip .tt-name{font-weight:600;color:var(--bright);margin-bottom:2px}
-#map-tooltip .tt-job{color:var(--mist);font-size:0.75rem;line-height:1.4;white-space:normal}
-
-  
-/* PROJECTS */
-.project-card{display:grid;grid-template-columns:114px 1fr;gap:0 18px;padding:18px 16px;border-radius:10px;border:1px solid transparent;text-decoration:none;transition:background .2s,border-color .2s;margin-bottom:2px}
-.project-card:hover{background:var(--accent-dim);border-color:var(--border-h)}
-.proj-thumb{width:108px;height:72px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.proj-thumb svg{width:26px;height:26px;opacity:.28}
-.proj-name{font-size:0.88rem;font-weight:600;color:var(--bright);margin-bottom:5px;display:inline-flex;align-items:center;gap:5px}
-.project-card:hover .proj-name .arrow{color:var(--accent);transform:translate(2px,-2px)}
-.proj-desc{font-size:0.81rem;color:var(--mist);line-height:1.6}
-
-/* ART */
-.art-intro{font-size:0.86rem;color:var(--mist);margin-bottom:26px;line-height:1.75}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:12px}
-.art-card{border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--surface);transition:border-color .25s,transform .25s;cursor:pointer;position:relative}
-.art-card:hover{border-color:var(--border-h);transform:translateY(-3px)}
-.art-placeholder{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.art-placeholder::before{content:'';position:absolute;inset:0;opacity:.5}
-.art-placeholder.ap1{background:#0d1b35}.art-placeholder.ap1::before{background:radial-gradient(circle at 30% 40%,#1e4d8c 0%,transparent 65%),radial-gradient(circle at 75% 70%,#0d3060 0%,transparent 55%)}
-.art-placeholder.ap2{background:#101a2a}.art-placeholder.ap2::before{background:radial-gradient(circle at 65% 35%,#163a6b 0%,transparent 60%),radial-gradient(circle at 20% 75%,#0a2548 0%,transparent 50%)}
-.art-placeholder.ap3{background:#0c1e38}.art-placeholder.ap3::before{background:radial-gradient(circle at 50% 20%,#1b4880 0%,transparent 55%),radial-gradient(circle at 80% 80%,#0e2d5a 0%,transparent 50%)}
-.art-placeholder.ap4{background:#0e1e34}.art-placeholder.ap4::before{background:radial-gradient(circle at 20% 30%,#2a5298 0%,transparent 50%),radial-gradient(circle at 70% 60%,#112d5c 0%,transparent 60%)}
-.art-placeholder.ap5{background:#0b1a30}.art-placeholder.ap5::before{background:radial-gradient(circle at 55% 55%,#1a4275 0%,transparent 60%),radial-gradient(circle at 25% 80%,#0c2547 0%,transparent 45%)}
-.art-placeholder.ap6{background:#0f1e38}.art-placeholder.ap6::before{background:radial-gradient(circle at 75% 25%,#1d4a85 0%,transparent 55%),radial-gradient(circle at 30% 65%,#0e2b54 0%,transparent 50%)}
-.art-placeholder svg{position:relative;z-index:1;opacity:.18;width:36px;height:36px}
-.art-overlay{position:absolute;inset:0;background:rgba(10,18,32,.78);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .22s;padding:12px;text-align:center;z-index:2}
-.art-card:hover .art-overlay{opacity:1}
-.art-ov-title{font-size:0.77rem;font-weight:600;color:var(--bright);margin-bottom:4px}
-.art-ov-meta{font-family:var(--mono);font-size:0.62rem;color:var(--accent);letter-spacing:.5px}
-.art-caption{padding:10px 12px}
-.art-caption-title{font-size:0.77rem;font-weight:500;color:var(--bright);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.art-caption-sub{font-family:var(--mono);font-size:0.62rem;color:var(--faint);margin-top:2px}
-.art-hint{margin-top:18px;padding:13px 16px;border:1px dashed var(--faint);border-radius:10px;font-size:0.78rem;color:var(--faint);text-align:center;line-height:1.65}
-.art-hint code{font-family:var(--mono);font-size:0.68rem;color:var(--accent)}
-
-/* CONTACT */
-.contact-intro{font-size:0.87rem;color:var(--mist);max-width:480px;margin-bottom:26px;line-height:1.75}
-.contact-btn{display:inline-flex;align-items:center;gap:10px;font-size:0.87rem;font-weight:500;color:var(--accent);text-decoration:none;border:1px solid rgba(126,184,247,0.28);padding:13px 26px;border-radius:8px;transition:background .2s,border-color .2s}
-.contact-btn:hover{background:var(--accent-dim);border-color:var(--accent)}
-
-/* FOOTER */
-.footer{font-family:var(--mono);font-size:0.68rem;color:var(--faint);line-height:1.9}
-.footer a{color:var(--mist);text-decoration:none}
-.footer a:hover{color:var(--accent)}
-
-/* CURSOR GLOW */
-#glow{position:fixed;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(126,184,247,0.04) 0%,transparent 70%);pointer-events:none;transform:translate(-50%,-50%);z-index:0}
-
-/* RESPONSIVE */
-@media(max-width:860px){
-  html,body{overflow:auto;height:auto}
-  .shell{flex-direction:column;height:auto;padding:0 20px}
-  .sidebar{position:static;width:100%;height:auto;padding:48px 0 0}
-  .sidebar::after{display:none}
-  .s-nav{display:none}
-  .pane{height:auto;overflow:visible;padding:40px 0 80px}
-  .exp-item,.project-card{grid-template-columns:1fr}
-  .exp-date{margin-bottom:4px}
-  .proj-thumb{display:none}
-}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.sidebar{animation:fadeUp .65s ease both}
-section{animation:fadeUp .5s ease both}
-#detail-view.visible{animation:fadeUp .35s ease both}
-
-/* ═══════════════════════════════════════════════
-   ACCESSIBILITY PANEL
-═══════════════════════════════════════════════ */
+/* ══ A11Y TOGGLE + PANEL ══ */
 #a11y-toggle{
-  position:fixed;right:0;top:50%;transform:translateY(-50%);
-  z-index:200;width:36px;height:64px;
-  background:var(--surface);border:1px solid var(--border-h);
-  border-right:none;border-radius:10px 0 0 10px;
-  cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-  transition:background .2s,border-color .2s;
+  position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:300;
+  width:34px;height:60px;background:var(--surface);border:1px solid var(--border-h);
+  border-right:none;border-radius:10px 0 0 10px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  transition:background .2s;
 }
-#a11y-toggle:hover{background:var(--surface2);border-color:rgba(126,184,247,0.4)}
-#a11y-toggle svg{width:16px;height:16px;fill:var(--accent);flex-shrink:0}
-#a11y-toggle span{font-size:7px;font-family:var(--mono);letter-spacing:0.5px;color:var(--mist);writing-mode:vertical-lr;transform:rotate(180deg);line-height:1}
-
+#a11y-toggle:hover{background:var(--surface2)}
+#a11y-toggle svg{width:15px;height:15px;fill:var(--accent)}
+#a11y-toggle .a11y-label{font-size:6.5px;font-family:var(--mono);letter-spacing:.5px;color:var(--mist);writing-mode:vertical-lr;transform:rotate(180deg)}
 #a11y-panel{
-  position:fixed;right:-300px;top:0;width:280px;height:100vh;
+  position:fixed;right:-290px;top:0;width:272px;height:100vh;
   background:var(--surface);border-left:1px solid var(--border-h);
-  z-index:199;transition:right .35s cubic-bezier(.4,0,.2,1);
-  display:flex;flex-direction:column;overflow:hidden;
+  z-index:299;transition:right .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden;
 }
 #a11y-panel.open{right:0}
-
-/* bubbles background */
-#a11y-panel::before{
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(circle 40px at 20% 15%,rgba(126,184,247,0.05) 0%,transparent 100%),
-    radial-gradient(circle 25px at 75% 28%,rgba(186,230,253,0.06) 0%,transparent 100%),
-    radial-gradient(circle 55px at 50% 60%,rgba(126,184,247,0.04) 0%,transparent 100%),
-    radial-gradient(circle 30px at 15% 70%,rgba(147,197,253,0.05) 0%,transparent 100%),
-    radial-gradient(circle 20px at 85% 82%,rgba(186,230,253,0.06) 0%,transparent 100%),
-    radial-gradient(circle 45px at 60% 92%,rgba(126,184,247,0.04) 0%,transparent 100%);
-}
-
-.a11y-header{
-  position:relative;z-index:1;
-  padding:24px 20px 16px;
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-}
-.a11y-header-left{display:flex;align-items:center;gap:10px}
-.a11y-fish-icon{font-size:1.3rem;animation:fishSwim 3s ease-in-out infinite}
-@keyframes fishSwim{0%,100%{transform:translateX(0) rotate(0deg)}40%{transform:translateX(4px) rotate(3deg)}70%{transform:translateX(-2px) rotate(-2deg)}}
-.a11y-title{font-size:0.78rem;font-weight:600;color:var(--bright);letter-spacing:0.5px}
-.a11y-subtitle{font-size:0.62rem;font-family:var(--mono);color:var(--mist);margin-top:1px}
-.a11y-close{background:none;border:none;color:var(--mist);cursor:pointer;padding:4px;border-radius:6px;display:flex;transition:color .15s,background .15s;font-size:1rem;line-height:1}
-.a11y-close:hover{color:var(--bright);background:var(--accent-dim)}
-
-.a11y-body{
-  position:relative;z-index:1;
-  flex:1;overflow-y:auto;padding:20px;
-  scrollbar-width:thin;scrollbar-color:var(--faint) transparent;
-  display:flex;flex-direction:column;gap:22px;
-}
-
-/* floating bubbles decoration */
-.a11y-bubbles{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.bubble{position:absolute;border-radius:50%;border:1px solid rgba(126,184,247,0.12);animation:bubbleFloat linear infinite}
-@keyframes bubbleFloat{0%{transform:translateY(0) scale(1);opacity:0.6}50%{opacity:0.3}100%{transform:translateY(-120px) scale(0.7);opacity:0}}
-
-.a11y-group{display:flex;flex-direction:column;gap:10px}
-.a11y-group-label{
-  font-size:0.62rem;font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;
-  color:var(--accent);display:flex;align-items:center;gap:8px;
-}
-.a11y-group-label::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* FISH SLIDER */
-.fish-slider-wrap{position:relative;padding:8px 0 4px}
-.fish-track{
-  position:relative;width:100%;height:28px;
-  background:linear-gradient(to right,var(--surface2),var(--surface2));
-  border-radius:14px;border:1px solid var(--border);overflow:visible;
-  cursor:pointer;
-}
-.fish-track::before{
-  content:'';position:absolute;top:50%;left:8px;right:8px;height:3px;
-  transform:translateY(-50%);
-  background:linear-gradient(to right,rgba(126,184,247,0.2),rgba(186,230,253,0.4));
-  border-radius:2px;
-}
-.fish-fill{
-  position:absolute;top:50%;left:8px;height:3px;transform:translateY(-50%);
-  background:linear-gradient(to right,var(--accent),var(--sky));
-  border-radius:2px;transition:width .1s;pointer-events:none;
-}
-.fish-thumb{
-  position:absolute;top:50%;transform:translate(-50%,-50%);
-  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;cursor:grab;user-select:none;
-  filter:drop-shadow(0 1px 4px rgba(126,184,247,0.4));
-  transition:filter .15s,transform .15s;
-  z-index:2;
-}
-.fish-thumb:active{cursor:grabbing;transform:translate(-50%,-50%) scale(1.2)}
-.fish-thumb:hover{filter:drop-shadow(0 2px 8px rgba(126,184,247,0.6))}
-
-.fish-labels{display:flex;justify-content:space-between;margin-top:6px}
-.fish-label{font-size:0.6rem;font-family:var(--mono);color:var(--faint)}
-
-/* COLOR THEME SWATCHES */
-.color-swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.swatch{
-  display:flex;flex-direction:column;align-items:center;gap:5px;
-  cursor:pointer;padding:8px 4px;border-radius:8px;border:1px solid transparent;
-  transition:border-color .18s,background .18s;
-}
+.a11y-hdr{padding:20px 18px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.a11y-hdr-left{display:flex;align-items:center;gap:10px}
+.a11y-fish{font-size:1.2rem;animation:swim 3s ease-in-out infinite}
+@keyframes swim{0%,100%{transform:translateX(0)}40%{transform:translateX(4px)}70%{transform:translateX(-2px)}}
+.a11y-ttl{font-size:.78rem;font-weight:600;color:var(--bright)}
+.a11y-sub-txt{font-size:.6rem;font-family:var(--mono);color:var(--mist)}
+.a11y-x{background:none;border:none;color:var(--mist);cursor:pointer;font-size:1rem;padding:4px;border-radius:5px;transition:color .15s}
+.a11y-x:hover{color:var(--bright)}
+.a11y-body{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:20px;scrollbar-width:thin;scrollbar-color:var(--faint) transparent}
+.a11y-grp-lbl{font-size:.6rem;font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.a11y-grp-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.fish-track{position:relative;width:100%;height:26px;background:var(--surface2);border-radius:13px;border:1px solid var(--border);cursor:pointer}
+.fish-track::before{content:'';position:absolute;top:50%;left:8px;right:8px;height:2px;transform:translateY(-50%);background:rgba(91,155,213,.2);border-radius:2px}
+.fish-fill{position:absolute;top:50%;left:8px;height:2px;transform:translateY(-50%);background:linear-gradient(to right,var(--accent),var(--sky));border-radius:2px;pointer-events:none}
+.fish-thumb{position:absolute;top:50%;transform:translate(-50%,-50%);width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:grab;user-select:none;filter:drop-shadow(0 1px 4px rgba(91,155,213,.5));z-index:2}
+.fish-thumb:active{cursor:grabbing}
+.fish-lbls{display:flex;justify-content:space-between;margin-top:5px}
+.fish-lbl{font-size:.58rem;font-family:var(--mono);color:var(--fog)}
+.fish-val{font-size:.6rem;font-family:var(--mono);color:var(--accent);text-align:center;margin-top:3px}
+.swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.swatch{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:7px 4px;border-radius:8px;border:1px solid transparent;transition:border-color .15s,background .15s}
 .swatch:hover{background:var(--accent-dim)}
 .swatch.active{border-color:var(--accent)}
-.swatch-dot{width:24px;height:24px;border-radius:50%;flex-shrink:0;border:2px solid rgba(255,255,255,0.12);box-shadow:0 0 6px rgba(0,0,0,0.3)}
-.swatch-name{font-size:0.6rem;font-family:var(--mono);color:var(--mist);text-align:center;line-height:1.3}
+.sw-dot{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.1)}
+.sw-nm{font-size:.57rem;font-family:var(--mono);color:var(--mist);text-align:center;line-height:1.3}
+.a11y-row{display:flex;align-items:center;justify-content:space-between;padding:3px 0}
+.a11y-row-lbl{font-size:.76rem;color:var(--mist);display:flex;align-items:center;gap:6px}
+.pill{position:relative;width:34px;height:18px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;cursor:pointer;transition:background .2s,border-color .2s;flex-shrink:0}
+.pill.on{background:var(--accent);border-color:var(--accent)}
+.pill::after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:transform .2s}
+.pill.on::after{transform:translateX(16px)}
+.a11y-rst{width:100%;padding:8px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--mist);font-family:var(--mono);font-size:.65rem;letter-spacing:1px;cursor:pointer;transition:border-color .2s,color .2s}
+.a11y-rst:hover{border-color:var(--accent);color:var(--accent)}
+.a11y-ftr{padding:10px 18px;border-top:1px solid var(--border);overflow:hidden;height:36px}
+.fish-parade{display:flex;gap:5px;animation:parade 8s linear infinite;font-size:.85rem;white-space:nowrap}
+@keyframes parade{0%{transform:translateX(272px)}100%{transform:translateX(-200px)}}
+body.hc{--bg:#000;--surface:#0a0a0a;--surface2:#111;--surface3:#181818;--bright:#fff;--mist:#ccc;--fog:#777;--border:rgba(255,255,255,.2);--border-h:rgba(255,255,255,.4)}
 
-/* CONTRAST toggle */
-.a11y-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0}
-.a11y-toggle-label{font-size:0.78rem;color:var(--mist);display:flex;align-items:center;gap:7px}
-.a11y-toggle-label span{font-size:1rem}
-.pill-toggle{
-  position:relative;width:36px;height:20px;
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:10px;cursor:pointer;transition:background .2s,border-color .2s;flex-shrink:0;
-}
-.pill-toggle.on{background:var(--accent);border-color:var(--accent)}
-.pill-toggle::after{
-  content:'';position:absolute;top:2px;left:2px;
-  width:14px;height:14px;border-radius:50%;
-  background:#fff;transition:transform .2s;
-}
-.pill-toggle.on::after{transform:translateX(16px)}
+/* ══ TOPBAR ══ */
+.topbar{padding:20px 56px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(13,27,46,.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100}
+.topbar-name{font-family:var(--serif);font-size:1.05rem;font-weight:600;color:var(--bright)}
+.topbar-links{display:flex;gap:20px}
+.topbar-link{font-family:var(--mono);font-size:.68rem;color:var(--mist);text-decoration:none;letter-spacing:1px;transition:color .2s}
+.topbar-link:hover{color:var(--accent)}
 
-/* reset btn */
-.a11y-reset{
-  width:100%;padding:9px;background:none;border:1px solid var(--border);
-  border-radius:8px;color:var(--mist);font-family:var(--mono);font-size:0.68rem;
-  letter-spacing:1px;cursor:pointer;transition:border-color .2s,color .2s,background .2s;
-  display:flex;align-items:center;justify-content:center;gap:7px;
-}
-.a11y-reset:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+/* ══ HERO ══ */
+.hero{max-width:1120px;margin:0 auto;padding:72px 56px 60px;display:grid;grid-template-columns:1fr 300px;gap:0 80px;align-items:start}
+.hero-eyebrow{font-family:var(--mono);font-size:.67rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.hero-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--accent)}
+.hero-name{font-family:var(--serif);font-size:clamp(2.5rem,5vw,3.8rem);font-weight:700;color:var(--bright);line-height:1.08;margin-bottom:12px;letter-spacing:-.5px}
+.hero-title{font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:26px;font-weight:600}
+.hero-bio{font-size:.94rem;color:var(--mist);line-height:1.85;max-width:500px;margin-bottom:14px}
+.hero-bio strong{color:var(--bright);font-weight:600}
+.hero-links{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 38px}
+.hero-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.67rem;letter-spacing:1px;color:var(--mist);text-decoration:none;transition:color .2s}
+.hero-link:hover{color:var(--accent)}
+.hero-link svg{width:13px;height:13px;fill:currentColor}
+.cta-area{display:flex;gap:14px;flex-wrap:wrap}
+.cta-btn{display:inline-flex;align-items:center;gap:9px;padding:13px 28px;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all .25s;border:1.5px solid transparent;font-family:var(--sans)}
+.cta-btn.primary{background:var(--accent);color:#0d1b2e;border-color:var(--accent)}
+.cta-btn.primary:hover{background:var(--sky);border-color:var(--sky);transform:translateY(-2px);box-shadow:0 6px 24px rgba(91,155,213,.35)}
+.cta-btn.secondary{background:transparent;color:var(--accent);border-color:var(--border-h)}
+.cta-btn.secondary:hover{border-color:var(--accent);background:var(--accent-dim);transform:translateY(-2px)}
+.cta-btn svg{width:15px;height:15px;fill:currentColor}
+.hero-right{display:flex;flex-direction:column;align-items:center;gap:14px;padding-top:6px}
+.headshot-frame{width:230px;height:285px;border-radius:115px 115px 75px 75px;overflow:hidden;background:var(--surface2);border:2px solid var(--border-h);box-shadow:var(--shadow-md),0 0 0 6px rgba(91,155,213,.06)}
+.headshot-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:28px;gap:8px;background:linear-gradient(160deg,var(--surface2) 0%,var(--surface3) 100%)}
+.headshot-ph svg{width:80px;height:80px;fill:var(--accent);opacity:.25}
+.headshot-ph span{font-family:var(--mono);font-size:.6rem;color:var(--fog);letter-spacing:1px}
+.headshot-frame img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.hero-loc{font-family:var(--mono);font-size:.65rem;color:var(--fog);letter-spacing:1px;text-align:center}
 
-/* footer fish parade */
-.a11y-footer{
-  position:relative;z-index:1;
-  padding:12px 20px;border-top:1px solid var(--border);
-  overflow:hidden;height:38px;
-}
-.fish-parade{display:flex;gap:6px;animation:parade 8s linear infinite;white-space:nowrap;font-size:0.9rem}
-@keyframes parade{0%{transform:translateX(280px)}100%{transform:translateX(-200px)}}
+/* ══ TIMELINE ══ */
+.tl-section{max-width:1120px;margin:0 auto;padding:16px 56px 80px}
+.sec-lbl{font-family:var(--mono);font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:32px;display:flex;align-items:center;gap:12px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.timeline{position:relative;padding-left:20px}
+.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,transparent,var(--border) 5%,var(--border) 95%,transparent)}
+.tl-item{display:grid;grid-template-columns:100px 1fr;gap:0 24px;padding:18px 18px 18px 0;border-radius:12px;border:1px solid transparent;transition:background .2s,border-color .2s;margin-bottom:4px;position:relative;cursor:pointer}
+.tl-item::before{content:'';position:absolute;left:-24px;top:28px;width:9px;height:9px;border-radius:50%;background:var(--faint);border:2px solid var(--bg);transition:background .2s,box-shadow .2s}
+.tl-item:hover{background:var(--accent-dim);border-color:var(--border-h)}
+.tl-item:hover::before{background:var(--accent);box-shadow:0 0 0 4px rgba(91,155,213,.2)}
+.tl-date{font-family:var(--mono);font-size:.63rem;color:var(--fog);text-transform:uppercase;padding-top:3px;line-height:1.5}
+.tl-role{font-size:.9rem;font-weight:700;color:var(--bright);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.tl-arrow{font-size:.72rem;color:var(--fog);transition:color .2s,transform .2s}
+.tl-item:hover .tl-arrow{color:var(--accent);transform:translate(2px,-2px)}
+.tl-desc{font-size:.81rem;color:var(--mist);line-height:1.65;margin-bottom:8px}
+.tl-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.tl-tag{font-family:var(--mono);font-size:.62rem;background:rgba(91,155,213,.1);color:var(--sky);border-radius:20px;padding:3px 10px}
+.resume-link{display:inline-flex;align-items:center;gap:6px;margin-top:20px;font-family:var(--mono);font-size:.68rem;color:var(--mist);text-decoration:none;transition:color .2s}
+.resume-link:hover{color:var(--accent)}
 
-/* HIGH CONTRAST mode */
-body.hc{--bg:#000;--surface:#0a0a0a;--surface2:#111;--bright:#fff;--mist:#e0e0e0;--faint:#666;--border:rgba(255,255,255,0.2);--border-h:rgba(255,255,255,0.4)}
+/* ══ PAGE NAV ══ */
+.page-nav{background:rgba(13,27,46,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:0 56px;display:flex;align-items:center;position:sticky;top:0;z-index:100}
+.pn-home{font-family:var(--mono);font-size:.67rem;letter-spacing:1px;color:var(--mist);cursor:pointer;padding:18px 0;margin-right:28px;transition:color .2s;display:flex;align-items:center;gap:6px;border:none;background:none;white-space:nowrap}
+.pn-home:hover{color:var(--accent)}
+.pn-home svg{width:13px;height:13px;fill:currentColor}
+.tab-btn{font-family:var(--sans);font-size:.82rem;font-weight:600;color:var(--mist);cursor:pointer;padding:18px 22px;border-bottom:2px solid transparent;border-top:none;border-left:none;border-right:none;background:none;transition:color .2s,border-color .2s;white-space:nowrap}
+.tab-btn:hover{color:var(--bright)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* ══ PAGE HEADER ══ */
+.page-hdr{max-width:1120px;margin:0 auto;padding:52px 56px 36px}
+.page-hdr-lbl{font-family:var(--mono);font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.page-hdr-lbl::before{content:'';display:block;width:20px;height:1px;background:var(--accent)}
+.page-hdr-title{font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--bright);margin-bottom:10px}
+.page-hdr-sub{font-size:.9rem;color:var(--mist);max-width:540px;line-height:1.8}
+
+/* ══ CONTENT + BLOCKS ══ */
+.page-content{max-width:1120px;margin:0 auto;padding:0 56px 80px}
+.fw-div{display:flex;align-items:center;gap:14px;margin:36px 0 18px}
+.fw-div-lbl{font-family:var(--serif);font-size:1.05rem;font-weight:600;color:var(--bright);white-space:nowrap}
+.fw-div::after{content:'';flex:1;height:1px;background:var(--border)}
+.exp-block{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:18px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s,border-color .2s}
+.exp-block:hover{box-shadow:var(--shadow-md);border-color:var(--border-h)}
+.exp-top{display:grid;grid-template-columns:1fr 250px;gap:0}
+.exp-left{padding:26px 28px}
+.exp-right{padding:26px 22px;background:var(--surface2);border-left:1px solid var(--border)}
+.exp-org{font-family:var(--mono);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.exp-title{font-size:.97rem;font-weight:700;color:var(--bright);margin-bottom:10px}
+.exp-body{font-size:.82rem;color:var(--mist);line-height:1.75;margin-bottom:12px}
+.exp-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.exp-list li{font-size:.8rem;color:var(--mist);padding-left:14px;position:relative;line-height:1.65}
+.exp-list li::before{content:'—';position:absolute;left:0;color:var(--fog);font-size:.7rem}
+.sk-lbl{font-family:var(--mono);font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--fog);margin-bottom:10px}
+.sk-list{display:flex;flex-direction:column;gap:6px}
+.sk-item{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--sky)}
+.sk-item::before{content:'';display:block;width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
+
+/* ══ PHOTO STRIP ══ */
+.photo-note{font-family:var(--mono);font-size:.6rem;color:var(--fog);padding:10px 28px 0}
+.photo-strip{border-top:1px solid var(--border);padding:16px 28px;background:var(--surface);display:flex;gap:12px;flex-wrap:wrap}
+.photo-slot{display:flex;flex-direction:column;align-items:center;gap:5px}
+.photo-slot img{width:130px;height:90px;object-fit:cover;border-radius:8px;border:1px solid var(--border);display:block}
+.photo-ph{width:130px;height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:1.5px dashed var(--faint);border-radius:8px;transition:border-color .2s,background .2s}
+.photo-ph:hover{border-color:var(--accent);background:var(--accent-dim)}
+.photo-ph svg{width:20px;height:20px;fill:var(--fog)}
+.photo-ph span{font-family:var(--mono);font-size:.56rem;color:var(--fog);text-align:center;line-height:1.4}
+.photo-cap{font-family:var(--mono);font-size:.58rem;color:var(--fog);text-align:center;max-width:130px;line-height:1.3}
+
+/* ══ PE CARDS ══ */
+.pe-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
+a.pe-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;box-shadow:var(--shadow);transition:box-shadow .2s,border-color .2s,transform .2s;text-decoration:none;display:block;color:inherit}
+a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transform:translateY(-2px)}
+.pe-icon{width:40px;height:40px;border-radius:9px;background:var(--surface2);display:flex;align-items:center;justify-content:center;margin-bottom:14px;border:1px solid var(--border)}
+.pe-icon svg{width:20px;height:20px;fill:var(--accent)}
+.pe-cat{font-family:var(--mono);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--fog);margin-bottom:5px}
+.pe-title{font-size:.92rem;font-weight:700;color:var(--bright);margin-bottom:7px}
+.pe-desc{font-size:.81rem;color:var(--mist);line-height:1.7;margin-bottom:12px}
+.pe-tags{display:flex;flex-wrap:wrap;gap:5px}
+.pe-tag{font-family:var(--mono);font-size:.6rem;background:var(--accent-dim);color:var(--sky);border:1px solid var(--border);border-radius:20px;padding:3px 9px}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;gap:40px;padding:48px 24px 52px}
+  .hero-right{order:-1;align-items:flex-start}
+  .headshot-frame{width:180px;height:224px}
+  .tl-section,.page-hdr,.page-content{padding-left:24px;padding-right:24px}
+  .page-nav{padding:0 16px}
+  .topbar{padding:16px 24px}
+  .exp-top{grid-template-columns:1fr}
+  .exp-right{border-left:none;border-top:1px solid var(--border)}
+  .pe-grid{grid-template-columns:1fr}
+}
 </style>
-
 </head>
 <body>
 
-<!-- ═══════════════════ ACCESSIBILITY TAB ═══════════════════ -->
-<button id="a11y-toggle" aria-label="Open accessibility settings" aria-expanded="false">
+<!-- A11Y TOGGLE -->
+<button id="a11y-toggle" aria-label="Accessibility settings" aria-expanded="false">
   <svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 110 4 2 2 0 010-4zm8 7h-5v13h-2v-6h-2v6H9V9H4V7h16v2z"/></svg>
-  <span>A11Y</span>
+  <span class="a11y-label">A11Y</span>
 </button>
 
+<!-- A11Y PANEL -->
 <aside id="a11y-panel" role="dialog" aria-label="Accessibility settings">
-  <div class="a11y-bubbles" id="bubble-canvas"></div>
-
-  <div class="a11y-header">
-    <div class="a11y-header-left">
-      <span class="a11y-fish-icon">🐟</span>
-      <div>
-        <div class="a11y-title">Accessibility</div>
-        <div class="a11y-subtitle">make it yours</div>
-      </div>
+  <div class="a11y-hdr">
+    <div class="a11y-hdr-left">
+      <span class="a11y-fish">🐟</span>
+      <div><div class="a11y-ttl">Accessibility</div><div class="a11y-sub-txt">make it yours</div></div>
     </div>
-    <button class="a11y-close" id="a11y-close" aria-label="Close accessibility panel">✕</button>
+    <button class="a11y-x" id="a11y-close">✕</button>
   </div>
-
   <div class="a11y-body">
-
-    <!-- FONT SIZE -->
-    <div class="a11y-group">
-      <div class="a11y-group-label">🐠 Text Size</div>
-      <div class="fish-slider-wrap">
-        <div class="fish-track" id="size-track">
-          <div class="fish-fill" id="size-fill"></div>
-          <div class="fish-thumb" id="size-thumb" role="slider" aria-valuemin="12" aria-valuemax="22" aria-valuenow="15" aria-label="Font size" tabindex="0">🐟</div>
-        </div>
-        <div class="fish-labels">
-          <span class="fish-label">small</span>
-          <span class="fish-label" id="size-val">15px</span>
-          <span class="fish-label">large</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- LINE HEIGHT -->
-    <div class="a11y-group">
-      <div class="a11y-group-label">🫧 Line Spacing</div>
-      <div class="fish-slider-wrap">
-        <div class="fish-track" id="lh-track">
-          <div class="fish-fill" id="lh-fill"></div>
-          <div class="fish-thumb" id="lh-thumb" role="slider" aria-valuemin="1.2" aria-valuemax="2.4" aria-valuenow="1.7" aria-label="Line height" tabindex="0">🐡</div>
-        </div>
-        <div class="fish-labels">
-          <span class="fish-label">tight</span>
-          <span class="fish-label" id="lh-val">1.7</span>
-          <span class="fish-label">airy</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- COLOR THEMES -->
-    <div class="a11y-group">
-      <div class="a11y-group-label">🌊 Text Color</div>
-      <div class="color-swatches" id="color-swatches">
-        <div class="swatch active" data-color="default" tabindex="0" role="button" aria-pressed="true">
-          <div class="swatch-dot" style="background:#dde8f8"></div>
-          <span class="swatch-name">Ocean<br>Blue</span>
-        </div>
-        <div class="swatch" data-color="warm" tabindex="0" role="button" aria-pressed="false">
-          <div class="swatch-dot" style="background:#f5e6c8"></div>
-          <span class="swatch-name">Sandy<br>Warm</span>
-        </div>
-        <div class="swatch" data-color="sage" tabindex="0" role="button" aria-pressed="false">
-          <div class="swatch-dot" style="background:#c8e6d4"></div>
-          <span class="swatch-name">Kelp<br>Green</span>
-        </div>
-        <div class="swatch" data-color="coral" tabindex="0" role="button" aria-pressed="false">
-          <div class="swatch-dot" style="background:#ffd6d6"></div>
-          <span class="swatch-name">Coral<br>Soft</span>
-        </div>
-        <div class="swatch" data-color="lavender" tabindex="0" role="button" aria-pressed="false">
-          <div class="swatch-dot" style="background:#e0d4f5"></div>
-          <span class="swatch-name">Deep<br>Tide</span>
-        </div>
-        <div class="swatch" data-color="white" tabindex="0" role="button" aria-pressed="false">
-          <div class="swatch-dot" style="background:#ffffff;border-color:rgba(0,0,0,0.15)"></div>
-          <span class="swatch-name">Bright<br>White</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- TOGGLES -->
-    <div class="a11y-group">
-      <div class="a11y-group-label">🐙 Options</div>
-      <div class="a11y-toggle-row">
-        <label class="a11y-toggle-label" for="toggle-contrast"><span>🔆</span> High Contrast</label>
-        <div class="pill-toggle" id="toggle-contrast" role="switch" aria-checked="false" tabindex="0"></div>
-      </div>
-      <div class="a11y-toggle-row">
-        <label class="a11y-toggle-label" for="toggle-dyslexia"><span>📖</span> Dyslexia Font</label>
-        <div class="pill-toggle" id="toggle-dyslexia" role="switch" aria-checked="false" tabindex="0"></div>
-      </div>
-      <div class="a11y-toggle-row">
-        <label class="a11y-toggle-label" for="toggle-motion"><span>🌀</span> Reduce Motion</label>
-        <div class="pill-toggle" id="toggle-motion" role="switch" aria-checked="false" tabindex="0"></div>
-      </div>
-    </div>
-
-    <button class="a11y-reset" id="a11y-reset">
-      🐚 Reset to defaults
-    </button>
-
-  </div>
-
-  <div class="a11y-footer">
-    <div class="fish-parade" aria-hidden="true">🐟 🫧 🐠 🐡 🦀 🫧 🐟 🐚 🐡 🫧 🐠 🐟 🦑 🫧 🐟</div>
-  </div>
-</aside>
-<!-- ════════════════════════════════════════════════════════════ -->
-
-<div id="glow"></div>
-
-<div class="shell">
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
     <div>
-      <div class="s-name">James Benavides</div>
-      <div class="s-title">Land Operations and Outreach Support</div>
-      <p class="s-bio">Nature has a way of reeling me in! My work in oyster aquaculture, coastal fisheries, and invasive species management have fueled my passion for conservation.</p>
+      <div class="a11y-grp-lbl">🐠 Text Size</div>
+      <div class="fish-track" id="size-track"><div class="fish-fill" id="size-fill"></div><div class="fish-thumb" id="size-thumb" tabindex="0" role="slider" aria-valuemin="12" aria-valuemax="22" aria-valuenow="15">🐟</div></div>
+      <div class="fish-lbls"><span class="fish-lbl">small</span><span class="fish-lbl">large</span></div>
+      <div class="fish-val" id="size-val">15px</div>
     </div>
-    <div class="s-divider"></div>
-    <nav class="s-nav">
-      <a href="#about"><span class="nl"></span>About</a>
-      <a href="#experience"><span class="nl"></span>Experience</a>
-      <a href="#map"><span class="nl"></span>Field Map</a>
-      <a href="#skills"><span class="nl"></span>Skills</a>
-      <a href="#projects"><span class="nl"></span>Projects</a>
-      <a href="#art"><span class="nl"></span>Art</a>
-      <a href="#contact"><span class="nl"></span>Contact</a>
-    </nav>
-    <div class="s-socials">
-      <a href="https://github.com" target="_blank" title="GitHub">
-        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-      </a>
-      <a href="https://linkedin.com" target="_blank" title="LinkedIn">
-        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-      </a>
-      <a href="https://instagram.com" target="_blank" title="Instagram">
-        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-      </a>
-      <a href="mailto:your@email.com" title="Email">
-        <svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 11.366l9.615-7.545h.749A1.636 1.636 0 0 1 24 5.457z"/></svg>
-      </a>
+    <div>
+      <div class="a11y-grp-lbl">🫧 Line Spacing</div>
+      <div class="fish-track" id="lh-track"><div class="fish-fill" id="lh-fill"></div><div class="fish-thumb" id="lh-thumb" tabindex="0" role="slider">🐡</div></div>
+      <div class="fish-lbls"><span class="fish-lbl">tight</span><span class="fish-lbl">airy</span></div>
+      <div class="fish-val" id="lh-val">1.75</div>
     </div>
-  </aside>
-
-  <!-- PANE -->
-  <div class="pane" id="pane">
-
-    <!-- MAIN VIEW -->
-    <div id="main-view">
-
-      <section id="about">
-        <div class="sec-label">About</div>
-        <div class="about-text">
-          <p>I'm a <strong> early career conservationist </strong> with a passion for <strong>coastal ecosystems and land stewardship</strong>. I thrive at the intersection of field science and community outreach, where hands-on research meets public engagement.</p>
-          <p>Currently serving as a 2025–2026 AmeriCorps Green Iowa member at <a href="https://www.whiterockconservancy.org" target="_blank">Whiterock Conservancy</a>, supporting prescribed burns, invasive species mitigation, and volunteer programs. Before that I worked with <a href="https://tpwd.texas.gov" target="_blank">Texas Parks and Wildlife</a>, the <a href="https://dmc.umaine.edu" target="_blank">Darling Marine Center</a>, and <a href="https://marinelab.duke.edu" target="_blank">Duke University Marine Lab</a>.</p>
-        </div>
-      </section>
-
-      <section id="experience">
-        <div class="sec-label">Experience</div>
-
-        <div class="exp-item" id="exp-whiterock">
-          <div class="exp-date">Dec 2025 — Now</div>
-          <div>
-            <div class="exp-role">Land Operations and Outreach Support · Whiterock Conservancy <span class="arrow">↗</span></div>
-            <p class="exp-desc">AmeriCorps Green Iowa member supporting prescribed burns, invasive species mitigation, and volunteer outreach programs across 5,500+ acres.</p>
-            <div class="tags"><span class="tag">Wildland Fire</span><span class="tag">Invasive Species</span><span class="tag">Agriculture</span><span class="tag">Soil Sampling</span></div>
-          </div>
-        </div>
-
-        <div class="exp-item" id="exp-tpwd">
-          <div class="exp-date">June–Sept 2025</div>
-          <div>
-            <div class="exp-role">Coastal Fisheries Intern · Texas Parks and Wildlife Department <span class="arrow">↗</span></div>
-            <p class="exp-desc">Bay habitat assessments via sonar scanning, fisheries sampling, and educational programs on harmful algal blooms at Galveston Bay.</p>
-            <div class="tags"><span class="tag">Oyster Reef Restoration</span><span class="tag">Harmful Algal Blooms</span><span class="tag">Fisheries Sampling</span></div>
-          </div>
-        </div>
-
-        <div class="exp-item" id="exp-darling">
-          <div class="exp-date">June–Aug 2024</div>
-          <div>
-            <div class="exp-role">Aquaculture Researcher · Darling Marine Center <span class="arrow">↗</span></div>
-            <p class="exp-desc">Fellowship weaving Indigenous Knowledge and Western Science to research tidal-energy oyster tumbling as a low-cost aquaculture alternative.</p>
-            <div class="tags"><span class="tag">Oyster Aquaculture</span><span class="tag">Decolonized Science</span><span class="tag">Tidal Energy</span></div>
-          </div>
-        </div>
-
-        <div class="exp-item" id="exp-bowdoin">
-          <div class="exp-date">June–Dec 2023</div>
-          <div>
-            <div class="exp-role">Animal Behavior Researcher · Bowdoin College <span class="arrow">↗</span></div>
-            <p class="exp-desc">Monitored scallop responses to light and sea star feeding rates to inform fisheries management in the warming Gulf of Maine.</p>
-            <div class="tags"><span class="tag">Bivalve Research</span><span class="tag">Behavioral Ecology</span><span class="tag">Research Design</span></div>
-          </div>
-        </div>
-
-        <div class="exp-item" id="exp-duke">
-          <div class="exp-date">June–Aug 2022</div>
-          <div>
-            <div class="exp-role">Microbial Oceanography Researcher · Duke University Marine Lab <span class="arrow">↗</span></div>
-            <p class="exp-desc">Isolated Labyrinthulomycetes from the PICO time series using pollen baiting and gene sequencing to study marine organic matter decomposition.</p>
-            <div class="tags"><span class="tag">Gene Sequencing</span><span class="tag">Microbial Ecology</span><span class="tag">Marine Chemistry</span></div>
-          </div>
-        </div>
-
-        <a class="resume-link" href="#">View Full Résumé <span class="arrow" style="font-size:0.85rem">↗</span></a>
-      </section>
-
-      <!-- ═══════════════════════════════════════════ FIELD MAP ═══ -->
-      <section id="map">
-        <div class="sec-label">Field Locations</div>
-        <div class="map-shell" id="map-shell">
-          <div id="map-svg-wrap"></div>
-          <div class="map-zoom-btns">
-            <button id="mzoom-in"  title="Zoom in">+</button>
-            <button id="mzoom-out" title="Zoom out">−</button>
-            <button id="mzoom-rst" class="rst" title="Reset">RST</button>
-          </div>
-          <div id="map-tooltip">
-            <div class="tt-name" id="mtt-name"></div>
-            <div class="tt-job"  id="mtt-job"></div>
-          </div>
-        </div>
-      </section>
-      <!-- ══════════════════════════════════════════════════════════ -->
-
-<section id="media">
-  <div class="sec-label">Media</div>
-
-  <div style="display:flex;flex-direction:column;gap:12px;">
-
-    <!-- Podcast -->
-    <a href="https://open.spotify.com/episode/286qn6wZA8FMIsA0r6vFPK?si=b28b5227fecf4e29" target="_blank" class="project-card">
-      <div class="proj-thumb">
-        <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 
-          10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
-        </svg>
+    <div>
+      <div class="a11y-grp-lbl">🌊 Text Color</div>
+      <div class="swatches" id="swatches">
+        <div class="swatch active" data-c="default" tabindex="0"><div class="sw-dot" style="background:#e8f2fb"></div><span class="sw-nm">Ocean<br>Blue</span></div>
+        <div class="swatch" data-c="warm" tabindex="0"><div class="sw-dot" style="background:#f5e6c8"></div><span class="sw-nm">Sandy<br>Warm</span></div>
+        <div class="swatch" data-c="sage" tabindex="0"><div class="sw-dot" style="background:#c8e6d4"></div><span class="sw-nm">Kelp<br>Green</span></div>
+        <div class="swatch" data-c="coral" tabindex="0"><div class="sw-dot" style="background:#ffd6d6"></div><span class="sw-nm">Coral<br>Soft</span></div>
+        <div class="swatch" data-c="lavender" tabindex="0"><div class="sw-dot" style="background:#e0d4f5"></div><span class="sw-nm">Deep<br>Tide</span></div>
+        <div class="swatch" data-c="white" tabindex="0"><div class="sw-dot" style="background:#fff;border-color:rgba(0,0,0,.15)"></div><span class="sw-nm">Bright<br>White</span></div>
       </div>
-      <div>
-        <div class="proj-name">Salty talks: Conversations on Sustainable Agriculture in Maine (2024) <span class="arrow">↗</span></div>
-        <p class="proj-desc">Listen to me talk about intersecting Western Science and Indigenous Knowledge into my oyster research! </p>
-        <div class="tags"><span class="tag">Podcast</span>
-                          <span class="tag">Interview</span>
-                          <span class="tag">Darling Marine Lab</span>
-      
-      </div>
-    </a>
-
-    <!-- YouTube -->
-    <a href="https://www.youtube.com/watch?v=prm94H-AAvs" target="_blank" class="project-card">
-       <div class="proj-thumb">
-    <img src="https://img.youtube.com/vi/prm94H-AAvs/hqdefault.jpg" alt="Sea Star Research Video">
+    </div>
+    <div>
+      <div class="a11y-grp-lbl">🐙 Options</div>
+      <div class="a11y-row"><span class="a11y-row-lbl">🔆 High Contrast</span><div class="pill" id="tog-contrast" role="switch" aria-checked="false" tabindex="0"></div></div>
+      <div class="a11y-row"><span class="a11y-row-lbl">📖 Dyslexia Font</span><div class="pill" id="tog-dyslexia" role="switch" aria-checked="false" tabindex="0"></div></div>
+      <div class="a11y-row"><span class="a11y-row-lbl">🌀 Reduce Motion</span><div class="pill" id="tog-motion" role="switch" aria-checked="false" tabindex="0"></div></div>
+    </div>
+    <button class="a11y-rst" id="a11y-reset">🐚 Reset to defaults</button>
   </div>
-  <div>
-      <div>
-        <div class="proj-name">How Will Sea Stars Grow in Warming Waters? (2023) <span class="arrow">↗</span></div>
-        <p class="proj-desc">See me discuss my Sea Star behavioral research</p>
-        <div class="tags">
-          <span class="tag">Video</span>
-          <span class="tag">Schiller Coastal Studies Center</span>
-        </div>
-      </div>
-    </a>
+  <div class="a11y-ftr"><div class="fish-parade" aria-hidden="true">🐟 🫧 🐠 🐡 🦀 🫧 🐟 🐚 🐡 🫧 🐠 🐟 🦑 🫧 🐟</div></div>
+</aside>
 
-    <!-- Bowdoin Article 1 -->
-    <a href="http://bowdoin.edu/news/2023/12/schiller-semester-ends-with-a-tidal-wave-of-student-research.html" target="_blank" class="project-card">
-      <div class="proj-thumb">
-        <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)">
-          <path d="M4 4h16v16H4z"/>
-        </svg>
-      </div>
-      <div>
-        <div class="proj-name">Schiller Semester Ends with a Tidal Wave of Student Research (2023) <span class="arrow">↗</span></div>
-        <p class="proj-desc">An overview of Bowdoin's selective Coastal Science Semester. Read about my Scallop Research! </p>
-        <div class="tags">
-          <span class="tag">Article</span>
-          <span class="tag">Schiller Coastal Studies Center</span>
-        </div>
-      </div>
-    </a>
+<!-- ═══ HOME ═══ -->
+<div id="home" class="view active">
+  <header class="topbar">
+    <span class="topbar-name">James Benavides</span>
+    <div class="topbar-links">
+      <a href="https://github.com" target="_blank" class="topbar-link">GitHub</a>
+      <a href="https://linkedin.com" target="_blank" class="topbar-link">LinkedIn</a>
+      <a href="mailto:your@email.com" class="topbar-link">Email</a>
+    </div>
+  </header>
 
-    <!-- Bowdoin Article 2 -->
-    <a href="https://www.bowdoin.edu/news/2023/08/coastal-research-reveals-complexities-marine-life.html" target="_blank" class="project-card">
-      <div class="proj-thumb">
-        <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)">
-          <path d="M4 4h16v16H4z"/>
-        </svg>
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow">AmeriCorps · Green Iowa 2025–26</div>
+      <h1 class="hero-name">James<br>Benavides</h1>
+      <div class="hero-title">Early Career Environmental Scientist</div>
+      <p class="hero-bio">Nature has a way of reeling me in. My work spans <strong>oyster aquaculture</strong>, <strong>coastal fisheries</strong>, and <strong>invasive species management</strong> — from the intertidal zones of Maine to the estuaries of Galveston Bay.</p>
+      <p class="hero-bio" style="margin-top:-8px">I thrive at the intersection of field science and community outreach. Currently serving at <strong>Whiterock Conservancy</strong> in Iowa, stewarding 5,500+ acres of prairie, forest, and wetland.</p>
+      <div class="hero-links">
+        <a href="https://www.whiterockconservancy.org" target="_blank" class="hero-link"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>Whiterock Conservancy</a>
+        <a href="mailto:your@email.com" class="hero-link"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>your@email.com</a>
+        <a href="https://linkedin.com" target="_blank" class="hero-link"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
       </div>
-      <div>
-        <div class="proj-name">The Sea Around Us at Schiller: Coastal Research Reveals Complexities of Marine Life (2023) <span class="arrow">↗</span></div>
-        <p class="proj-desc">Highlighting special marine science Research Fellows. Read about my Sea Star Research! </p>
-        <div class="tags">
-          <span class="tag">Article</span>
-          <span class="tag">Schiller Coastal Studies Center</span>
-        </div>
+      <div class="cta-area">
+        <button class="cta-btn primary" onclick="showPage('fieldwork')"><svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 20.49L5.71 21l1-2.3A4.49 4.49 0 008 19c8 0 10-8 10-8s-3 3.5-7 4c1.5-1 2-3 2-3z"/></svg>Fieldwork &amp; Research</button>
+        <button class="cta-btn secondary" onclick="showPage('engagement')"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>Public Engagement</button>
       </div>
-    </a>
-
-    <!-- LinkedIn Featured Post -->
-    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7269828295095947265/" target="_blank" class="project-card">
-      <div class="proj-thumb">
-        <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)">
-          <path d="M4 4h16v16H4z"/>
-        </svg>
+    </div>
+    <div class="hero-right">
+      <div class="headshot-frame">
+        <!-- Replace with: <img src="your-photo.jpg" alt="James Benavides"> -->
+        <div class="headshot-ph"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Add headshot</span></div>
       </div>
-      <div>
-        <div class="proj-name"> Aquaculture Research Institute Research Fellow Spotlight (2024) <span class="arrow">↗</span></div>
-        <p class="proj-desc">Listen to a quick highlight of my oyster aquaculture project! </p>
-        <div class="tags">
-          <span class="tag">LinkedIn</span>
-          <span class="tag">Darling Marine Lab</span>
-        </div>
-      </div>
-    </a>
+      <div class="hero-loc">📍 Coon Rapids, Iowa</div>
+    </div>
   </div>
-</section>
-      
-      <section id="projects">
-        <div class="sec-label">Projects</div>
-        <a class="project-card" href="#" target="_blank">
-          <div class="proj-thumb"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
-          <div>
-            <div class="proj-name">Project Alpha <span class="arrow">↗</span></div>
-            <p class="proj-desc">A concise description of what this project does and what makes it meaningful.</p>
-            <div class="tags"><span class="tag">Ecology</span><span class="tag">Field Research</span></div>
-          </div>
-        </a>
-        <a class="project-card" href="#" target="_blank">
-          <div class="proj-thumb"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg></div>
-          <div>
-            <div class="proj-name">Project Beta <span class="arrow">↗</span></div>
-            <p class="proj-desc">What you built and why it matters. Mention notable outcomes or recognition if applicable.</p>
-            <div class="tags"><span class="tag">Conservation</span><span class="tag">Outreach</span></div>
-          </div>
-        </a>
-      </section>
 
-      <section id="art">
-        <div class="sec-label">Art</div>
-        <p class="art-intro">Beyond the field, I create [describe your art practice]. Art is how I explore ideas that don't fit neatly into data or fieldwork.</p>
-        <div class="gallery">
-          <div class="art-card"><div class="art-placeholder ap1"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><div class="art-overlay"><div class="art-ov-title">Piece Title</div><div class="art-ov-meta">Medium · Year</div></div></div><div class="art-caption"><div class="art-caption-title">Piece Title</div><div class="art-caption-sub">Medium · Year</div></div></div>
-          <div class="art-card"><div class="art-placeholder ap2"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><div class="art-overlay"><div class="art-ov-title">Piece Title</div><div class="art-ov-meta">Medium · Year</div></div></div><div class="art-caption"><div class="art-caption-title">Piece Title</div><div class="art-caption-sub">Medium · Year</div></div></div>
-          <div class="art-card"><div class="art-placeholder ap3"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><div class="art-overlay"><div class="art-ov-title">Piece Title</div><div class="art-ov-meta">Medium · Year</div></div></div><div class="art-caption"><div class="art-caption-title">Piece Title</div><div class="art-caption-sub">Medium · Year</div></div></div>
-          <div class="art-card"><div class="art-placeholder ap4"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><div class="art-overlay"><div class="art-ov-title">Piece Title</div><div class="art-ov-meta">Medium · Year</div></div></div><div class="art-caption"><div class="art-caption-title">Piece Title</div><div class="art-caption-sub">Medium · Year</div></div></div>
-          <div class="art-card"><div class="art-placeholder ap5"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><div class="art-overlay"><div class="art-ov-title">Piece Title</div><div class="art-ov-meta">Medium · Year</div></div></div><div class="art-caption"><div class="art-caption-title">Piece Title</div><div class="art-caption-sub">Medium · Year</div></div></div>
-          <div class="art-card"><div class="art-placeholder ap6"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--sky)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><div class="art-overlay"><div class="art-ov-title">Piece Title</div><div class="art-ov-meta">Medium · Year</div></div></div><div class="art-caption"><div class="art-caption-title">Piece Title</div><div class="art-caption-sub">Medium · Year</div></div></div>
+  <!-- TIMELINE -->
+  <div class="tl-section">
+    <div class="sec-lbl">Experience</div>
+    <div class="timeline">
+      <div class="tl-item" onclick="showPage('fieldwork')">
+        <div class="tl-date">Dec 2025 — Now</div>
+        <div>
+          <div class="tl-role">Land Operations &amp; Outreach · Whiterock Conservancy <span class="tl-arrow">↗</span></div>
+          <p class="tl-desc">AmeriCorps Green Iowa member supporting prescribed burns, invasive species mitigation, and volunteer outreach across 5,500+ acres.</p>
+          <div class="tl-tags"><span class="tl-tag">Wildland Fire</span><span class="tl-tag">Invasive Species</span><span class="tl-tag">Volunteer Coordination</span><span class="tl-tag">Soil Sampling</span></div>
         </div>
-        <div class="art-hint">Replace each <code>.art-placeholder</code> div with <code>&lt;img src="your-image.jpg"&gt;</code> to display your artwork.</div>
-      </section>
+      </div>
+      <div class="tl-item" onclick="showPage('fieldwork')">
+        <div class="tl-date">Jun–Sept 2025</div>
+        <div>
+          <div class="tl-role">Coastal Fisheries Intern · Texas Parks &amp; Wildlife <span class="tl-arrow">↗</span></div>
+          <p class="tl-desc">Bay habitat assessments via sonar scanning, fisheries sampling, and educational programs on harmful algal blooms at Galveston Bay.</p>
+          <div class="tl-tags"><span class="tl-tag">Oyster Reef Restoration</span><span class="tl-tag">Harmful Algal Blooms</span><span class="tl-tag">Fisheries Sampling</span></div>
+        </div>
+      </div>
+      <div class="tl-item" onclick="showPage('fieldwork')">
+        <div class="tl-date">Jun–Aug 2024</div>
+        <div>
+          <div class="tl-role">Aquaculture Researcher · Darling Marine Center <span class="tl-arrow">↗</span></div>
+          <p class="tl-desc">Fellowship weaving Indigenous Knowledge and Western Science to research tidal-energy oyster tumbling as a low-cost aquaculture alternative.</p>
+          <div class="tl-tags"><span class="tl-tag">Oyster Aquaculture</span><span class="tl-tag">Decolonized Science</span><span class="tl-tag">Tidal Energy</span></div>
+        </div>
+      </div>
+      <div class="tl-item" onclick="showPage('fieldwork')">
+        <div class="tl-date">Jun–Dec 2023</div>
+        <div>
+          <div class="tl-role">Animal Behavior Researcher · Bowdoin College <span class="tl-arrow">↗</span></div>
+          <p class="tl-desc">Monitored scallop responses to light and sea star feeding rates to inform fisheries management in the warming Gulf of Maine.</p>
+          <div class="tl-tags"><span class="tl-tag">Bivalve Research</span><span class="tl-tag">Behavioral Ecology</span><span class="tl-tag">Research Design</span></div>
+        </div>
+      </div>
+      <div class="tl-item" onclick="showPage('fieldwork')">
+        <div class="tl-date">Jun–Aug 2022</div>
+        <div>
+          <div class="tl-role">Microbial Oceanography Researcher · Duke University Marine Lab <span class="tl-arrow">↗</span></div>
+          <p class="tl-desc">Isolated Labyrinthulomycetes from the PICO time series using pollen baiting and gene sequencing to study marine organic matter decomposition.</p>
+          <div class="tl-tags"><span class="tl-tag">Gene Sequencing</span><span class="tl-tag">Microbial Ecology</span><span class="tl-tag">Marine Chemistry</span></div>
+        </div>
+      </div>
+    </div>
+    <a class="resume-link" href="#">View Full Résumé ↗</a>
+  </div>
+</div>
 
-      <section id="contact">
-        <div class="sec-label">Contact</div>
-        <p class="contact-intro">I'm open to new opportunities, collaborations, and interesting conversations. Whether you have a project in mind or just want to say hello — feel free to reach out.</p>
-        <a class="contact-btn" href="mailto:your@email.com">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 11.366l9.615-7.545h.749A1.636 1.636 0 0 1 24 5.457z"/></svg>
-          Say Hello
-        </a>
-      </section>
+<!-- ═══ FIELDWORK PAGE ═══ -->
+<div id="fieldwork" class="view">
+  <nav class="page-nav">
+    <button class="pn-home" onclick="showHome()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Home</button>
+    <button class="tab-btn active" onclick="showPage('fieldwork')">Fieldwork / Research</button>
+    <button class="tab-btn" onclick="showPage('engagement')">Public Engagement / Education</button>
+  </nav>
+  <div class="page-hdr">
+    <div class="page-hdr-lbl">Skills &amp; Experience</div>
+    <h2 class="page-hdr-title">Fieldwork &amp; Research</h2>
+    <p class="page-hdr-sub">Hands-on experience across coastal fisheries, aquaculture, land management, and ecological research — from the Gulf Coast to the Gulf of Maine.</p>
+  </div>
+  <div class="page-content">
 
-      <footer class="footer">
-        <p>Designed &amp; built by <a href="#">James Benavides</a>. Inspired by <a href="https://brittanychiang.com" target="_blank">Brittany Chiang</a>.</p>
-        <p>HTML · CSS · Vanilla JS</p>
-      </footer>
+    <div class="fw-div"><span class="fw-div-lbl">Land Management</span></div>
 
+    <!-- Invasive Species -->
+    <div class="exp-block">
+      <div class="exp-top">
+        <div class="exp-left">
+          <div class="exp-org">Whiterock Conservancy · Coon Rapids, Iowa</div>
+          <div class="exp-title">Invasive Species Removal</div>
+          <p class="exp-body">Mechanical and chemical management of invasive woody and herbaceous species across prairies, riparian zones, and forest edges.</p>
+          <ul class="exp-list">
+            <li>Chainsaw cutting and stump treatment of invasive shrubs and trees</li>
+            <li>Herbicide application using backpack and boom sprayers</li>
+            <li>Brush cutter and skid steer operation for large-scale removal</li>
+            <li>Site monitoring and re-treatment scheduling</li>
+          </ul>
+        </div>
+        <div class="exp-right">
+          <div class="sk-lbl">Skills Used</div>
+          <div class="sk-list">
+            <span class="sk-item">Chainsaw operation</span>
+            <span class="sk-item">Herbicide application</span>
+            <span class="sk-item">Brush cutter</span>
+            <span class="sk-item">Skid steer</span>
+            <span class="sk-item">Site monitoring</span>
+          </div>
+        </div>
+      </div>
+      <p class="photo-note">📷 To add photos: replace each &lt;div class="photo-ph"&gt; with &lt;img src="yourfile.jpg" alt="caption"&gt; inside .photo-slot</p>
+      <div class="photo-strip">
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
+      </div>
     </div>
 
-    <!-- DETAIL VIEW -->
-    <div id="detail-view">
-      <button class="detail-back" id="back-btn">
-        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-        Back to Experience
-      </button>
-      <div id="detail-content"></div>
+    <!-- Prescribed Fire -->
+    <div class="exp-block">
+      <div class="exp-top">
+        <div class="exp-left">
+          <div class="exp-org">Whiterock Conservancy · Coon Rapids, Iowa</div>
+          <div class="exp-title">Prescribed Fire Support</div>
+          <p class="exp-body">Supporting prescribed burn operations from pre-burn preparation through post-fire monitoring and documentation.</p>
+          <ul class="exp-list">
+            <li>Torch operation and line holding during active burns</li>
+            <li>Pre-burn site prep and equipment checks</li>
+            <li>Post-fire vegetation monitoring and reporting</li>
+          </ul>
+        </div>
+        <div class="exp-right">
+          <div class="sk-lbl">Skills Used</div>
+          <div class="sk-list">
+            <span class="sk-item">Wildland fire operations</span>
+            <span class="sk-item">Drip torch</span>
+            <span class="sk-item">Fire weather monitoring</span>
+            <span class="sk-item">Vegetation assessment</span>
+          </div>
+        </div>
+      </div>
+      <p class="photo-note">📷 To add photos: replace each &lt;div class="photo-ph"&gt; with &lt;img src="yourfile.jpg" alt="caption"&gt; inside .photo-slot</p>
+      <div class="photo-strip">
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Running the torch during a prescribed fire</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
+      </div>
+    </div>
+
+    <!-- Timber / Trail -->
+    <div class="exp-block">
+      <div class="exp-top">
+        <div class="exp-left">
+          <div class="exp-org">Whiterock Conservancy · Coon Rapids, Iowa</div>
+          <div class="exp-title">Timber Stand Improvement &amp; Trail Maintenance</div>
+          <p class="exp-body">Supporting forest health through selective thinning and maintaining public recreational infrastructure across the conservancy's trail network.</p>
+          <ul class="exp-list">
+            <li>Selective felling and log extraction for habitat improvement</li>
+            <li>Trail mowing and clearing with UTV/ATV and zero-turn mower</li>
+            <li>Campground upkeep and seasonal preparation</li>
+          </ul>
+        </div>
+        <div class="exp-right">
+          <div class="sk-lbl">Skills Used</div>
+          <div class="sk-list">
+            <span class="sk-item">Chainsaw</span>
+            <span class="sk-item">Skid steer</span>
+            <span class="sk-item">UTV / ATV</span>
+            <span class="sk-item">Zero-turn mower</span>
+            <span class="sk-item">Forest ecology</span>
+          </div>
+        </div>
+      </div>
+      <p class="photo-note">📷 To add photos: replace each &lt;div class="photo-ph"&gt; with &lt;img src="yourfile.jpg" alt="caption"&gt; inside .photo-slot</p>
+      <div class="photo-strip">
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Moving logs for timber stand improvement</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
+      </div>
+    </div>
+
+    <div class="fw-div"><span class="fw-div-lbl">Coastal Fisheries</span></div>
+
+    <div class="exp-block">
+      <div class="exp-top">
+        <div class="exp-left">
+          <div class="exp-org">Texas Parks &amp; Wildlife Department · Galveston Bay</div>
+          <div class="exp-title">Fisheries Sampling</div>
+          <p class="exp-body">Multi-method fisheries and habitat surveys across Galveston Bay's estuary — one of the most productive systems in North America.</p>
+          <ul class="exp-list">
+            <li>Bag seining for juvenile fish and invertebrate community sampling</li>
+            <li>Sidescan sonar scanning from small vessel for substrate mapping</li>
+            <li>Patent hydraulic oyster tong operation for reef surveys</li>
+            <li>Quadrat surveys for benthic community assessment</li>
+            <li>Offshore vertical longline deployment and retrieval</li>
+            <li>Water quality sampling: DO, salinity, turbidity, temperature (YSI Sonde 6600)</li>
+          </ul>
+        </div>
+        <div class="exp-right">
+          <div class="sk-lbl">Skills Used</div>
+          <div class="sk-list">
+            <span class="sk-item">Trailering &amp; boating</span>
+            <span class="sk-item">Sidescan sonar</span>
+            <span class="sk-item">Fish identification</span>
+            <span class="sk-item">YSI Sonde 6600</span>
+            <span class="sk-item">Instrument calibration</span>
+            <span class="sk-item">Patent hydraulic oyster tongs</span>
+            <span class="sk-item">Data collection · R Studio</span>
+          </div>
+        </div>
+      </div>
+      <p class="photo-note">📷 To add photos: replace each &lt;div class="photo-ph"&gt; with &lt;img src="yourfile.jpg" alt="caption"&gt; inside .photo-slot</p>
+      <div class="photo-strip">
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">My team after a grant writing workshop</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Leading HAB education workshop</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Recording fish for angler surveys</div></div>
+      </div>
+    </div>
+
+    <div class="fw-div"><span class="fw-div-lbl">Aquaculture &amp; Bivalve Research</span></div>
+
+    <div class="exp-block">
+      <div class="exp-top">
+        <div class="exp-left">
+          <div class="exp-org">Darling Marine Center · University of Maine</div>
+          <div class="exp-title">Tidal-Energy Oyster Aquaculture Research</div>
+          <p class="exp-body">Fellowship research weaving Indigenous Knowledge and Western Science (Two-Eyed Seeing) to evaluate tidal energy as a low-cost tumbling alternative for oyster aquaculture.</p>
+          <ul class="exp-list">
+            <li>Experimental design comparing tidal-tumbled vs. traditionally managed oysters</li>
+            <li>Growth rate, shell shape, and survival monitoring across intertidal and subtidal sites</li>
+            <li>Tidal cycle data recording and energy exposure quantification</li>
+            <li>Community-based research in partnership with Indigenous knowledge holders</li>
+          </ul>
+        </div>
+        <div class="exp-right">
+          <div class="sk-lbl">Skills Used</div>
+          <div class="sk-list">
+            <span class="sk-item">Research design</span>
+            <span class="sk-item">Oyster husbandry</span>
+            <span class="sk-item">Intertidal fieldwork</span>
+            <span class="sk-item">Data analysis</span>
+            <span class="sk-item">Community-based research</span>
+            <span class="sk-item">Science communication</span>
+          </div>
+        </div>
+      </div>
+      <p class="photo-note">📷 To add photos: replace each &lt;div class="photo-ph"&gt; with &lt;img src="yourfile.jpg" alt="caption"&gt; inside .photo-slot</p>
+      <div class="photo-strip">
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">AqueOUS Summer Cohort</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Leading a laboratory tour</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Intertidal oyster study site</div></div>
+      </div>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-top">
+        <div class="exp-left">
+          <div class="exp-org">Bowdoin College — Schiller Coastal Studies Center</div>
+          <div class="exp-title">Scallop &amp; Sea Star Behavioral Research</div>
+          <p class="exp-body">Dual-focus project examining light-based scallop harvest feasibility and sea star feeding dynamics in the context of Gulf of Maine warming.</p>
+          <ul class="exp-list">
+            <li>Scallop behavioral monitoring under light gradients (swimming, valve movement, mantle retraction)</li>
+            <li>Sea star feeding rate and prey consumption quantification under controlled conditions</li>
+            <li>Growth monitoring for sea star population recovery dynamics</li>
+            <li>Daily animal welfare checks and flow-through tank maintenance</li>
+          </ul>
+        </div>
+        <div class="exp-right">
+          <div class="sk-lbl">Skills Used</div>
+          <div class="sk-list">
+            <span class="sk-item">Behavioral observation</span>
+            <span class="sk-item">Controlled lab experiments</span>
+            <span class="sk-item">Animal care</span>
+            <span class="sk-item">GoPro / video analysis</span>
+            <span class="sk-item">Field notebooks</span>
+            <span class="sk-item">Research reporting</span>
+          </div>
+        </div>
+      </div>
+      <p class="photo-note">📷 To add photos: replace each &lt;div class="photo-ph"&gt; with &lt;img src="yourfile.jpg" alt="caption"&gt; inside .photo-slot</p>
+      <div class="photo-strip">
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Collecting mussels to feed sea stars</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Sea stars in flow-through tanks</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">GoPro recording scallop behavior</div></div>
+      </div>
+    </div>
+
+    <div class="fw-div"><span class="fw-div-lbl">Microbial Oceanography</span></div>
+
+    <div class="exp-block">
+      <div class="exp-top">
+        <div class="exp-left">
+          <div class="exp-org">Duke University Marine Lab · Beaufort, NC</div>
+          <div class="exp-title">Labyrinthulomycetes Isolation &amp; Culture</div>
+          <p class="exp-body">Investigated marine protist communities at the PICO long-term time series site using culture-based isolation and gene sequencing to study organic matter decomposition pathways.</p>
+          <ul class="exp-list">
+            <li>Pollen-grain baiting for Labyrinthulomycetes isolation from seawater and sediment</li>
+            <li>Pure culture development on antibiotic-containing marine agar</li>
+            <li>Gene sequencing for species identification</li>
+            <li>Offshore water sampling and sample processing</li>
+          </ul>
+        </div>
+        <div class="exp-right">
+          <div class="sk-lbl">Skills Used</div>
+          <div class="sk-list">
+            <span class="sk-item">Sterile technique</span>
+            <span class="sk-item">Pollen baiting</span>
+            <span class="sk-item">Gene sequencing</span>
+            <span class="sk-item">Culture maintenance</span>
+            <span class="sk-item">Sample filtration</span>
+            <span class="sk-item">Marine chemistry</span>
+          </div>
+        </div>
+      </div>
+      <p class="photo-note">📷 To add photos: replace each &lt;div class="photo-ph"&gt; with &lt;img src="yourfile.jpg" alt="caption"&gt; inside .photo-slot</p>
+      <div class="photo-strip">
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">My team after offshore water sampling</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Culturing marine protists</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Offshore water filtering</div></div>
+      </div>
     </div>
 
   </div>
 </div>
 
-<!-- D3 + TopoJSON for the map -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<!-- ═══ PUBLIC ENGAGEMENT PAGE ═══ -->
+<div id="engagement" class="view">
+  <nav class="page-nav">
+    <button class="pn-home" onclick="showHome()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Home</button>
+    <button class="tab-btn" onclick="showPage('fieldwork')">Fieldwork / Research</button>
+    <button class="tab-btn active" onclick="showPage('engagement')">Public Engagement / Education</button>
+  </nav>
+  <div class="page-hdr">
+    <div class="page-hdr-lbl">Skills &amp; Experience</div>
+    <h2 class="page-hdr-title">Public Engagement &amp; Education</h2>
+    <p class="page-hdr-sub">Connecting communities to conservation through programs, outreach, and science communication — from elementary classrooms to public events.</p>
+  </div>
+  <div class="page-content">
+
+    <div class="fw-div"><span class="fw-div-lbl">Education Programs</span></div>
+
+    <div class="exp-block">
+      <div class="exp-top">
+        <div class="exp-left">
+          <div class="exp-org">Whiterock Conservancy · Iowa</div>
+          <div class="exp-title">K–12 Environmental Education Programming</div>
+          <p class="exp-body">Facilitating hands-on field education programs for school groups visiting Whiterock, including ecology lessons, nature journaling, and ecosystem exploration.</p>
+          <ul class="exp-list">
+            <li>Teaching 2nd graders about ecosystem energy transfer</li>
+            <li>Leading nature journaling and field observation activities</li>
+            <li>Adapting programming for diverse age groups and learning levels</li>
+          </ul>
+        </div>
+        <div class="exp-right">
+          <div class="sk-lbl">Skills Used</div>
+          <div class="sk-list">
+            <span class="sk-item">Curriculum delivery</span>
+            <span class="sk-item">Group facilitation</span>
+            <span class="sk-item">Nature journaling</span>
+            <span class="sk-item">Age-appropriate instruction</span>
+          </div>
+        </div>
+      </div>
+      <p class="photo-note">📷 To add photos: replace each &lt;div class="photo-ph"&gt; with &lt;img src="yourfile.jpg" alt="caption"&gt; inside .photo-slot</p>
+      <div class="photo-strip">
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Teaching 2nd graders about energy transfer</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
+      </div>
+    </div>
+
+    <div class="exp-block">
+      <div class="exp-top">
+        <div class="exp-left">
+          <div class="exp-org">Texas Parks &amp; Wildlife · Galveston Bay</div>
+          <div class="exp-title">Harmful Algal Bloom Public Workshop</div>
+          <p class="exp-body">Developed and delivered an educational field program on harmful algal blooms and water quality for Friends of Galveston Island State Park, including live water sampling demonstrations.</p>
+          <ul class="exp-list">
+            <li>Curriculum development on HAB science and water quality</li>
+            <li>Live water quality sampling demonstrations</li>
+            <li>Q&amp;A and public outreach facilitation</li>
+          </ul>
+        </div>
+        <div class="exp-right">
+          <div class="sk-lbl">Skills Used</div>
+          <div class="sk-list">
+            <span class="sk-item">Program development</span>
+            <span class="sk-item">Public speaking</span>
+            <span class="sk-item">Water quality demos</span>
+            <span class="sk-item">Community outreach</span>
+          </div>
+        </div>
+      </div>
+      <p class="photo-note">📷 To add photos: replace each &lt;div class="photo-ph"&gt; with &lt;img src="yourfile.jpg" alt="caption"&gt; inside .photo-slot</p>
+      <div class="photo-strip">
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Leading an educational HAB workshop</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
+      </div>
+    </div>
+
+    <div class="fw-div"><span class="fw-div-lbl">Volunteer Coordination</span></div>
+
+    <div class="exp-block">
+      <div class="exp-top">
+        <div class="exp-left">
+          <div class="exp-org">Whiterock Conservancy · Iowa</div>
+          <div class="exp-title">Volunteer Stewardship Programs</div>
+          <p class="exp-body">Coordinating and leading volunteer conservation events, training community members in land stewardship and habitat restoration techniques.</p>
+          <ul class="exp-list">
+            <li>Planning and logistics for volunteer workdays</li>
+            <li>Safety briefings and tool training for participants</li>
+            <li>Leading invasive species removal and planting events</li>
+            <li>Volunteer outreach and recruitment</li>
+          </ul>
+        </div>
+        <div class="exp-right">
+          <div class="sk-lbl">Skills Used</div>
+          <div class="sk-list">
+            <span class="sk-item">Event coordination</span>
+            <span class="sk-item">Safety training</span>
+            <span class="sk-item">Community outreach</span>
+            <span class="sk-item">Team leadership</span>
+            <span class="sk-item">Volunteer management</span>
+          </div>
+        </div>
+      </div>
+      <p class="photo-note">📷 To add photos: replace each &lt;div class="photo-ph"&gt; with &lt;img src="yourfile.jpg" alt="caption"&gt; inside .photo-slot</p>
+      <div class="photo-strip">
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
+        <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
+      </div>
+    </div>
+
+    <div class="fw-div"><span class="fw-div-lbl">Science Communication &amp; Media</span></div>
+
+    <div class="pe-grid">
+      <a href="https://open.spotify.com/episode/286qn6wZA8FMIsA0r6vFPK?si=b28b5227fecf4e29" target="_blank" class="pe-card">
+        <div class="pe-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
+        <div class="pe-cat">Podcast · Darling Marine Lab</div>
+        <div class="pe-title">Salty Talks: Sustainable Agriculture in Maine (2024)</div>
+        <div class="pe-desc">Discussing how I intersected Western Science and Indigenous Knowledge in my oyster research.</div>
+        <div class="pe-tags"><span class="pe-tag">Podcast</span><span class="pe-tag">Interview</span></div>
+      </a>
+      <a href="https://www.youtube.com/watch?v=prm94H-AAvs" target="_blank" class="pe-card">
+        <div class="pe-icon"><svg viewBox="0 0 24 24"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z"/></svg></div>
+        <div class="pe-cat">Video · Bowdoin / Schiller Center</div>
+        <div class="pe-title">How Will Sea Stars Grow in Warming Waters? (2023)</div>
+        <div class="pe-desc">Video feature on my sea star behavioral research at Bowdoin's Coastal Studies Center.</div>
+        <div class="pe-tags"><span class="pe-tag">Video</span><span class="pe-tag">Research Feature</span></div>
+      </a>
+      <a href="http://bowdoin.edu/news/2023/12/schiller-semester-ends-with-a-tidal-wave-of-student-research.html" target="_blank" class="pe-card">
+        <div class="pe-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
+        <div class="pe-cat">Article · Bowdoin News</div>
+        <div class="pe-title">Schiller Semester: A Tidal Wave of Student Research (2023)</div>
+        <div class="pe-desc">Overview of Bowdoin's Coastal Science Semester featuring my scallop research.</div>
+        <div class="pe-tags"><span class="pe-tag">Press</span><span class="pe-tag">Schiller Center</span></div>
+      </a>
+      <a href="https://www.bowdoin.edu/news/2023/08/coastal-research-reveals-complexities-marine-life.html" target="_blank" class="pe-card">
+        <div class="pe-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
+        <div class="pe-cat">Article · Bowdoin News</div>
+        <div class="pe-title">Coastal Research Reveals Complexities of Marine Life (2023)</div>
+        <div class="pe-desc">Marine science Research Fellows spotlight featuring my sea star research.</div>
+        <div class="pe-tags"><span class="pe-tag">Press</span><span class="pe-tag">Schiller Center</span></div>
+      </a>
+      <a href="https://www.linkedin.com/feed/update/urn:li:activity:7269828295095947265/" target="_blank" class="pe-card">
+        <div class="pe-icon"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+        <div class="pe-cat">LinkedIn · Darling Marine Lab</div>
+        <div class="pe-title">Aquaculture Research Institute Fellow Spotlight (2024)</div>
+        <div class="pe-desc">A highlight of my oyster aquaculture project from the ARI Research Fellow program.</div>
+        <div class="pe-tags"><span class="pe-tag">LinkedIn</span><span class="pe-tag">Darling Marine Lab</span></div>
+      </a>
+    </div>
+
+  </div>
+</div>
 
 <script>
-/* ─────────────────────────────────────────────────────────────
-   FIELD MAP
-───────────────────────────────────────────────────────────── */
-(function() {
-  var PINS = [
-    { name: 'Coon Rapids, Iowa',       job: 'Land Operations · Whiterock Conservancy',      lon: -94.678, lat: 41.873 },
-    { name: 'Galveston, Texas',        job: 'Coastal Fisheries Intern · TPWD',              lon: -94.797, lat: 29.301 },
-    { name: 'Walpole, Maine',          job: 'Aquaculture Researcher · Darling Marine Center',lon: -69.548, lat: 43.963 },
-    { name: 'Brunswick, Maine',        job: 'Animal Behavior Researcher · Bowdoin College',  lon: -69.965, lat: 43.914 },
-    { name: 'Beaufort, North Carolina',job: 'Microbial Oceanography · Duke Marine Lab',      lon: -76.657, lat: 34.718 }
-  ];
+/* ── Navigation ── */
+function showHome(){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('home').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showPage(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
-  var STAR_FILL   = '#D4537E';
-  var STAR_HOVER  = '#F4C0D1';
-  var LAND_FILL   = '#1e2d45';
-  var LAND_STROKE = '#3d5570';
-  var BORDER_CLR  = '#5a7fa8';
-  var WATER_FILL  = '#0e1621';
+/* ── Accessibility Panel ── */
+(function(){
+  var panel   = document.getElementById('a11y-panel');
+  var tabBtn  = document.getElementById('a11y-toggle');
+  var closeBtn= document.getElementById('a11y-close');
+  var root    = document.documentElement;
 
-  var wrap = document.getElementById('map-svg-wrap');
-  var shell = document.getElementById('map-shell');
-  var tip   = document.getElementById('map-tooltip');
-  var ttName = document.getElementById('mtt-name');
-  var ttJob  = document.getElementById('mtt-job');
+  tabBtn.addEventListener('click',  ()=>{ panel.classList.add('open');    tabBtn.setAttribute('aria-expanded','true');  });
+  closeBtn.addEventListener('click',()=>{ panel.classList.remove('open'); tabBtn.setAttribute('aria-expanded','false'); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') panel.classList.remove('open'); });
 
-  var W = wrap.offsetWidth || 600;
-  var H = Math.round(W * 0.60);
-
-  var svg = d3.select('#map-svg-wrap').append('svg')
-    .attr('viewBox', '0 0 ' + W + ' ' + H)
-    .attr('width', '100%')
-    .style('display', 'block')
-    .style('cursor', 'grab');
-
-  svg.append('rect').attr('width', W).attr('height', H).attr('fill', WATER_FILL);
-
-  var projection = d3.geoAlbersUsa().scale(W * 1.25).translate([W / 2, H / 2]);
-  var pathGen    = d3.geoPath(projection);
-  var mapG       = svg.append('g');
-  var pinG       = svg.append('g');
-
-  /* Zoom behaviour */
-  var zoom = d3.zoom()
-    .scaleExtent([1, 10])
-    .translateExtent([[0, 0], [W, H]])
-    .on('zoom', function(event) {
-      var t = event.transform;
-      mapG.attr('transform', t);
-      pinG.attr('transform', t);
-      svg.style('cursor', t.k > 1 ? 'grabbing' : 'grab');
-      /* keep stars constant size */
-      var s = 1 / t.k;
-      pinG.selectAll('polygon').each(function(d) {
-        d3.select(this).attr('points', starPoints(d.cx, d.cy, d.r * s));
-      });
-    });
-
-  svg.call(zoom);
-
-  document.getElementById('mzoom-in').addEventListener('click',  function(){ svg.transition().duration(280).call(zoom.scaleBy, 1.6); });
-  document.getElementById('mzoom-out').addEventListener('click', function(){ svg.transition().duration(280).call(zoom.scaleBy, 0.625); });
-  document.getElementById('mzoom-rst').addEventListener('click', function(){ svg.transition().duration(380).call(zoom.transform, d3.zoomIdentity); });
-
-  /* Star helper */
-  function starPoints(cx, cy, r) {
-    var pts = [];
-    for (var i = 0; i < 10; i++) {
-      var a = (i * Math.PI / 5) - Math.PI / 2;
-      var rad = (i % 2 === 0) ? r : r * 0.42;
-      pts.push((cx + rad * Math.cos(a)).toFixed(2) + ',' + (cy + rad * Math.sin(a)).toFixed(2));
+  function makeSlider(trackId, thumbId, fillId, valId, min, max, init, dec, unit, cb){
+    var track=document.getElementById(trackId), thumb=document.getElementById(thumbId),
+        fill=document.getElementById(fillId),   valEl=document.getElementById(valId), cur=init;
+    function pct(v){ return (v-min)/(max-min); }
+    function fromPct(p){ return min+p*(max-min); }
+    function setVal(v){
+      cur=Math.max(min,Math.min(max,v));
+      var p=pct(cur), tw=track.offsetWidth-16;
+      thumb.style.left=(8+p*tw)+'px';
+      fill.style.width=(p*tw)+'px';
+      valEl.textContent=cur.toFixed(dec)+(unit||'');
+      cb(cur);
     }
-    return pts.join(' ');
+    function posFromEvent(e){
+      var r=track.getBoundingClientRect(), cx=e.touches?e.touches[0].clientX:e.clientX;
+      return fromPct(Math.max(0,Math.min(1,(cx-r.left-8)/(r.width-16))));
+    }
+    var drag=false;
+    thumb.addEventListener('mousedown', e=>{drag=true;e.preventDefault();});
+    thumb.addEventListener('touchstart',()=>drag=true,{passive:true});
+    document.addEventListener('mousemove',e=>{if(drag)setVal(posFromEvent(e));});
+    document.addEventListener('touchmove',e=>{if(drag)setVal(posFromEvent(e));},{passive:true});
+    document.addEventListener('mouseup', ()=>drag=false);
+    document.addEventListener('touchend',()=>drag=false);
+    track.addEventListener('click',e=>{if(e.target===thumb)return;setVal(posFromEvent(e));});
+    thumb.addEventListener('keydown',e=>{
+      var s=(max-min)/20;
+      if(e.key==='ArrowRight'||e.key==='ArrowUp'){setVal(cur+s);e.preventDefault();}
+      if(e.key==='ArrowLeft' ||e.key==='ArrowDown'){setVal(cur-s);e.preventDefault();}
+    });
+    setVal(init);
+    return {setVal, getCur:()=>cur};
   }
 
-  /* Load US atlas */
-  d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(function(us) {
-    var states = topojson.feature(us, us.objects.states);
-    var mesh   = topojson.mesh(us, us.objects.states, function(a, b){ return a !== b; });
-    var nation = topojson.feature(us, us.objects.nation);
-
-    /* State fills */
-    mapG.selectAll('path.state')
-      .data(states.features)
-      .join('path')
-      .attr('class', 'state')
-      .attr('d', pathGen)
-      .attr('fill', LAND_FILL)
-      .attr('stroke', 'none');
-
-    /* Interior borders */
-    mapG.append('path')
-      .datum(mesh)
-      .attr('d', pathGen)
-      .attr('fill', 'none')
-      .attr('stroke', LAND_STROKE)
-      .attr('stroke-width', 0.55);
-
-    /* Outer nation border */
-    var nationFeat = nation.features ? nation.features[0] : nation;
-    mapG.append('path')
-      .datum(nationFeat)
-      .attr('d', pathGen)
-      .attr('fill', 'none')
-      .attr('stroke', BORDER_CLR)
-      .attr('stroke-width', 1.6);
-
-    /* Stars */
-    var R = Math.max(7, W * 0.013);
-
-    PINS.forEach(function(p) {
-      var proj = projection([p.lon, p.lat]);
-      if (!proj) return;
-      var cx = proj[0], cy = proj[1];
-
-      var poly = pinG.append('polygon')
-        .datum({ cx: cx, cy: cy, r: R, pin: p })
-        .attr('points', starPoints(cx, cy, R))
-        .attr('fill', STAR_FILL)
-        .attr('stroke', 'rgba(212,83,126,0.45)')
-        .attr('stroke-width', 1)
-        .style('cursor', 'pointer')
-        .style('filter', 'drop-shadow(0 0 3px rgba(212,83,126,0.5))');
-
-      poly
-        .on('mouseenter', function(event, d) {
-          var k = d3.zoomTransform(svg.node()).k;
-          d3.select(this).attr('points', starPoints(d.cx, d.cy, d.r * 1.5 / k)).attr('fill', STAR_HOVER);
-          ttName.textContent = d.pin.name;
-          ttJob.textContent  = d.pin.job;
-          tip.style.opacity  = '1';
-          moveTip(event);
-        })
-        .on('mousemove', moveTip)
-        .on('mouseleave', function(event, d) {
-          var k = d3.zoomTransform(svg.node()).k;
-          d3.select(this).attr('points', starPoints(d.cx, d.cy, d.r / k)).attr('fill', STAR_FILL);
-          tip.style.opacity = '0';
-        });
-    });
-
-  }).catch(function() {
-    mapG.append('text')
-      .attr('x', W / 2).attr('y', H / 2)
-      .attr('text-anchor', 'middle')
-      .attr('fill', '#94a3c4').attr('font-size', 13)
-      .text('Map data could not be loaded.');
+  var BASE_FS=15, BASE_LH=1.75;
+  var sizeCtrl=makeSlider('size-track','size-thumb','size-fill','size-val',12,22,BASE_FS,0,'px',v=>{
+    document.body.style.fontSize=v+'px';
+  });
+  var lhCtrl=makeSlider('lh-track','lh-thumb','lh-fill','lh-val',1.2,2.4,BASE_LH,2,'',v=>{
+    document.body.style.lineHeight=v;
   });
 
-  /* Tooltip position */
-  function moveTip(event) {
-    var box = shell.getBoundingClientRect();
-    var x = event.clientX - box.left + 14;
-    var y = event.clientY - box.top  - 28;
-    if (x + 250 > box.width) x = event.clientX - box.left - 260;
-    if (y < 4) y = event.clientY - box.top + 16;
-    tip.style.left = x + 'px';
-    tip.style.top  = y + 'px';
-  }
-})();
-
-/* ─────────────────────────────────────────────────────────────
-   EXPERIENCE DETAIL + NAV (unchanged from original)
-───────────────────────────────────────────────────────────── */
-(function() {
-
-  var roles = {
-    whiterock: {
-      org: 'Whiterock Conservancy · AmeriCorps Green Iowa',
-      orgUrl: 'https://www.whiterockconservancy.org',
-      orgLabel: 'Visit Whiterock Conservancy',
-      title: 'Land Operations and Outreach Support',
-      date: 'December 2025 — Present',
-      tags: ['Wildland Firefighting','Invasive Species Removal','Agriculture','Soil Sampling','Volunteer Coordination','Public Programming'],
-      overview: '<p>As a 2025–2026 AmeriCorps Green Iowa member, I serve at Whiterock Conservancy supporting a wide range of land management and conservation activities across one of Iowa\'s most ecologically diverse landscapes.</p><p>Whiterock protects over 5,500 acres in the Raccoon River watershed: prairies, forests, wetlands, and working agricultural lands.</p>',
-      slides: [
-        { src: 'Whiterock3', caption: 'Teaching 2nd graders about ecosystem energy transfer' },
-        { src: 'Whiterock2', caption: 'Running the torch during a prescribed fire' },
-        { src: 'Whiterock1', caption: 'Moving logs for timber stand improvement' }
-      ],
-      responsibilities: [
-        'Supporting prescribed burns, including planning, execution, and post-burn monitoring',
-        'Conducting invasive species mitigation through mechanical removal, herbicide application, and monitoring',
-        'Performing habitat assessments, species monitoring, and vegetation mapping',
-        'Facilitating volunteer stewardship projects and training community members in conservation techniques',
-        'Leading public programs and educational events for diverse audiences',
-        'Assisting with soil sampling, research data collection, and GIS mapping'
-      ]
-    },
-    tpwd: {
-      org: 'Texas Parks and Wildlife Department',
-      orgUrl: 'https://tpwd.texas.gov/fisheries/coastal',
-      orgLabel: 'Visit TPWD Coastal Fisheries',
-      title: 'Coastal Fisheries Intern',
-      date: 'June 2025 — September 2025',
-      tags: ['Environmental Permitting','Oyster Reef Restoration','Harmful Algal Blooms','Fisheries Sampling','Sonar Scanning','Water Quality'],
-      overview: '<p>I worked alongside Texas Parks and Wildlife\'s Coastal Fisheries team, conducting habitat assessments and fisheries sampling across Galveston Bay\'s complex estuary system.</p><p>Galveston Bay is Texas\'s largest estuary and one of the most productive in the nation. Working here gave me direct exposure to real-world fisheries management challenges including water quality degradation, habitat loss, and harmful algal blooms.</p>',
-      slides: [
-        { src: 'Texas1.png', caption: 'My team after a Grant Writing Workshop' },
-        { src: 'Texas2.jpg', caption: 'Leading an educational workshop on Harmful Algal Blooms and water quality sampling' },
-        { src: 'Texas3.jpg', caption: 'Recording fish species and length for Angler Surveys' }
-      ],
-      responsibilities: [
-        'Conducted bay system habitat assessments using sonar scanning from a transport boat navigating shallow waters',
-        'Gained hands-on experience with bag seining, vertical longlines, and trawl sampling for fish and invertebrate surveys',
-        'Performed water quality assessments including dissolved oxygen, salinity, temperature, and turbidity measurements',
-        'Assisted with oyster reef restoration site evaluation and environmental permitting documentation',
-        'Presented an educational field program on harmful algal blooms (HABs) to Friends of Galveston Island State Park',
-        'Compiled field data and contributed to habitat assessment reports'
-      ]
-    },
-    darling: {
-      org: 'Darling Marine Center · University of Maine',
-      orgUrl: 'https://dmc.umaine.edu',
-      orgLabel: 'Visit Darling Marine Center',
-      title: 'Aquaculture Researcher',
-      date: 'June 2024 — August 2024',
-      tags: ['Oyster Aquaculture','Science Communication','Decolonized Science','Indigenous Knowledge','Tidal Energy','Research Design'],
-      overview: '<p>This fellowship wove together Indigenous Knowledge and Western Science (known as Two-Eyed Seeing) to produce research that is more holistic, community-centered, and applicable to local needs.</p><p>My project investigated whether tidal energy could replace powered tumblers for oyster aquaculture in intertidal and subtidal settings, potentially lowering the cost and labor barrier for small-scale and Indigenous-owned operations.</p>',
-      slides: [
-        { src: 'Darling1.jpg', caption: 'AqueOUS Summer Cohort' },
-        { src: 'Darling2.jpg', caption: 'Leading a laboratory tour, focusing on oyster and scallop project sites' },
-        { src: 'Darling3.jpg', caption: 'Intertidal oyster study site' }
-      ],
-      responsibilities: [
-        'Designed and implemented an experiment comparing tidal-tumbled oysters to traditionally managed controls across intertidal and subtidal environments',
-        'Monitored oyster growth rates, shell shape, and survival across treatment groups over the summer season',
-        'Recorded and analyzed tidal cycle data to quantify tumbling frequency and energy exposure',
-        'Collaborated with Indigenous community members and knowledge holders to integrate traditional ecological knowledge into research design'
-      ]
-    },
-    bowdoin: {
-      org: 'Bowdoin College — Marine Science Program',
-      orgUrl: 'https://www.bowdoin.edu/biology/',
-      orgLabel: 'Visit Bowdoin Biology',
-      title: 'Animal Behavior Researcher',
-      date: 'June 2023 — December 2023',
-      tags: ['Bivalve Research','Research Design','Animal Welfare','Behavioral Ecology','Scallop Biology','Sea Star Dynamics'],
-      overview: '<p>This research position focused on two interconnected questions: whether scallops could be harvested using light-based methods as an alternative to dredging, and how shifting sea star populations are affecting bivalve dynamics in the warming Gulf of Maine.</p><p>The Gulf of Maine is warming faster than nearly any other ocean region on Earth, thus understanding how species respond is critical for sustainable fisheries management.</p>',
-      slides: [
-        { src: 'Schiller1.jpg', caption: 'Collecting mussels with my team to feed our sea stars' },
-        { src: 'Schiller2.jpg', caption: 'Sea stars were held in flow-through tanks' },
-        { src: 'Schiller3.jpg', caption: 'Observing sea star behavior in both species' },
-        { src: 'Schiller5.png', caption: 'GoPro recording scallop swimming behavior in response to a light gradient' }
-      ],
-      responsibilities: [
-        'Monitored scallop behavioral responses (swimming, valve movement, mantle retraction) under varying light intensities to evaluate feasibility of light-based harvest',
-        'Recorded and analyzed feeding rates and prey consumption of two sea star species under controlled laboratory conditions',
-        'Observed and documented growth rates of sea stars over the study period to assess population recovery dynamics',
-        'Checked all specimens daily, maintaining tank water quality and animal welfare throughout the study',
-        'Maintained detailed field notebooks and contributed to data analysis and reporting',
-        'Supported lab operations including tank maintenance, feeding schedules, and equipment calibration'
-      ]
-    },
-    duke: {
-      org: 'Duke University Marine Lab',
-      orgUrl: 'https://marinelab.duke.edu',
-      orgLabel: 'Visit Duke Marine Lab',
-      title: 'Microbial Oceanography Researcher',
-      date: 'June 2022 — August 2022',
-      tags: ['Microbial Ecology','Gene Sequencing','Marine Chemistry','Labyrinthulomycetes','Organic Matter Cycling','Pure Culture Isolation'],
-      overview: '<p>This summer research position introduced me to the hidden world of marine microbes — specifically the Labyrinthulomycetes, a group of protists that play important but poorly understood roles in breaking down organic matter in coastal ocean systems.</p><p>Working at the Pivers Island Coastal Observatory (PICO) long-term time series site gave me a window into how microbial communities shift seasonally — sparking a lasting interest in the intersection of microbiology, biogeochemistry, and ecosystem science.</p>',
-      slides: [
-        { src: 'Duke1.png', caption: 'My team after offshore water sampling' },
-        { src: 'Duke2.png', caption: 'Culturing marine protists using experimental agar gels' },
-        { src: 'Duke3.png', caption: 'Offshore water filtering for future microbial isolation' }
-      ],
-      responsibilities: [
-        'Isolated Labyrinthulomycetes from seawater and sediment samples using pollen grain baiting techniques',
-        'Cultured isolates on antibiotic-containing marine agar media to obtain pure cultures',
-        'Maintained lab cultures and performed sterile technique protocols daily',
-        'Contributed to documentation of isolate collection and maintained organized strain libraries'
-      ]
-    }
+  var THEMES={
+    default:{bright:'#e8f2fb',mist:'#7a9ab8',faint:'#2a3d55'},
+    warm:   {bright:'#f5e6c8',mist:'#c8a87a',faint:'#7a6040'},
+    sage:   {bright:'#c8e6d4',mist:'#7ab896',faint:'#3a6050'},
+    coral:  {bright:'#ffd6d6',mist:'#e89494',faint:'#8a5050'},
+    lavender:{bright:'#e0d4f5',mist:'#a894d4',faint:'#5a4880'},
+    white:  {bright:'#ffffff',mist:'#cccccc',faint:'#666666'}
   };
-
-  var pane       = document.getElementById('pane');
-  var mainView   = document.getElementById('main-view');
-  var detailView = document.getElementById('detail-view');
-  var detailCont = document.getElementById('detail-content');
-  var backBtn    = document.getElementById('back-btn');
-  var timer      = null;
-
-  var expMap = {
-    'exp-whiterock': 'whiterock',
-    'exp-tpwd':      'tpwd',
-    'exp-darling':   'darling',
-    'exp-bowdoin':   'bowdoin',
-    'exp-duke':      'duke'
-  };
-
-  Object.keys(expMap).forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.addEventListener('click', function() { openDetail(expMap[id]); });
-  });
-
-  backBtn.addEventListener('click', closeDetail);
-
-  function openDetail(key) {
-    var r = roles[key];
-    if (!r) return;
-    clearInterval(timer);
-
-    var tagsHtml = r.tags.map(function(t){ return '<span class="tag">'+t+'</span>'; }).join('');
-
-    var slidesHtml = r.slides.map(function(s, i) {
-      var inner = s.src
-        ? '<img src="'+s.src+'" alt="'+s.caption+'" loading="lazy">'
-        : '<div class="slide-placeholder"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>Add photo: set src to your image file path</span></div>';
-      return '<div class="slide'+(i===0?' active':'')+'" data-i="'+i+'">'+inner+'</div>';
-    }).join('');
-
-    var dotsHtml = r.slides.map(function(_,i){
-      return '<button class="slide-dot'+(i===0?' active':'')+'" data-d="'+i+'"></button>';
-    }).join('');
-
-    var respHtml = r.responsibilities.map(function(x){ return '<li>'+x+'</li>'; }).join('');
-
-    detailCont.innerHTML =
-      '<div style="margin-bottom:36px">'+
-        '<div class="detail-org">'+r.org+'</div>'+
-        '<div class="detail-title">'+r.title+'</div>'+
-        '<div class="detail-date">'+r.date+'</div>'+
-        '<div class="detail-tags">'+tagsHtml+'</div>'+
-      '</div>'+
-      '<div class="detail-section-title">Overview</div>'+
-      '<div class="detail-body">'+r.overview+'</div>'+
-      '<div class="detail-divider"></div>'+
-      '<div class="detail-section-title">Photos</div>'+
-      '<div class="slideshow">'+
-        '<div class="slides-track">'+slidesHtml+'</div>'+
-        '<div class="slide-caption-bar">'+
-          '<span class="slide-caption-text" id="scaption">'+r.slides[0].caption+'</span>'+
-          '<div class="slide-controls">'+
-            '<button class="slide-btn" id="sprev"><svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>'+
-            '<div class="slide-dots" id="sdots">'+dotsHtml+'</div>'+
-            '<button class="slide-btn" id="snext"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>'+
-          '</div>'+
-        '</div>'+
-      '</div>'+
-      '<div class="detail-divider"></div>'+
-      '<div class="detail-section-title">Responsibilities</div>'+
-      '<div class="detail-body"><ul>'+respHtml+'</ul></div>'+
-      '<a class="detail-org-link" href="'+r.orgUrl+'" target="_blank" rel="noopener">'+
-        '<svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>'+
-        r.orgLabel+
-      '</a>';
-
-    var slides  = detailCont.querySelectorAll('.slide');
-    var dots    = detailCont.querySelectorAll('.slide-dot');
-    var caption = detailCont.querySelector('#scaption');
-    var prevBtn = detailCont.querySelector('#sprev');
-    var nextBtn = detailCont.querySelector('#snext');
-    var cur = 0;
-
-    function goTo(n) {
-      slides[cur].classList.remove('active'); dots[cur].classList.remove('active');
-      cur = (n + r.slides.length) % r.slides.length;
-      slides[cur].classList.add('active'); dots[cur].classList.add('active');
-      caption.textContent = r.slides[cur].caption;
-    }
-
-    prevBtn.addEventListener('click', function(){ clearInterval(timer); goTo(cur-1); });
-    nextBtn.addEventListener('click', function(){ clearInterval(timer); goTo(cur+1); });
-    dots.forEach(function(d){ d.addEventListener('click', function(){ clearInterval(timer); goTo(+d.getAttribute('data-d')); }); });
-    timer = setInterval(function(){ goTo(cur+1); }, 5000);
-
-    mainView.style.display = 'none';
-    detailView.style.display = 'block';
-    detailView.classList.add('visible');
-    pane.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function closeDetail() {
-    clearInterval(timer);
-    detailView.style.display = 'none';
-    detailView.classList.remove('visible');
-    mainView.style.display = 'block';
-    var expSec = mainView.querySelector('#experience');
-    if (expSec) pane.scrollTo({ top: expSec.offsetTop - 40, behavior: 'smooth' });
-  }
-
-  /* Nav highlight */
-  var secs  = Array.from(document.querySelectorAll('section[id]'));
-  var links = Array.from(document.querySelectorAll('.s-nav a'));
-
-  function updateNav() {
-    if (detailView.style.display === 'block') return;
-    var st = pane.scrollTop + 80;
-    var active = secs[0] ? secs[0].id : '';
-    secs.forEach(function(s){ if (s.offsetTop <= st) active = s.id; });
-    links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#'+active); });
-  }
-
-  pane.addEventListener('scroll', updateNav, { passive: true });
-  updateNav();
-
-  links.forEach(function(a) {
-    a.addEventListener('click', function(e) {
-      e.preventDefault();
-      if (detailView.style.display === 'block') {
-        closeDetail();
-        setTimeout(function(){
-          var t = pane.querySelector(a.getAttribute('href'));
-          if (t) pane.scrollTo({ top: t.offsetTop - 40, behavior: 'smooth' });
-        }, 60);
-      } else {
-        var t = pane.querySelector(a.getAttribute('href'));
-        if (t) pane.scrollTo({ top: t.offsetTop - 40, behavior: 'smooth' });
-      }
-    });
-  });
-
-  /* Cursor glow */
-  var glow = document.getElementById('glow');
-  document.addEventListener('mousemove', function(e) {
-    glow.style.left = e.clientX + 'px';
-    glow.style.top  = e.clientY + 'px';
-  });
-
-})();
-
-/* ═══════════════════════════════════════════════════════════
-   ACCESSIBILITY PANEL
-═══════════════════════════════════════════════════════════ */
-(function() {
-
-  var panel    = document.getElementById('a11y-panel');
-  var tabBtn   = document.getElementById('a11y-toggle');
-  var closeBtn = document.getElementById('a11y-close');
-  var root     = document.documentElement;
-
-  /* ── open / close ── */
-  function openPanel()  { panel.classList.add('open');    tabBtn.setAttribute('aria-expanded','true');  }
-  function closePanel() { panel.classList.remove('open'); tabBtn.setAttribute('aria-expanded','false'); }
-  tabBtn.addEventListener('click',  openPanel);
-  closeBtn.addEventListener('click', closePanel);
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closePanel(); });
-
-  /* ── floating bubbles ── */
-  var canvas = document.getElementById('bubble-canvas');
-  for (var b = 0; b < 12; b++) {
-    (function(i){
-      var bub = document.createElement('div');
-      bub.className = 'bubble';
-      var size = 8 + Math.random() * 28;
-      bub.style.cssText = [
-        'width:'+size+'px','height:'+size+'px',
-        'left:'+(5+Math.random()*85)+'%',
-        'bottom:'+(-size)+'px',
-        'animation-duration:'+(6+Math.random()*8)+'s',
-        'animation-delay:'+(Math.random()*6)+'s'
-      ].join(';');
-      canvas.appendChild(bub);
-    })(b);
-  }
-
-  /* ── generic fish slider ── */
-  function makeFishSlider(trackId, thumbId, fillId, valId, min, max, initial, decimals, unit, onUpdate) {
-    var track = document.getElementById(trackId);
-    var thumb = document.getElementById(thumbId);
-    var fill  = document.getElementById(fillId);
-    var valEl = document.getElementById(valId);
-    var current = initial;
-
-    function pct(v){ return (v - min) / (max - min); }
-    function fromPct(p){ return min + p * (max - min); }
-
-    function setVal(v) {
-      current = Math.max(min, Math.min(max, v));
-      var p = pct(current);
-      var trackW = track.offsetWidth - 16; // 8px padding each side
-      var px = 8 + p * trackW;
-      thumb.style.left = px + 'px';
-      fill.style.width = (p * trackW) + 'px';
-      valEl.textContent = current.toFixed(decimals) + (unit||'');
-      thumb.setAttribute('aria-valuenow', current.toFixed(decimals));
-      onUpdate(current);
-    }
-
-    function posFromEvent(e) {
-      var rect = track.getBoundingClientRect();
-      var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      var p = Math.max(0, Math.min(1, (clientX - rect.left - 8) / (rect.width - 16)));
-      return fromPct(p);
-    }
-
-    var dragging = false;
-    thumb.addEventListener('mousedown', function(e){ dragging=true; e.preventDefault(); });
-    thumb.addEventListener('touchstart', function(e){ dragging=true; }, {passive:true});
-    document.addEventListener('mousemove', function(e){ if(dragging) setVal(posFromEvent(e)); });
-    document.addEventListener('touchmove', function(e){ if(dragging) setVal(posFromEvent(e)); }, {passive:true});
-    document.addEventListener('mouseup',  function(){ dragging=false; });
-    document.addEventListener('touchend', function(){ dragging=false; });
-    track.addEventListener('click', function(e){ if(e.target===thumb) return; setVal(posFromEvent(e)); });
-
-    /* keyboard */
-    var step = (max - min) / 20;
-    thumb.addEventListener('keydown', function(e){
-      if(e.key==='ArrowRight'||e.key==='ArrowUp')   { setVal(current+step); e.preventDefault(); }
-      if(e.key==='ArrowLeft' ||e.key==='ArrowDown')  { setVal(current-step); e.preventDefault(); }
-    });
-
-    setVal(initial); // init position
-    return { setVal: setVal, getCurrent: function(){ return current; } };
-  }
-
-  /* ── font size slider ── */
-  var BASE_SIZE = 15;
-  var sizeCtrl = makeFishSlider('size-track','size-thumb','size-fill','size-val', 12, 22, BASE_SIZE, 0, 'px', function(v){
-    root.style.setProperty('font-size', v + 'px');
-    document.body.style.fontSize = v + 'px';
-  });
-
-  /* ── line height slider ── */
-  var lhCtrl = makeFishSlider('lh-track','lh-thumb','lh-fill','lh-val', 1.2, 2.4, 1.7, 1, '', function(v){
-    document.body.style.lineHeight = v;
-  });
-
-  /* ── color themes ── */
-  var COLOR_THEMES = {
-    default:   { bright:'#dde8f8', mist:'#94a3c4', faint:'#3d5070' },
-    warm:      { bright:'#f5e6c8', mist:'#c8a87a', faint:'#7a6040' },
-    sage:      { bright:'#c8e6d4', mist:'#7ab896', faint:'#3a6050' },
-    coral:     { bright:'#ffd6d6', mist:'#e89494', faint:'#8a5050' },
-    lavender:  { bright:'#e0d4f5', mist:'#a894d4', faint:'#5a4880' },
-    white:     { bright:'#ffffff', mist:'#cccccc', faint:'#666666' }
-  };
-
-  document.getElementById('color-swatches').addEventListener('click', function(e){
-    var sw = e.target.closest('.swatch');
-    if (!sw) return;
-    var col = sw.getAttribute('data-color');
-    var theme = COLOR_THEMES[col];
-    if (!theme) return;
-    document.querySelectorAll('.swatch').forEach(function(s){
-      s.classList.remove('active');
-      s.setAttribute('aria-pressed','false');
-    });
+  document.getElementById('swatches').addEventListener('click',e=>{
+    var sw=e.target.closest('.swatch'); if(!sw) return;
+    var t=THEMES[sw.dataset.c]; if(!t) return;
+    document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
     sw.classList.add('active');
-    sw.setAttribute('aria-pressed','true');
-    root.style.setProperty('--bright', theme.bright);
-    root.style.setProperty('--mist',   theme.mist);
-    root.style.setProperty('--faint',  theme.faint);
+    root.style.setProperty('--bright',t.bright);
+    root.style.setProperty('--mist',  t.mist);
+    root.style.setProperty('--faint', t.faint);
   });
 
-  /* ── pill toggles ── */
-  function makePillToggle(id, onToggle) {
-    var el = document.getElementById(id);
-    var state = false;
-    function toggle() {
-      state = !state;
-      el.classList.toggle('on', state);
-      el.setAttribute('aria-checked', state ? 'true' : 'false');
-      onToggle(state);
-    }
-    el.addEventListener('click', toggle);
-    el.addEventListener('keydown', function(e){ if(e.key===' '||e.key==='Enter'){ toggle(); e.preventDefault(); } });
-    return { setState: function(v){ if(v!==state) toggle(); } };
+  function makePill(id,cb){
+    var el=document.getElementById(id), on=false;
+    function toggle(){on=!on;el.classList.toggle('on',on);el.setAttribute('aria-checked',on);cb(on);}
+    el.addEventListener('click',toggle);
+    el.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){toggle();e.preventDefault();}});
+    return {setState:v=>{if(v!==on)toggle();}};
   }
 
-  var contrastCtrl = makePillToggle('toggle-contrast', function(on){
-    document.body.classList.toggle('hc', on);
+  var contrastCtrl=makePill('tog-contrast',on=>document.body.classList.toggle('hc',on));
+  var dyslexiaCtrl=makePill('tog-dyslexia',on=>document.body.style.fontFamily=on?"'OpenDyslexic','Comic Sans MS',cursive":'');
+  var motionCtrl  =makePill('tog-motion',on=>{
+    var ex=document.getElementById('rm-style');
+    if(on){var s=document.createElement('style');s.id='rm-style';s.textContent='*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}';document.head.appendChild(s);}
+    else if(ex) ex.remove();
   });
 
-  var dyslexiaCtrl = makePillToggle('toggle-dyslexia', function(on){
-    document.body.style.fontFamily = on ? "'OpenDyslexic', 'Comic Sans MS', cursive" : '';
-  });
-
-  var motionCtrl = makePillToggle('toggle-motion', function(on){
-    if (on) {
-      var s = document.createElement('style');
-      s.id = 'reduce-motion-style';
-      s.textContent = '*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}';
-      document.head.appendChild(s);
-    } else {
-      var ex = document.getElementById('reduce-motion-style');
-      if (ex) ex.remove();
-    }
-  });
-
-  /* ── reset ── */
-  document.getElementById('a11y-reset').addEventListener('click', function(){
-    sizeCtrl.setVal(BASE_SIZE);
-    lhCtrl.setVal(1.7);
-    root.style.removeProperty('--bright');
-    root.style.removeProperty('--mist');
-    root.style.removeProperty('--faint');
-    document.body.style.fontSize   = '';
-    document.body.style.lineHeight = '';
-    document.body.style.fontFamily = '';
+  document.getElementById('a11y-reset').addEventListener('click',()=>{
+    sizeCtrl.setVal(BASE_FS); lhCtrl.setVal(BASE_LH);
+    root.style.removeProperty('--bright'); root.style.removeProperty('--mist'); root.style.removeProperty('--faint');
+    document.body.style.fontSize=''; document.body.style.lineHeight=''; document.body.style.fontFamily='';
+    document.querySelectorAll('.swatch').forEach(s=>s.classList.toggle('active',s.dataset.c==='default'));
+    contrastCtrl.setState(false); dyslexiaCtrl.setState(false); motionCtrl.setState(false);
     document.body.classList.remove('hc');
-    document.querySelectorAll('.swatch').forEach(function(s){
-      var isDefault = s.getAttribute('data-color') === 'default';
-      s.classList.toggle('active', isDefault);
-      s.setAttribute('aria-pressed', isDefault ? 'true' : 'false');
-    });
-    var rms = document.getElementById('reduce-motion-style');
-    if (rms) rms.remove();
-    contrastCtrl.setState(false);
-    dyslexiaCtrl.setState(false);
-    motionCtrl.setState(false);
+    var ex=document.getElementById('rm-style'); if(ex) ex.remove();
   });
-
 })();
 </script>
 </body>

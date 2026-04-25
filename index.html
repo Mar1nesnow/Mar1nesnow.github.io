@@ -18,7 +18,7 @@
   --shadow:0 2px 20px rgba(0,0,0,0.3);--shadow-md:0 6px 40px rgba(0,0,0,0.4);
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--bg);color:var(--bright);font-size:15px;line-height:1.75;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--bright);font-size:16.5px;line-height:1.8;overflow-x:hidden}
 
 /* ══ VIEWS ══ */
 .view{display:none;min-height:100vh}
@@ -93,7 +93,7 @@ body.hc{--bg:#000;--surface:#0a0a0a;--surface2:#111;--surface3:#181818;--bright:
 .hero-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--accent)}
 .hero-name{font-family:var(--serif);font-size:clamp(2.5rem,5vw,3.8rem);font-weight:700;color:var(--bright);line-height:1.08;margin-bottom:12px;letter-spacing:-.5px}
 .hero-title{font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:26px;font-weight:600}
-.hero-bio{font-size:.94rem;color:var(--mist);line-height:1.85;max-width:500px;margin-bottom:14px}
+.hero-bio{font-size:1rem;color:var(--mist);line-height:1.88;max-width:500px;margin-bottom:14px}
 .hero-bio strong{color:var(--bright);font-weight:600}
 .hero-links{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 38px}
 .hero-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.67rem;letter-spacing:1px;color:var(--mist);text-decoration:none;transition:color .2s}
@@ -124,75 +124,81 @@ body.hc{--bg:#000;--surface:#0a0a0a;--surface2:#111;--surface3:#181818;--bright:
 .tl-item::before{content:'';position:absolute;left:-24px;top:28px;width:9px;height:9px;border-radius:50%;background:var(--faint);border:2px solid var(--bg);transition:background .2s,box-shadow .2s}
 .tl-item:hover{background:var(--accent-dim);border-color:var(--border-h)}
 .tl-item:hover::before{background:var(--accent);box-shadow:0 0 0 4px rgba(91,155,213,.2)}
-.tl-date{font-family:var(--mono);font-size:.63rem;color:var(--fog);text-transform:uppercase;padding-top:3px;line-height:1.5}
-.tl-role{font-size:.9rem;font-weight:700;color:var(--bright);margin-bottom:5px;display:flex;align-items:center;gap:6px}
-.tl-arrow{font-size:.72rem;color:var(--fog);transition:color .2s,transform .2s}
+.tl-date{font-family:var(--mono);font-size:.7rem;color:var(--fog);text-transform:uppercase;padding-top:3px;line-height:1.5}
+.tl-role{font-size:1rem;font-weight:700;color:var(--bright);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.tl-arrow{font-size:.78rem;color:var(--fog);transition:color .2s,transform .2s}
 .tl-item:hover .tl-arrow{color:var(--accent);transform:translate(2px,-2px)}
-.tl-desc{font-size:.81rem;color:var(--mist);line-height:1.65;margin-bottom:8px}
+.tl-desc{font-size:.9rem;color:var(--mist);line-height:1.7;margin-bottom:8px}
 .tl-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
-.tl-tag{font-family:var(--mono);font-size:.62rem;background:rgba(91,155,213,.1);color:var(--sky);border-radius:20px;padding:3px 10px}
-.resume-link{display:inline-flex;align-items:center;gap:6px;margin-top:20px;font-family:var(--mono);font-size:.68rem;color:var(--mist);text-decoration:none;transition:color .2s}
+.tl-tag{font-family:var(--mono);font-size:.65rem;background:rgba(91,155,213,.1);color:var(--sky);border-radius:20px;padding:3px 10px}
+.resume-link{display:inline-flex;align-items:center;gap:6px;margin-top:20px;font-family:var(--mono);font-size:.75rem;color:var(--mist);text-decoration:none;transition:color .2s}
 .resume-link:hover{color:var(--accent)}
 
 /* ══ PAGE NAV ══ */
-.page-nav{background:rgba(13,27,46,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:0 56px;display:flex;align-items:center;position:sticky;top:0;z-index:100}
-.pn-home{font-family:var(--mono);font-size:.67rem;letter-spacing:1px;color:var(--mist);cursor:pointer;padding:18px 0;margin-right:28px;transition:color .2s;display:flex;align-items:center;gap:6px;border:none;background:none;white-space:nowrap}
-.pn-home:hover{color:var(--accent)}
-.pn-home svg{width:13px;height:13px;fill:currentColor}
-.tab-btn{font-family:var(--sans);font-size:.82rem;font-weight:600;color:var(--mist);cursor:pointer;padding:18px 22px;border-bottom:2px solid transparent;border-top:none;border-left:none;border-right:none;background:none;transition:color .2s,border-color .2s;white-space:nowrap}
-.tab-btn:hover{color:var(--bright)}
-.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.page-nav{background:rgba(13,27,46,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:0;display:flex;align-items:stretch;position:sticky;top:0;z-index:100;min-height:80px}
+.pn-home{font-family:var(--mono);font-size:.75rem;letter-spacing:1px;color:var(--mist);cursor:pointer;padding:0 28px;margin-right:0;transition:color .2s,background .2s;display:flex;align-items:center;gap:7px;border:none;border-right:1px solid var(--border);border-bottom:4px solid transparent;background:none;white-space:nowrap;flex-shrink:0}
+.pn-home:hover{color:var(--accent);background:var(--accent-dim)}
+.pn-home svg{width:14px;height:14px;fill:currentColor}
+.tab-btn{font-family:var(--sans);font-size:1.25rem;font-weight:700;color:var(--mist);cursor:pointer;padding:0;flex:1;border-bottom:4px solid transparent;border-top:none;border-left:none;border-right:1px solid var(--border);background:none;transition:color .2s,border-color .2s,background .2s;white-space:nowrap;letter-spacing:.2px}
+.tab-btn:last-child{border-right:none}
+.tab-btn:hover{color:var(--bright);background:var(--accent-dim)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(91,155,213,0.07)}
 
 /* ══ PAGE HEADER ══ */
 .page-hdr{max-width:1120px;margin:0 auto;padding:52px 56px 36px}
-.page-hdr-lbl{font-family:var(--mono);font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.page-hdr-lbl{font-family:var(--mono);font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:10px}
 .page-hdr-lbl::before{content:'';display:block;width:20px;height:1px;background:var(--accent)}
-.page-hdr-title{font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--bright);margin-bottom:10px}
-.page-hdr-sub{font-size:.9rem;color:var(--mist);max-width:540px;line-height:1.8}
+.page-hdr-title{font-family:var(--serif);font-size:2.2rem;font-weight:700;color:var(--bright);margin-bottom:10px}
+.page-hdr-sub{font-size:1rem;color:var(--mist);max-width:580px;line-height:1.85}
 
 /* ══ CONTENT + BLOCKS ══ */
 .page-content{max-width:1120px;margin:0 auto;padding:0 56px 80px}
 .fw-div{display:flex;align-items:center;gap:14px;margin:36px 0 18px}
-.fw-div-lbl{font-family:var(--serif);font-size:1.05rem;font-weight:600;color:var(--bright);white-space:nowrap}
+.fw-div-lbl{font-family:var(--serif);font-size:1.15rem;font-weight:600;color:var(--bright);white-space:nowrap}
 .fw-div::after{content:'';flex:1;height:1px;background:var(--border)}
 .exp-block{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:18px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s,border-color .2s}
 .exp-block:hover{box-shadow:var(--shadow-md);border-color:var(--border-h)}
-.exp-top{display:grid;grid-template-columns:1fr 250px;gap:0}
-.exp-left{padding:26px 28px}
-.exp-right{padding:26px 22px;background:var(--surface2);border-left:1px solid var(--border)}
-.exp-org{font-family:var(--mono);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
-.exp-title{font-size:.97rem;font-weight:700;color:var(--bright);margin-bottom:10px}
-.exp-body{font-size:.82rem;color:var(--mist);line-height:1.75;margin-bottom:12px}
-.exp-list{list-style:none;display:flex;flex-direction:column;gap:5px}
-.exp-list li{font-size:.8rem;color:var(--mist);padding-left:14px;position:relative;line-height:1.65}
-.exp-list li::before{content:'—';position:absolute;left:0;color:var(--fog);font-size:.7rem}
-.sk-lbl{font-family:var(--mono);font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--fog);margin-bottom:10px}
-.sk-list{display:flex;flex-direction:column;gap:6px}
-.sk-item{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--sky)}
+.exp-top{display:grid;grid-template-columns:1fr 260px;gap:0}
+.exp-left{padding:28px 30px}
+.exp-right{padding:28px 24px;background:var(--surface2);border-left:1px solid var(--border)}
+.exp-org{font-family:var(--mono);font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
+.exp-title{font-size:1.05rem;font-weight:700;color:var(--bright);margin-bottom:11px}
+.exp-body{font-size:.92rem;color:var(--mist);line-height:1.8;margin-bottom:13px}
+.exp-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.exp-list li{font-size:.88rem;color:var(--mist);padding-left:16px;position:relative;line-height:1.7}
+.exp-list li::before{content:'—';position:absolute;left:0;color:var(--fog);font-size:.75rem}
+.sk-lbl{font-family:var(--mono);font-size:.63rem;letter-spacing:2px;text-transform:uppercase;color:var(--fog);margin-bottom:11px}
+.sk-list{display:flex;flex-direction:column;gap:7px}
+.sk-item{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--sky)}
 .sk-item::before{content:'';display:block;width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
 
 /* ══ PHOTO STRIP ══ */
-.photo-note{font-family:var(--mono);font-size:.6rem;color:var(--fog);padding:10px 28px 0}
+.photo-note{font-family:var(--mono);font-size:.62rem;color:var(--fog);padding:10px 28px 0}
 .photo-strip{border-top:1px solid var(--border);padding:16px 28px;background:var(--surface);display:flex;gap:12px;flex-wrap:wrap}
 .photo-slot{display:flex;flex-direction:column;align-items:center;gap:5px}
 .photo-slot img{width:130px;height:90px;object-fit:cover;border-radius:8px;border:1px solid var(--border);display:block}
 .photo-ph{width:130px;height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:1.5px dashed var(--faint);border-radius:8px;transition:border-color .2s,background .2s}
 .photo-ph:hover{border-color:var(--accent);background:var(--accent-dim)}
 .photo-ph svg{width:20px;height:20px;fill:var(--fog)}
-.photo-ph span{font-family:var(--mono);font-size:.56rem;color:var(--fog);text-align:center;line-height:1.4}
-.photo-cap{font-family:var(--mono);font-size:.58rem;color:var(--fog);text-align:center;max-width:130px;line-height:1.3}
+.photo-ph span{font-family:var(--mono);font-size:.58rem;color:var(--fog);text-align:center;line-height:1.4}
+.photo-cap{font-family:var(--mono);font-size:.6rem;color:var(--fog);text-align:center;max-width:130px;line-height:1.3}
 
-/* ══ PE CARDS ══ */
+/* ══ MEDIA CARDS (with thumbnail) ══ */
 .pe-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
-a.pe-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;box-shadow:var(--shadow);transition:box-shadow .2s,border-color .2s,transform .2s;text-decoration:none;display:block;color:inherit}
+a.pe-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s,border-color .2s,transform .2s;text-decoration:none;display:block;color:inherit}
 a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transform:translateY(-2px)}
+.pe-thumb{width:100%;height:150px;object-fit:cover;display:block;background:var(--surface2)}
+.pe-thumb-ph{width:100%;height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.pe-thumb-ph svg{width:28px;height:28px;fill:var(--accent);opacity:.4}
+.pe-thumb-ph span{font-family:var(--mono);font-size:.6rem;color:var(--fog);text-align:center;line-height:1.5}
+.pe-card-body{padding:20px 22px}
 .pe-icon{width:40px;height:40px;border-radius:9px;background:var(--surface2);display:flex;align-items:center;justify-content:center;margin-bottom:14px;border:1px solid var(--border)}
 .pe-icon svg{width:20px;height:20px;fill:var(--accent)}
-.pe-cat{font-family:var(--mono);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--fog);margin-bottom:5px}
-.pe-title{font-size:.92rem;font-weight:700;color:var(--bright);margin-bottom:7px}
-.pe-desc{font-size:.81rem;color:var(--mist);line-height:1.7;margin-bottom:12px}
+.pe-cat{font-family:var(--mono);font-size:.63rem;letter-spacing:2px;text-transform:uppercase;color:var(--fog);margin-bottom:5px}
+.pe-title{font-size:.97rem;font-weight:700;color:var(--bright);margin-bottom:8px;line-height:1.4}
+.pe-desc{font-size:.87rem;color:var(--mist);line-height:1.75;margin-bottom:13px}
 .pe-tags{display:flex;flex-wrap:wrap;gap:5px}
-.pe-tag{font-family:var(--mono);font-size:.6rem;background:var(--accent-dim);color:var(--sky);border:1px solid var(--border);border-radius:20px;padding:3px 9px}
+.pe-tag{font-family:var(--mono);font-size:.62rem;background:var(--accent-dim);color:var(--sky);border:1px solid var(--border);border-radius:20px;padding:3px 9px}
 
 /* ══ RESPONSIVE ══ */
 @media(max-width:900px){
@@ -351,39 +357,49 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
     <div class="sec-lbl">Science Communication &amp; Media</div>
     <div class="pe-grid">
       <a href="https://open.spotify.com/episode/286qn6wZA8FMIsA0r6vFPK?si=b28b5227fecf4e29" target="_blank" class="pe-card">
-        <div class="pe-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
-        <div class="pe-cat">Podcast · Darling Marine Lab</div>
-        <div class="pe-title">Salty Talks: Sustainable Agriculture in Maine (2024)</div>
-        <div class="pe-desc">Listen to me discuss intersecting Western Science and Indigenous Knowledge in my oyster research.</div>
-        <div class="pe-tags"><span class="pe-tag">Podcast</span><span class="pe-tag">Interview</span></div>
+        <div class="pe-thumb-ph" id="thumb-spotify"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg><span>Loading thumbnail…</span></div>
+        <div class="pe-card-body">
+          <div class="pe-cat">Podcast · Darling Marine Lab</div>
+          <div class="pe-title">Salty Talks: Sustainable Agriculture in Maine (2024)</div>
+          <div class="pe-desc">Listen to me discuss intersecting Western Science and Indigenous Knowledge in my oyster research.</div>
+          <div class="pe-tags"><span class="pe-tag">Podcast</span><span class="pe-tag">Interview</span></div>
+        </div>
       </a>
       <a href="https://www.youtube.com/watch?v=prm94H-AAvs" target="_blank" class="pe-card">
-        <div class="pe-icon"><svg viewBox="0 0 24 24"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z"/></svg></div>
-        <div class="pe-cat">Video · Bowdoin / Schiller Center</div>
-        <div class="pe-title">How Will Sea Stars Grow in Warming Waters? (2023)</div>
-        <div class="pe-desc">Video feature on my sea star behavioral research at Bowdoin's Coastal Studies Center.</div>
-        <div class="pe-tags"><span class="pe-tag">Video</span><span class="pe-tag">Research Feature</span></div>
+        <img class="pe-thumb" src="https://img.youtube.com/vi/prm94H-AAvs/hqdefault.jpg" alt="Sea Stars video thumbnail">
+        <div class="pe-card-body">
+          <div class="pe-cat">Video · Bowdoin / Schiller Center</div>
+          <div class="pe-title">How Will Sea Stars Grow in Warming Waters? (2023)</div>
+          <div class="pe-desc">Video feature on my sea star behavioral research at Bowdoin's Coastal Studies Center.</div>
+          <div class="pe-tags"><span class="pe-tag">Video</span><span class="pe-tag">Research Feature</span></div>
+        </div>
       </a>
       <a href="http://bowdoin.edu/news/2023/12/schiller-semester-ends-with-a-tidal-wave-of-student-research.html" target="_blank" class="pe-card">
-        <div class="pe-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
-        <div class="pe-cat">Article · Bowdoin News</div>
-        <div class="pe-title">Schiller Semester: A Tidal Wave of Student Research (2023)</div>
-        <div class="pe-desc">Overview of Bowdoin's Coastal Science Semester featuring my scallop research.</div>
-        <div class="pe-tags"><span class="pe-tag">Press</span><span class="pe-tag">Schiller Center</span></div>
+        <div class="pe-thumb-ph" id="thumb-bowdoin1"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg><span>Loading thumbnail…</span></div>
+        <div class="pe-card-body">
+          <div class="pe-cat">Article · Bowdoin News</div>
+          <div class="pe-title">Schiller Semester: A Tidal Wave of Student Research (2023)</div>
+          <div class="pe-desc">Overview of Bowdoin's Coastal Science Semester featuring my scallop research.</div>
+          <div class="pe-tags"><span class="pe-tag">Press</span><span class="pe-tag">Schiller Center</span></div>
+        </div>
       </a>
       <a href="https://www.bowdoin.edu/news/2023/08/coastal-research-reveals-complexities-marine-life.html" target="_blank" class="pe-card">
-        <div class="pe-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
-        <div class="pe-cat">Article · Bowdoin News</div>
-        <div class="pe-title">Coastal Research Reveals Complexities of Marine Life (2023)</div>
-        <div class="pe-desc">Marine science Research Fellows spotlight featuring my sea star research.</div>
-        <div class="pe-tags"><span class="pe-tag">Press</span><span class="pe-tag">Schiller Center</span></div>
+        <div class="pe-thumb-ph" id="thumb-bowdoin2"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg><span>Loading thumbnail…</span></div>
+        <div class="pe-card-body">
+          <div class="pe-cat">Article · Bowdoin News</div>
+          <div class="pe-title">Coastal Research Reveals Complexities of Marine Life (2023)</div>
+          <div class="pe-desc">Marine science Research Fellows spotlight featuring my sea star research.</div>
+          <div class="pe-tags"><span class="pe-tag">Press</span><span class="pe-tag">Schiller Center</span></div>
+        </div>
       </a>
       <a href="https://www.linkedin.com/feed/update/urn:li:activity:7269828295095947265/" target="_blank" class="pe-card">
-        <div class="pe-icon"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
-        <div class="pe-cat">LinkedIn · Darling Marine Lab</div>
-        <div class="pe-title">Aquaculture Research Institute Fellow Spotlight (2024)</div>
-        <div class="pe-desc">A highlight of my oyster aquaculture project from the ARI Research Fellow program.</div>
-        <div class="pe-tags"><span class="pe-tag">LinkedIn</span><span class="pe-tag">Darling Marine Lab</span></div>
+        <div class="pe-thumb-ph" id="thumb-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span>Loading thumbnail…</span></div>
+        <div class="pe-card-body">
+          <div class="pe-cat">LinkedIn · Darling Marine Lab</div>
+          <div class="pe-title">Aquaculture Research Institute Fellow Spotlight (2024)</div>
+          <div class="pe-desc">A highlight of my oyster aquaculture project from the ARI Research Fellow program.</div>
+          <div class="pe-tags"><span class="pe-tag">LinkedIn</span><span class="pe-tag">Darling Marine Lab</span></div>
+        </div>
       </a>
     </div>
   </div>
@@ -846,7 +862,75 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
   </div>
 </div>
 
+<style>
+.cursor-bubble{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);animation:bubbleFade var(--dur,0.9s) ease-out forwards}
+@keyframes bubbleFade{
+  0%  {opacity:.7;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)),calc(-50% - var(--rise,40px))) scale(.2)}
+}
+</style>
 <script>
+/* ── Bubble cursor trail ── */
+(function(){
+  var colors=['rgba(91,155,213,','rgba(147,197,232,','rgba(212,236,251,','rgba(61,112,170,'];
+  var last={x:0,y:0},throttle=false;
+  document.addEventListener('mousemove',function(e){
+    if(throttle)return;
+    throttle=true;
+    setTimeout(function(){throttle=false;},40);
+    var n=Math.floor(Math.random()*2)+1;
+    for(var i=0;i<n;i++){
+      (function(){
+        var b=document.createElement('div');
+        b.className='cursor-bubble';
+        var size=Math.random()*10+5;
+        var alpha=Math.random()*.5+.3;
+        var col=colors[Math.floor(Math.random()*colors.length)];
+        var dx=(Math.random()-0.5)*30;
+        var rise=Math.random()*50+20;
+        var dur=(Math.random()*.5+.6).toFixed(2);
+        var border=Math.random()>.5?'border:1px solid '+col+'0.8);background:'+col+alpha+');':'background:'+col+alpha+');';
+        b.style.cssText='width:'+size+'px;height:'+size+'px;left:'+e.clientX+'px;top:'+e.clientY+'px;'+border+'--dx:'+dx+'px;--rise:'+rise+'px;--dur:'+dur+'s;';
+        document.body.appendChild(b);
+        setTimeout(function(){b.remove();},dur*1000+50);
+      })();
+    }
+  });
+})();
+
+/* ── Auto-load OG thumbnails ── */
+(function(){
+  var cards=[
+    {id:'thumb-spotify', url:'https://open.spotify.com/episode/286qn6wZA8FMIsA0r6vFPK'},
+    {id:'thumb-bowdoin1',url:'https://www.bowdoin.edu/news/2023/12/schiller-semester-ends-with-a-tidal-wave-of-student-research.html'},
+    {id:'thumb-bowdoin2',url:'https://www.bowdoin.edu/news/2023/08/coastal-research-reveals-complexities-marine-life.html'},
+    {id:'thumb-linkedin',url:'https://www.linkedin.com/feed/update/urn:li:activity:7269828295095947265/'}
+  ];
+  cards.forEach(function(c){
+    var el=document.getElementById(c.id);
+    if(!el)return;
+    // Use jsonlink.erl.im — free OG scraper, no key needed
+    fetch('https://jsonlink.io/api/extract?url='+encodeURIComponent(c.url))
+      .then(function(r){return r.json();})
+      .then(function(d){
+        var img=d.images&&d.images[0]?d.images[0]:null;
+        if(img){
+          var i=document.createElement('img');
+          i.className='pe-thumb';
+          i.src=img;
+          i.alt='Thumbnail';
+          i.onerror=function(){showFallback(el);};
+          el.parentNode.replaceChild(i,el);
+        } else { showFallback(el); }
+      })
+      .catch(function(){showFallback(el);});
+  });
+  function showFallback(el){
+    // show generic icon placeholder on failure
+    el.querySelector('span')&&(el.querySelector('span').textContent='Add thumbnail');
+  }
+})();
+
 /* ── Navigation ── */
 function showHome(){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));

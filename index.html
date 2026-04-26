@@ -6,33 +6,50 @@
 <title>James Benavides — Environmental Scientist</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-/* ══════════════════════════════════════════════════
-   RESET & ROOT
-══════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ══ SOFTER, WARMER DEEP-BLUE PALETTE ══ */
 :root{
-  --bg:#0d1b2e;--surface:#152237;--surface2:#1a2b42;--surface3:#1f3350;
-  --accent:#5b9bd5;--accent-dim:rgba(91,155,213,0.12);
-  --sky:#93c5e8;--bright:#e8f2fb;--mist:#7a9ab8;--fog:#4d6a85;--faint:#2a3d55;
-  --border:rgba(91,155,213,0.15);--border-h:rgba(91,155,213,0.35);
+  /* backgrounds — warmer, less stark */
+  --bg:#101e30;
+  --surface:#172334;
+  --surface2:#1e2d42;
+  --surface3:#243550;
+  /* accent — slightly warmer cornflower */
+  --accent:#6aaee0;
+  --accent-dim:rgba(106,174,224,0.10);
+  --accent-glow:rgba(106,174,224,0.22);
+  /* text hierarchy — more contrast between levels */
+  --sky:#b0d8f2;
+  --bright:#edf4fc;       /* headings / bold */
+  --body:#c4d8ec;         /* body text — readable, not harsh */
+  --mist:#8dafc8;         /* secondary text */
+  --fog:#557090;          /* tertiary / captions */
+  --faint:#2e4560;        /* borders dim */
+  --border:rgba(106,174,224,0.14);
+  --border-h:rgba(106,174,224,0.34);
+  /* type */
   --serif:'Playfair Display',Georgia,serif;
   --sans:'Source Sans 3',sans-serif;
   --mono:'DM Mono',monospace;
-  --shadow:0 2px 20px rgba(0,0,0,0.3);--shadow-md:0 6px 40px rgba(0,0,0,0.4);
+  /* shadows */
+  --shadow:0 2px 18px rgba(0,0,0,0.28);
+  --shadow-md:0 6px 36px rgba(0,0,0,0.38);
 }
+
 html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--bg);color:var(--bright);font-size:18px;line-height:1.85;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--body);font-size:18px;line-height:1.85;overflow-x:hidden}
 
 /* ══ VIEWS ══ */
 .view{display:none;min-height:100vh}
-.view.active{display:block;animation:fadeUp .4s ease both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.view.active{display:block;animation:fadeIn .32s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-/* ══════════════════════════════════════════════════
-   ACCESSIBILITY PANEL
-══════════════════════════════════════════════════ */
+/* ══════════════════════════════════════
+   A11Y TOGGLE + PANEL
+══════════════════════════════════════ */
 #a11y-toggle{
   position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:300;
   width:34px;height:60px;background:var(--surface);border:1px solid var(--border-h);
@@ -61,9 +78,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--bright);font-size:
 .a11y-grp-lbl{font-size:.6rem;font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .a11y-grp-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
 .fish-track{position:relative;width:100%;height:26px;background:var(--surface2);border-radius:13px;border:1px solid var(--border);cursor:pointer}
-.fish-track::before{content:'';position:absolute;top:50%;left:8px;right:8px;height:2px;transform:translateY(-50%);background:rgba(91,155,213,.2);border-radius:2px}
+.fish-track::before{content:'';position:absolute;top:50%;left:8px;right:8px;height:2px;transform:translateY(-50%);background:rgba(106,174,224,.2);border-radius:2px}
 .fish-fill{position:absolute;top:50%;left:8px;height:2px;transform:translateY(-50%);background:linear-gradient(to right,var(--accent),var(--sky));border-radius:2px;pointer-events:none}
-.fish-thumb{position:absolute;top:50%;transform:translate(-50%,-50%);width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:grab;user-select:none;filter:drop-shadow(0 1px 4px rgba(91,155,213,.5));z-index:2}
+.fish-thumb{position:absolute;top:50%;transform:translate(-50%,-50%);width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:grab;user-select:none;filter:drop-shadow(0 1px 4px rgba(106,174,224,.5));z-index:2}
 .fish-thumb:active{cursor:grabbing}
 .fish-lbls{display:flex;justify-content:space-between;margin-top:5px}
 .fish-lbl{font-size:.58rem;font-family:var(--mono);color:var(--fog)}
@@ -85,71 +102,58 @@ body{font-family:var(--sans);background:var(--bg);color:var(--bright);font-size:
 .a11y-ftr{padding:10px 18px;border-top:1px solid var(--border);overflow:hidden;height:36px}
 .fish-parade{display:flex;gap:5px;animation:parade 8s linear infinite;font-size:.85rem;white-space:nowrap}
 @keyframes parade{0%{transform:translateX(272px)}100%{transform:translateX(-200px)}}
-body.hc{--bg:#000;--surface:#0a0a0a;--surface2:#111;--surface3:#181818;--bright:#fff;--mist:#ccc;--fog:#777;--border:rgba(255,255,255,.2);--border-h:rgba(255,255,255,.4)}
+body.hc{--bg:#000;--surface:#0a0a0a;--surface2:#111;--surface3:#181818;--bright:#fff;--body:#e8e8e8;--mist:#ccc;--fog:#777;--border:rgba(255,255,255,.2);--border-h:rgba(255,255,255,.4)}
 
-/* ══════════════════════════════════════════════════
+/* ══════════════════════════════════════
    TOPBAR
-══════════════════════════════════════════════════ */
+══════════════════════════════════════ */
 .topbar{
   padding:18px 56px;display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid var(--border);background:rgba(13,27,46,.97);
+  border-bottom:1px solid var(--border);background:rgba(16,30,48,.97);
   backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;
 }
 .topbar-name{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:var(--bright)}
-.topbar-links{display:flex;gap:20px}
+.topbar-links{display:flex;gap:22px}
 .topbar-link{font-family:var(--mono);font-size:.72rem;color:var(--mist);text-decoration:none;letter-spacing:1px;transition:color .2s}
 .topbar-link:hover{color:var(--accent)}
 
-/* ══════════════════════════════════════════════════
-   HOME — NAME + HEADSHOT ROW (top of wireframe)
-══════════════════════════════════════════════════ */
+/* ══════════════════════════════════════
+   HOME — NAME + HEADSHOT ROW
+══════════════════════════════════════ */
 .home-top{
   max-width:1120px;margin:0 auto;
-  padding:60px 56px 40px;
-  display:grid;grid-template-columns:1fr 340px;gap:0 60px;align-items:center;
+  padding:48px 56px 28px;   /* ← tighter bottom padding → bio feels closer */
+  display:grid;grid-template-columns:1fr 320px;gap:0 56px;align-items:center;
 }
-.home-top-left{}
 .home-eyebrow{
-  font-family:var(--mono);font-size:.72rem;letter-spacing:3px;text-transform:uppercase;
-  color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:12px;
 }
 .home-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--accent)}
 .home-name{
-  font-family:var(--serif);font-size:clamp(3rem,6vw,5rem);font-weight:700;
-  color:var(--bright);line-height:1.05;margin-bottom:14px;letter-spacing:-.5px;
+  font-family:var(--serif);font-size:clamp(2.8rem,5.5vw,4.8rem);font-weight:700;
+  color:var(--bright);line-height:1.05;margin-bottom:12px;letter-spacing:-.5px;
 }
 .home-title{
-  font-size:.85rem;letter-spacing:2.5px;text-transform:uppercase;
-  color:var(--accent);font-weight:600;margin-bottom:24px;
+  font-size:.82rem;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--accent);font-weight:600;margin-bottom:22px;
 }
-.home-contact-links{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:0}
+.home-contact-links{display:flex;gap:14px;flex-wrap:wrap}
 .home-contact-link{
   display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--mono);font-size:.72rem;letter-spacing:1px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.8px;
   color:var(--mist);text-decoration:none;transition:color .2s;
 }
 .home-contact-link:hover{color:var(--accent)}
 .home-contact-link svg{width:13px;height:13px;fill:currentColor}
 
-/* ── Headshot ── */
-.home-top-right{display:flex;flex-direction:column;align-items:center;gap:12px}
-
-/* ════════════════════════════════════════
-   HEADSHOT — HOW TO ADD YOUR PHOTO:
-   1. Save your photo (JPG/PNG/WEBP) in the
-      same folder as this HTML file.
-   2. Replace the <div class="headshot-ph">
-      block below with:
-      <img src="James1.jpg" alt="James Benavides">
-   3. The frame handles sizing automatically.
-════════════════════════════════════════ */
+/* headshot */
+.home-top-right{display:flex;flex-direction:column;align-items:center;gap:10px}
 .headshot-frame{
-  width:280px;height:340px;
-  border-radius:140px 140px 90px 90px;
-  overflow:hidden;
-  background:var(--surface2);
-  border:3px solid var(--border-h);
-  box-shadow:var(--shadow-md),0 0 0 8px rgba(91,155,213,.06);
+  width:270px;height:330px;
+  border-radius:135px 135px 80px 80px;overflow:hidden;
+  background:var(--surface2);border:3px solid var(--border-h);
+  box-shadow:var(--shadow-md),0 0 0 8px rgba(106,174,224,.05);
 }
 .headshot-ph{
   width:100%;height:100%;display:flex;flex-direction:column;
@@ -157,394 +161,49 @@ body.hc{--bg:#000;--surface:#0a0a0a;--surface2:#111;--surface3:#181818;--bright:
   background:linear-gradient(160deg,var(--surface2) 0%,var(--surface3) 100%);
   padding:20px;text-align:center;
 }
-.headshot-ph svg{width:72px;height:72px;fill:var(--accent);opacity:.25}
-.headshot-ph .ph-label{font-family:var(--mono);font-size:.7rem;color:var(--fog);letter-spacing:.5px;line-height:1.6}
-.headshot-ph .ph-code{font-family:var(--mono);font-size:.62rem;color:var(--accent);opacity:.7;line-height:1.5}
+.headshot-ph svg{width:68px;height:68px;fill:var(--accent);opacity:.22}
+.headshot-ph .ph-label{font-family:var(--mono);font-size:.68rem;color:var(--fog);line-height:1.6}
+.headshot-ph .ph-code{font-family:var(--mono);font-size:.6rem;color:var(--accent);opacity:.65;line-height:1.5}
 .headshot-frame img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
-.hero-loc{font-family:var(--mono);font-size:.68rem;color:var(--fog);letter-spacing:1px;text-align:center}
+.hero-loc{font-family:var(--mono);font-size:.67rem;color:var(--fog);letter-spacing:1px;text-align:center}
 
-/* ══════════════════════════════════════════════════
-   HOME — BIO BLOCK (full width, wireframe row 2)
-══════════════════════════════════════════════════ */
+/* ══════════════════════════════════════
+   HOME — BIO BLOCK
+   Sits immediately below name row (small gap)
+══════════════════════════════════════ */
 .home-bio-block{
   max-width:1120px;margin:0 auto;
-  padding:0 56px 48px;
+  padding:0 56px 40px;   /* ← small top padding = bio hugs name */
 }
 .bio-card{
   background:var(--surface);border:1px solid var(--border);
-  border-radius:18px;padding:44px 52px;
+  border-radius:18px;padding:40px 50px;
   box-shadow:var(--shadow);
+}
+
+/* Bio typography — punchy, legible hierarchy */
+.bio-card .bio-lead{
+  font-family:var(--serif);font-size:1.3rem;font-weight:400;font-style:italic;
+  color:var(--bright);line-height:1.7;margin-bottom:22px;
+  border-left:3px solid var(--accent);padding-left:20px;
 }
 .bio-card p{
-  font-size:1.1rem;color:var(--mist);line-height:1.9;
-  margin-bottom:18px;
+  font-size:1.05rem;color:var(--body);line-height:1.9;
+  margin-bottom:16px;
 }
 .bio-card p:last-child{margin-bottom:0}
-.bio-card strong{color:var(--bright);font-weight:600}
-
-/* ══════════════════════════════════════════════════
-   HOME — THREE BIG NAV BUTTONS (wireframe rows 3-5)
-══════════════════════════════════════════════════ */
-.home-nav-btns{
-  max-width:1120px;margin:0 auto;
-  padding:0 56px 80px;
-  display:flex;flex-direction:column;gap:18px;
+.bio-card strong{
+  color:var(--bright);font-weight:700;
+  /* subtle highlight on key terms */
+  background:rgba(106,174,224,0.1);
+  padding:0 3px;border-radius:3px;
 }
-.home-nav-btn{
-  display:flex;align-items:center;justify-content:space-between;
-  width:100%;padding:32px 44px;
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:18px;cursor:pointer;
-  font-family:var(--sans);font-size:1.6rem;font-weight:700;
-  color:var(--mist);text-align:left;
-  transition:background .22s,border-color .22s,color .22s,transform .22s,box-shadow .22s;
-  box-shadow:var(--shadow);
+.bio-card .bio-tag{
+  display:inline-block;font-family:var(--mono);font-size:.72rem;
+  color:var(--accent);background:rgba(106,174,224,0.1);
+  border:1px solid rgba(106,174,224,0.25);border-radius:20px;
+  padding:2px 10px;margin:2px 4px 2px 0;vertical-align:middle;
 }
-.home-nav-btn:hover{
-  background:var(--surface2);border-color:var(--accent);
-  color:var(--bright);transform:translateY(-3px);
-  box-shadow:var(--shadow-md);
-}
-.home-nav-btn.primary{
-  background:var(--accent);border-color:var(--accent);color:#0d1b2e;
-}
-.home-nav-btn.primary:hover{background:var(--sky);border-color:var(--sky)}
-.home-nav-btn-left{display:flex;align-items:center;gap:20px}
-.home-nav-btn-icon{font-size:2rem;flex-shrink:0}
-.home-nav-btn-text{}
-.home-nav-btn-title{font-size:1.55rem;font-weight:700;display:block;margin-bottom:4px}
-.home-nav-btn-sub{font-size:.88rem;font-weight:400;opacity:.7;display:block;font-family:var(--mono);letter-spacing:.5px}
-.home-nav-btn-arrow{font-size:1.6rem;opacity:.4;transition:opacity .2s,transform .2s;flex-shrink:0}
-.home-nav-btn:hover .home-nav-btn-arrow{opacity:1;transform:translate(4px,-4px)}
-
-/* ══════════════════════════════════════════════════
-   HOME — TIMELINE
-══════════════════════════════════════════════════ */
-.tl-section{max-width:1120px;margin:0 auto;padding:0 56px 60px}
-.sec-lbl{
-  font-family:var(--mono);font-size:.68rem;letter-spacing:3px;text-transform:uppercase;
-  color:var(--accent);margin-bottom:32px;display:flex;align-items:center;gap:12px;
-}
-.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
-.timeline{position:relative;padding-left:24px}
-.timeline::before{
-  content:'';position:absolute;left:0;top:8px;bottom:8px;width:1px;
-  background:linear-gradient(to bottom,transparent,var(--border) 5%,var(--border) 95%,transparent);
-}
-.tl-item{
-  display:grid;grid-template-columns:110px 1fr;gap:0 28px;
-  padding:20px 20px 20px 0;border-radius:14px;border:1px solid transparent;
-  transition:background .2s,border-color .2s;margin-bottom:6px;
-  position:relative;cursor:pointer;
-}
-.tl-item::before{
-  content:'';position:absolute;left:-28px;top:30px;
-  width:10px;height:10px;border-radius:50%;
-  background:var(--faint);border:2px solid var(--bg);
-  transition:background .2s,box-shadow .2s;
-}
-.tl-item:hover{background:var(--accent-dim);border-color:var(--border-h)}
-.tl-item:hover::before{background:var(--accent);box-shadow:0 0 0 4px rgba(91,155,213,.2)}
-.tl-date{font-family:var(--mono);font-size:.7rem;color:var(--fog);text-transform:uppercase;padding-top:4px;line-height:1.5}
-.tl-role{font-size:1.05rem;font-weight:700;color:var(--bright);margin-bottom:6px;display:flex;align-items:center;gap:8px}
-.tl-arrow{font-size:.8rem;color:var(--fog);transition:color .2s,transform .2s}
-.tl-item:hover .tl-arrow{color:var(--accent);transform:translate(2px,-2px)}
-.tl-desc{font-size:.95rem;color:var(--mist);line-height:1.7;margin-bottom:8px}
-.tl-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.tl-tag{font-family:var(--mono);font-size:.65rem;background:rgba(91,155,213,.1);color:var(--sky);border-radius:20px;padding:3px 11px}
-.resume-link{display:inline-flex;align-items:center;gap:6px;margin-top:20px;font-family:var(--mono);font-size:.78rem;color:var(--mist);text-decoration:none;transition:color .2s}
-.resume-link:hover{color:var(--accent)}
-
-/* ══════════════════════════════════════════════════
-   HOME — MEDIA SECTION
-══════════════════════════════════════════════════ */
-.pe-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
-a.pe-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;
-  box-shadow:var(--shadow);transition:box-shadow .2s,border-color .2s,transform .2s;
-  text-decoration:none;display:block;color:inherit;
-}
-a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transform:translateY(-2px)}
-.pe-thumb{width:100%;height:160px;object-fit:cover;display:block;background:var(--surface2)}
-.pe-thumb-ph{
-  width:100%;height:160px;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:8px;
-  background:var(--surface2);border-bottom:1px solid var(--border);
-}
-.pe-thumb-ph svg{width:28px;height:28px;fill:var(--accent);opacity:.4}
-.pe-thumb-ph span{font-family:var(--mono);font-size:.62rem;color:var(--fog);text-align:center;line-height:1.5}
-.pe-card-body{padding:20px 22px}
-.pe-cat{font-family:var(--mono);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--fog);margin-bottom:5px}
-.pe-title{font-size:1rem;font-weight:700;color:var(--bright);margin-bottom:8px;line-height:1.4}
-.pe-desc{font-size:.9rem;color:var(--mist);line-height:1.75;margin-bottom:13px}
-.pe-tags{display:flex;flex-wrap:wrap;gap:5px}
-.pe-tag{font-family:var(--mono);font-size:.62rem;background:var(--accent-dim);color:var(--sky);border:1px solid var(--border);border-radius:20px;padding:3px 9px}
-
-/* ══════════════════════════════════════════════════
-   INNER PAGE NAV (tabs)
-══════════════════════════════════════════════════ */
-.page-nav{
-  background:rgba(13,27,46,.97);backdrop-filter:blur(8px);
-  border-bottom:1px solid var(--border);
-  padding:0;display:flex;align-items:stretch;
-  position:sticky;top:0;z-index:100;min-height:88px;
-}
-.pn-home{
-  font-family:var(--mono);font-size:.78rem;letter-spacing:1px;color:var(--mist);
-  cursor:pointer;padding:0 32px;
-  transition:color .2s,background .2s;display:flex;align-items:center;gap:8px;
-  border:none;border-right:1px solid var(--border);border-bottom:4px solid transparent;
-  background:none;white-space:nowrap;flex-shrink:0;
-}
-.pn-home:hover{color:var(--accent);background:var(--accent-dim)}
-.pn-home svg{width:15px;height:15px;fill:currentColor}
-.tab-btn{
-  font-family:var(--sans);font-size:1.35rem;font-weight:700;
-  color:var(--mist);cursor:pointer;padding:0;flex:1;
-  border-bottom:5px solid transparent;border-top:none;border-left:none;
-  border-right:1px solid var(--border);background:none;
-  transition:color .2s,border-color .2s,background .2s;
-  white-space:nowrap;letter-spacing:.2px;
-}
-.tab-btn:last-child{border-right:none}
-.tab-btn:hover{color:var(--bright);background:var(--accent-dim)}
-.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(91,155,213,0.07)}
-
-/* ══════════════════════════════════════════════════
-   INNER PAGE HEADER
-══════════════════════════════════════════════════ */
-.page-hdr{max-width:1120px;margin:0 auto;padding:52px 56px 36px}
-.page-hdr-lbl{
-  font-family:var(--mono);font-size:.72rem;letter-spacing:3px;text-transform:uppercase;
-  color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:10px;
-}
-.page-hdr-lbl::before{content:'';display:block;width:20px;height:1px;background:var(--accent)}
-.page-hdr-title{font-family:var(--serif);font-size:2.4rem;font-weight:700;color:var(--bright);margin-bottom:12px}
-.page-hdr-sub{font-size:1.05rem;color:var(--mist);max-width:600px;line-height:1.85}
-
-/* ══════════════════════════════════════════════════
-   EXPERIENCE BLOCKS
-══════════════════════════════════════════════════ */
-.page-content{max-width:1120px;margin:0 auto;padding:0 56px 80px}
-.fw-div{display:flex;align-items:center;gap:14px;margin:40px 0 20px}
-.fw-div-lbl{font-family:var(--serif);font-size:1.2rem;font-weight:600;color:var(--bright);white-space:nowrap}
-.fw-div::after{content:'';flex:1;height:1px;background:var(--border)}
-.exp-block{background:var(--surface);border:1px solid var(--border);border-radius:16px;margin-bottom:20px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s,border-color .2s}
-.exp-block:hover{box-shadow:var(--shadow-md);border-color:var(--border-h)}
-.exp-top{display:grid;grid-template-columns:1fr 270px;gap:0}
-.exp-left{padding:30px 32px}
-.exp-right{padding:30px 26px;background:var(--surface2);border-left:1px solid var(--border)}
-.exp-org{font-family:var(--mono);font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
-.exp-title{font-size:1.1rem;font-weight:700;color:var(--bright);margin-bottom:12px}
-.exp-body{font-size:.95rem;color:var(--mist);line-height:1.82;margin-bottom:14px}
-.exp-list{list-style:none;display:flex;flex-direction:column;gap:7px}
-.exp-list li{font-size:.92rem;color:var(--mist);padding-left:18px;position:relative;line-height:1.72}
-.exp-list li::before{content:'—';position:absolute;left:0;color:var(--fog);font-size:.78rem}
-.sk-lbl{font-family:var(--mono);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--fog);margin-bottom:12px}
-.sk-list{display:flex;flex-direction:column;gap:8px}
-.sk-item{display:flex;align-items:center;gap:9px;font-size:.9rem;color:var(--sky)}
-.sk-item::before{content:'';display:block;width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
-
-/* ══════════════════════════════════════════════════
-   PHOTO STRIPS
-
-   HOW TO ADD PHOTOS TO EACH STRIP:
-   Find the .photo-slot you want, then replace:
-     <div class="photo-ph">...</div>
-   with:
-     <img src="yourfile.jpg" alt="description">
-   The img tag goes INSIDE .photo-slot, replacing
-   the photo-ph div. Update the .photo-cap text too.
-══════════════════════════════════════════════════ */
-.photo-note{
-  font-family:var(--mono);font-size:.62rem;color:var(--fog);
-  padding:12px 32px 0;line-height:1.6;
-}
-.photo-strip{
-  border-top:1px solid var(--border);padding:18px 32px;
-  background:var(--surface);display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;
-}
-.photo-slot{display:flex;flex-direction:column;align-items:center;gap:6px}
-.photo-slot img{
-  width:140px;height:100px;object-fit:cover;
-  border-radius:10px;border:1px solid var(--border);display:block;
-}
-.photo-ph{
-  width:140px;height:100px;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:5px;
-  border:1.5px dashed var(--faint);border-radius:10px;
-  transition:border-color .2s,background .2s;
-}
-.photo-ph:hover{border-color:var(--accent);background:var(--accent-dim)}
-.photo-ph svg{width:22px;height:22px;fill:var(--fog)}
-.photo-ph span{font-family:var(--mono);font-size:.58rem;color:var(--fog);text-align:center;line-height:1.5}
-.photo-cap{font-family:var(--mono);font-size:.62rem;color:var(--fog);text-align:center;max-width:140px;line-height:1.35}
-
-/* ══════════════════════════════════════════════════
-   PUBLIC ENGAGEMENT HOBBY CARDS
-══════════════════════════════════════════════════ */
-.pe-hobby-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
-.pe-hobby-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;box-shadow:var(--shadow)}
-.pe-icon{width:42px;height:42px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;margin-bottom:14px;border:1px solid var(--border)}
-.pe-icon svg{width:21px;height:21px;fill:var(--accent)}
-.pe-cat{font-family:var(--mono);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--fog);margin-bottom:5px}
-.pe-title{font-size:1rem;font-weight:700;color:var(--bright);margin-bottom:8px}
-.pe-desc{font-size:.92rem;color:var(--mist);line-height:1.75;margin-bottom:13px}
-.pe-tags{display:flex;flex-wrap:wrap;gap:5px}
-.pe-tag{font-family:var(--mono);font-size:.62rem;background:var(--accent-dim);color:var(--sky);border:1px solid var(--border);border-radius:20px;padding:3px 9px}
-
-/* ══════════════════════════════════════════════════
-   CURSOR BUBBLES
-══════════════════════════════════════════════════ */
-.cursor-bubble{
-  position:fixed;border-radius:50%;pointer-events:none;z-index:9999;
-  transform:translate(-50%,-50%);
-  animation:bubbleFade var(--dur,0.9s) ease-out forwards;
-}
-@keyframes bubbleFade{
-  0%{opacity:.7;transform:translate(-50%,-50%) scale(1)}
-  100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)),calc(-50% - var(--rise,40px))) scale(.2)}
-}
-
-/* ══════════════════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════════════════ */
-@media(max-width:900px){
-  .home-top{grid-template-columns:1fr;gap:40px;padding:40px 24px 32px}
-  .home-top-right{order:-1;align-items:flex-start}
-  .headshot-frame{width:200px;height:248px}
-  .home-bio-block,.home-nav-btns,.tl-section{padding-left:24px;padding-right:24px}
-  .home-nav-btn{padding:24px 28px;font-size:1.25rem}
-  .home-nav-btn-title{font-size:1.2rem}
-  .page-hdr,.page-content{padding-left:24px;padding-right:24px}
-  .page-nav{padding:0}
-  .topbar{padding:16px 24px}
-  .exp-top{grid-template-columns:1fr}
-  .exp-right{border-left:none;border-top:1px solid var(--border)}
-  .pe-grid,.pe-hobby-grid{grid-template-columns:1fr}
-  .tab-btn{font-size:1rem}
-}
-</style>
-</head>
-<body>
-
-<!-- ════════════════════ A11Y TOGGLE ════════════════════ -->
-<button id="a11y-toggle" aria-label="Accessibility settings" aria-expanded="false">
-  <svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 110 4 2 2 0 010-4zm8 7h-5v13h-2v-6h-2v6H9V9H4V7h16v2z"/></svg>
-  <span class="a11y-label">A11Y</span>
-</button>
-
-<!-- ════════════════════ A11Y PANEL ════════════════════ -->
-<aside id="a11y-panel" role="dialog" aria-label="Accessibility settings">
-  <div class="a11y-hdr">
-    <div class="a11y-hdr-left">
-      <span class="a11y-fish">🐟</span>
-      <div><div class="a11y-ttl">Accessibility</div><div class="a11y-sub-txt">make it yours</div></div>
-    </div>
-    <button class="a11y-x" id="a11y-close">✕</button>
-  </div>
-  <div class="a11y-body">
-    <div>
-      <div class="a11y-grp-lbl">🐠 Text Size</div>
-      <div class="fish-track" id="size-track">
-        <div class="fish-fill" id="size-fill"></div>
-        <div class="fish-thumb" id="size-thumb" tabindex="0" role="slider" aria-valuemin="14" aria-valuemax="24" aria-valuenow="18">🐟</div>
-      </div>
-      <div class="fish-lbls"><span class="fish-lbl">small</span><span class="fish-lbl">large</span></div>
-      <div class="fish-val" id="size-val">18px</div>
-    </div>
-    <div>
-      <div class="a11y-grp-lbl">🫧 Line Spacing</div>
-      <div class="fish-track" id="lh-track">
-        <div class="fish-fill" id="lh-fill"></div>
-        <div class="fish-thumb" id="lh-thumb" tabindex="0" role="slider">🐡</div>
-      </div>
-      <div class="fish-lbls"><span class="fish-lbl">tight</span><span class="fish-lbl">airy</span></div>
-      <div class="fish-val" id="lh-val">1.85</div>
-    </div>
-    <div>
-      <div class="a11y-grp-lbl">🌊 Text Color</div>
-      <div class="swatches" id="swatches">
-        <div class="swatch active" data-c="default" tabindex="0"><div class="sw-dot" style="background:#e8f2fb"></div><span class="sw-nm">Ocean<br>Blue</span></div>
-        <div class="swatch" data-c="warm" tabindex="0"><div class="sw-dot" style="background:#f5e6c8"></div><span class="sw-nm">Sandy<br>Warm</span></div>
-        <div class="swatch" data-c="sage" tabindex="0"><div class="sw-dot" style="background:#c8e6d4"></div><span class="sw-nm">Kelp<br>Green</span></div>
-        <div class="swatch" data-c="coral" tabindex="0"><div class="sw-dot" style="background:#ffd6d6"></div><span class="sw-nm">Coral<br>Soft</span></div>
-        <div class="swatch" data-c="lavender" tabindex="0"><div class="sw-dot" style="background:#e0d4f5"></div><span class="sw-nm">Deep<br>Tide</span></div>
-        <div class="swatch" data-c="white" tabindex="0"><div class="sw-dot" style="background:#fff;border-color:rgba(0,0,0,.15)"></div><span class="sw-nm">Bright<br>White</span></div>
-      </div>
-    </div>
-    <div>
-      <div class="a11y-grp-lbl">🐙 Options</div>
-      <div class="a11y-row"><span class="a11y-row-lbl">🔆 High Contrast</span><div class="pill" id="tog-contrast" role="switch" aria-checked="false" tabindex="0"></div></div>
-      <div class="a11y-row"><span class="a11y-row-lbl">📖 Dyslexia Font</span><div class="pill" id="tog-dyslexia" role="switch" aria-checked="false" tabindex="0"></div></div>
-      <div class="a11y-row"><span class="a11y-row-lbl">🌀 Reduce Motion</span><div class="pill" id="tog-motion" role="switch" aria-checked="false" tabindex="0"></div></div>
-    </div>
-    <button class="a11y-rst" id="a11y-reset">🐚 Reset to defaults</button>
-  </div>
-  <div class="a11y-ftr"><div class="fish-parade" aria-hidden="true">🐟 🫧 🐠 🐡 🦀 🫧 🐟 🐚 🐡 🫧 🐠 🐟 🦑 🫧 🐟</div></div>
-</aside>
-
-<!-- ════════════════════════════════════════════════════
-     HOME VIEW
-════════════════════════════════════════════════════ -->
-<div id="home" class="view active">
-
-  <header class="topbar">
-    <span class="topbar-name">James Benavides</span>
-    <div class="topbar-links">
-      <a href="https://www.linkedin.com/in/james-benavides/" target="_blank" class="topbar-link">LinkedIn</a>
-      <a href="mailto:JamesBenavides003@gmail.com" class="topbar-link">Email</a>
-    </div>
-  </header>
-
-  <!-- ROW 1: Name + Headshot -->
-  <div class="home-top">
-    <div class="home-top-left">
-      <h1 class="home-name">James<br>Benavides</h1>
-      <div class="home-title">Environmental Scientist</div>
-      <div class="home-contact-links">
-        <a href="https://www.linkedin.com/in/james-benavides/" target="_blank" class="home-contact-link">
-          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          LinkedIn
-        </a>
-        <a href="mailto:JamesBenavides003@gmail.com" class="home-contact-link">
-          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-          JamesBenavides003@gmail.com
-        </a>
-        <span class="home-contact-link">📍 Coon Rapids, Iowa</span>
-      </div>
-    </div>
-
-    <div class="home-top-right">
-      <!-- ════════════════════════════════════════
-           HEADSHOT PHOTO — ADD YOURS HERE
-           Replace the <div class="headshot-ph">
-           block below with your photo:
-           <img src="James1.jpg" alt="James Benavides">
-           Make sure the image file is in the same
-           folder as this HTML file.
-      ════════════════════════════════════════ -->
-      <div class="headshot-frame">
-      <img src="James.png" alt="James Benavides Headshot">          
-         <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-          <span class="ph-label">Add your headshot here</span>
-          <span class="ph-code">Replace this div with:<br>&lt;img src="James1.jpg"&gt;</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ROW 2: Full-width Bio -->
-  <div class="home-bio-block">
-    <div class="bio-card">
-      <p>Welcome! I'm an environmental scientist with a passion for understanding ecosystems through both data and lived experience.</p>
-      <p>In 2025, I earned dual degrees in <strong>Biology (Marine, Ecology, and Evolution)</strong> and <strong>Gender, Sexuality, and Women's Studies</strong> from <strong>Bowdoin College in Maine</strong>. This interdisciplinary foundation shapes how I approach environmental work as both science and story.</p>
-      <p>My research experience spans sea star behavior, oyster aquaculture, and marine protist culturing — with experience designing, conducting, and presenting independent projects.</p>
-      <p>In my recent experience with <strong>Texas Parks and Wildlife – Coastal Fisheries</strong>, I worked on permitting processes, public engagement, and fisheries sampling, gaining insight into applied conservation at the state level.</p>
-      <p>I currently serve as an <strong>AmeriCorps</strong> member at <strong>Whiterock Conservancy</strong> in Iowa, where I focus on land stewardship through invasive species removal, soil and water sampling, environmental education for diverse audiences, and trail and campground maintenance.</p>
-      <p>While I value preparation and safety in the field, I also believe curiosity and connection to place are just as essential. Moving forward, I'm eager to deepen my skills in data analysis, programming, scientific communication, and grant writing alongside hands-on environmental work.</p>
-    </div>
-  </div>
 
 /* ══════════════════════════════════════
    HOME — THREE BIG NAV BUTTONS
@@ -576,7 +235,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
 .home-nav-btn-sub{font-size:.85rem;font-weight:400;opacity:.7;display:block;font-family:var(--mono);letter-spacing:.4px}
 .home-nav-btn-arrow{font-size:1.5rem;opacity:.35;transition:opacity .2s,transform .2s;flex-shrink:0}
 .home-nav-btn:hover .home-nav-btn-arrow{opacity:1;transform:translate(4px,-4px)}
- 
+
 /* ══════════════════════════════════════
    TIMELINE
 ══════════════════════════════════════ */
@@ -611,7 +270,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
 .tl-tag{font-family:var(--mono);font-size:.63rem;background:rgba(106,174,224,.1);color:var(--sky);border-radius:20px;padding:3px 11px}
 .resume-link{display:inline-flex;align-items:center;gap:6px;margin-top:20px;font-family:var(--mono);font-size:.76rem;color:var(--mist);text-decoration:none;transition:color .2s}
 .resume-link:hover{color:var(--accent)}
- 
+
 /* ══════════════════════════════════════
    MEDIA CARDS
 ══════════════════════════════════════ */
@@ -636,7 +295,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
 .pe-desc{font-size:.88rem;color:var(--mist);line-height:1.75;margin-bottom:12px}
 .pe-tags{display:flex;flex-wrap:wrap;gap:5px}
 .pe-tag{font-family:var(--mono);font-size:.6rem;background:var(--accent-dim);color:var(--sky);border:1px solid var(--border);border-radius:20px;padding:3px 9px}
- 
+
 /* ══════════════════════════════════════
    INNER PAGE NAV (full-width tabs)
 ══════════════════════════════════════ */
@@ -666,7 +325,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
 .tab-btn:last-child{border-right:none}
 .tab-btn:hover{color:var(--bright);background:var(--accent-dim)}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(106,174,224,0.07)}
- 
+
 /* ══════════════════════════════════════
    INNER PAGE HEADER
 ══════════════════════════════════════ */
@@ -678,7 +337,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
 .page-hdr-lbl::before{content:'';display:block;width:20px;height:1px;background:var(--accent)}
 .page-hdr-title{font-family:var(--serif);font-size:2.3rem;font-weight:700;color:var(--bright);margin-bottom:12px}
 .page-hdr-sub{font-size:1.02rem;color:var(--mist);max-width:600px;line-height:1.85}
- 
+
 /* ══════════════════════════════════════
    EXPERIENCE BLOCKS
 ══════════════════════════════════════ */
@@ -701,7 +360,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
 .sk-list{display:flex;flex-direction:column;gap:8px}
 .sk-item{display:flex;align-items:center;gap:9px;font-size:.88rem;color:var(--sky)}
 .sk-item::before{content:'';display:block;width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
- 
+
 /* ══════════════════════════════════════
    PHOTO STRIPS
    To add a photo: replace <div class="photo-ph">...</div>
@@ -717,7 +376,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
 .photo-ph svg{width:22px;height:22px;fill:var(--fog)}
 .photo-ph span{font-family:var(--mono);font-size:.57rem;color:var(--fog);text-align:center;line-height:1.5}
 .photo-cap{font-family:var(--mono);font-size:.6rem;color:var(--fog);text-align:center;max-width:140px;line-height:1.35}
- 
+
 /* ══════════════════════════════════════
    HOBBY CARDS (fun page)
 ══════════════════════════════════════ */
@@ -730,7 +389,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
 .pe-desc{font-size:.91rem;color:var(--mist);line-height:1.75;margin-bottom:12px}
 .pe-tags{display:flex;flex-wrap:wrap;gap:5px}
 .pe-tag{font-family:var(--mono);font-size:.6rem;background:var(--accent-dim);color:var(--sky);border:1px solid var(--border);border-radius:20px;padding:3px 9px}
- 
+
 /* ══════════════════════════════════════
    CURSOR BUBBLES
 ══════════════════════════════════════ */
@@ -739,7 +398,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
   0%{opacity:.65;transform:translate(-50%,-50%) scale(1)}
   100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)),calc(-50% - var(--rise,40px))) scale(.15)}
 }
- 
+
 /* ══════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════ */
@@ -761,13 +420,13 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
 </style>
 </head>
 <body>
- 
+
 <!-- ═══ A11Y TOGGLE ═══ -->
 <button id="a11y-toggle" aria-label="Accessibility settings" aria-expanded="false">
   <svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 110 4 2 2 0 010-4zm8 7h-5v13h-2v-6h-2v6H9V9H4V7h16v2z"/></svg>
   <span class="a11y-label">A11Y</span>
 </button>
- 
+
 <!-- ═══ A11Y PANEL ═══ -->
 <aside id="a11y-panel" role="dialog" aria-label="Accessibility settings">
   <div class="a11y-hdr">
@@ -811,7 +470,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
   </div>
   <div class="a11y-ftr"><div class="fish-parade" aria-hidden="true">🐟 🫧 🐠 🐡 🦀 🫧 🐟 🐚 🐡 🫧 🐠 🐟 🦑 🫧 🐟</div></div>
 </aside>
- 
+
 <!-- ════════════════════════════════════
      HOME
 ════════════════════════════════════ -->
@@ -823,7 +482,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
       <a href="mailto:JamesBenavides003@gmail.com" class="topbar-link">Email</a>
     </div>
   </header>
- 
+
   <!-- ROW 1 — Name + Headshot -->
   <div class="home-top">
     <div class="home-top-left">
@@ -840,7 +499,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
         <span class="home-contact-link">📍 Coon Rapids, Iowa</span>
       </div>
     </div>
- 
+
     <div class="home-top-right">
       <!-- ════════════════════════════════
            ADD YOUR HEADSHOT HERE:
@@ -859,26 +518,26 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
       <div class="hero-loc">📍 Coon Rapids, Iowa</div>
     </div>
   </div>
- 
+
   <!-- ROW 2 — Bio (tight to name row) -->
   <div class="home-bio-block">
     <div class="bio-card">
- 
+
       <p class="bio-lead">I'm an environmental scientist who believes in science as both <em>rigorous practice</em> and <em>human story</em> — and that the most meaningful conservation work happens at the intersection of the two.</p>
- 
+
       <p>In 2025, I earned dual degrees in <strong>Biology (Marine, Ecology &amp; Evolution)</strong> and <strong>Gender, Sexuality &amp; Women's Studies</strong> from <strong>Bowdoin College</strong> in Maine. That interdisciplinary combination isn't an accident — it's how I see the world. <span class="bio-tag">Marine Science</span><span class="bio-tag">Ecology</span><span class="bio-tag">Social Science</span></p>
- 
+
       <p>My research spans <strong>sea star behavioral ecology</strong>, <strong>oyster aquaculture</strong>, and <strong>marine protist culturing</strong> — each project independently designed, conducted, and presented. Most recently, a fellowship at the <strong>Darling Marine Center</strong> explored tidal-energy aquaculture through a <strong>Two-Eyed Seeing</strong> framework, weaving Indigenous Knowledge and Western Science together.</p>
- 
+
       <p>As a <strong>Coastal Fisheries Intern with Texas Parks &amp; Wildlife</strong>, I worked on permitting, public engagement, and multi-method fisheries sampling across Galveston Bay — gaining direct exposure to applied conservation at the state agency level.</p>
- 
+
       <p>I currently serve as an <strong>AmeriCorps member at Whiterock Conservancy</strong> in Iowa: prescribed burns, invasive species removal, soil and water sampling, trail maintenance, and environmental education for audiences from 2nd graders to adult volunteers.</p>
- 
+
       <p>Moving forward, I'm eager to grow in <strong>data analysis, scientific communication, and grant writing</strong> — pairing those skills with the fieldwork and community engagement I love.</p>
- 
+
     </div>
   </div>
- 
+
   <!-- ROW 3 — Three Big Buttons -->
   <div class="home-nav-btns">
     <button class="home-nav-btn primary" onclick="showPage('fieldwork')">
@@ -912,7 +571,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
       <span class="home-nav-btn-arrow">↗</span>
     </button>
   </div>
- 
+
   <!-- Timeline -->
   <div class="tl-section">
     <div class="sec-lbl">Experience</div>
@@ -960,7 +619,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
     </div>
     <a class="resume-link" href="#">View Full Résumé ↗</a>
   </div>
- 
+
   <!-- Media -->
   <div class="tl-section" style="padding-top:0">
     <div class="sec-lbl">Science Communication &amp; Media</div>
@@ -991,9 +650,9 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
       </a>
     </div>
   </div>
- 
+
 </div><!-- /home -->
- 
+
 <!-- ════════════════════════════════════
      FIELDWORK
 ════════════════════════════════════ -->
@@ -1010,9 +669,9 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
     <p class="page-hdr-sub">Hands-on experience across coastal fisheries and land management — from the Gulf of Mexico to the Gulf of Maine.</p>
   </div>
   <div class="page-content">
- 
+
     <div class="fw-div"><span class="fw-div-lbl">Land Management</span></div>
- 
+
     <div class="exp-block">
       <div class="exp-top">
         <div class="exp-left">
@@ -1043,7 +702,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
         <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
       </div>
     </div>
- 
+
     <div class="exp-block">
       <div class="exp-top">
         <div class="exp-left">
@@ -1071,7 +730,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
         <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
       </div>
     </div>
- 
+
     <div class="exp-block">
       <div class="exp-top">
         <div class="exp-left">
@@ -1099,9 +758,9 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
         <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
       </div>
     </div>
- 
+
     <div class="fw-div"><span class="fw-div-lbl">Coastal Fisheries</span></div>
- 
+
     <div class="exp-block">
       <div class="exp-top">
         <div class="exp-left">
@@ -1135,9 +794,9 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
         <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Recording fish for angler surveys</div></div>
       </div>
     </div>
- 
+
     <div class="fw-div"><span class="fw-div-lbl">Aquaculture &amp; Bivalve Research</span></div>
- 
+
     <div class="exp-block">
       <div class="exp-top">
         <div class="exp-left">
@@ -1167,7 +826,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
         <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Intertidal oyster study site</div></div>
       </div>
     </div>
- 
+
     <div class="exp-block">
       <div class="exp-top">
         <div class="exp-left">
@@ -1196,9 +855,9 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
         <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">GoPro recording scallop behavior</div></div>
       </div>
     </div>
- 
+
     <div class="fw-div"><span class="fw-div-lbl">Microbial Oceanography</span></div>
- 
+
     <div class="exp-block">
       <div class="exp-top">
         <div class="exp-left">
@@ -1227,10 +886,10 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
         <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Offshore water filtering</div></div>
       </div>
     </div>
- 
+
   </div>
 </div><!-- /fieldwork -->
- 
+
 <!-- ════════════════════════════════════
      PUBLIC ENGAGEMENT
 ════════════════════════════════════ -->
@@ -1247,9 +906,9 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
     <p class="page-hdr-sub">Connecting communities to conservation through programs, outreach, and science communication — from elementary classrooms to public events.</p>
   </div>
   <div class="page-content">
- 
+
     <div class="fw-div"><span class="fw-div-lbl">Education Programs</span></div>
- 
+
     <div class="exp-block">
       <div class="exp-top">
         <div class="exp-left">
@@ -1278,7 +937,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
         <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
       </div>
     </div>
- 
+
     <div class="exp-block">
       <div class="exp-top">
         <div class="exp-left">
@@ -1307,9 +966,9 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
         <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
       </div>
     </div>
- 
+
     <div class="fw-div"><span class="fw-div-lbl">Volunteer Coordination</span></div>
- 
+
     <div class="exp-block">
       <div class="exp-top">
         <div class="exp-left">
@@ -1340,10 +999,10 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
         <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
       </div>
     </div>
- 
+
   </div>
 </div><!-- /engagement -->
- 
+
 <!-- ════════════════════════════════════
      FUN THINGS
 ════════════════════════════════════ -->
@@ -1360,7 +1019,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
     <p class="page-hdr-sub">Life outside the lab and the land — hobbies, creativity, adventures, and whatever else makes me, me.</p>
   </div>
   <div class="page-content">
- 
+
     <div class="fw-div"><span class="fw-div-lbl">Art &amp; Creativity</span></div>
     <!-- ART GALLERY: replace each placeholder div with <img src="art.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:12px" alt="title"> -->
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px;margin-bottom:20px">
@@ -1371,7 +1030,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
       <div style="background:var(--surface);border:1.5px dashed var(--faint);border-radius:14px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:18px;text-align:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="var(--fog)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span style="font-family:var(--mono);font-size:.62rem;color:var(--fog);line-height:1.5">Add artwork<br>src="art.jpg"</span></div>
       <div style="background:var(--surface);border:1.5px dashed var(--faint);border-radius:14px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:18px;text-align:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="var(--fog)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span style="font-family:var(--mono);font-size:.62rem;color:var(--fog);line-height:1.5">Add artwork<br>src="art.jpg"</span></div>
     </div>
- 
+
     <div class="fw-div"><span class="fw-div-lbl">Hobbies &amp; Interests</span></div>
     <div class="pe-hobby-grid">
       <div class="pe-hobby-card"><div class="pe-icon"><svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/></svg></div><div class="pe-cat">Hobby</div><div class="pe-title">Your Hobby Here</div><div class="pe-desc">Describe what you love about it, how long you've been doing it, or a fun memory!</div><div class="pe-tags"><span class="pe-tag">Tag</span><span class="pe-tag">Tag</span></div></div>
@@ -1379,7 +1038,7 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
       <div class="pe-hobby-card"><div class="pe-icon"><svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 14H8v-2h8v2zm0-4H8v-2h8v2zm-3-4H8V6h5v2z"/></svg></div><div class="pe-cat">Reading</div><div class="pe-title">What I'm Reading</div><div class="pe-desc">A book, article, or paper you've been enjoying — science, fiction, or something unexpected.</div><div class="pe-tags"><span class="pe-tag">Tag</span><span class="pe-tag">Tag</span></div></div>
       <div class="pe-hobby-card"><div class="pe-icon"><svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div><div class="pe-cat">Music / Other</div><div class="pe-title">Something You Love</div><div class="pe-desc">Music, cooking, sports, language learning — whatever brings you joy. Make it personal!</div><div class="pe-tags"><span class="pe-tag">Tag</span><span class="pe-tag">Tag</span></div></div>
     </div>
- 
+
     <div class="fw-div"><span class="fw-div-lbl">Photos &amp; Memories</span></div>
     <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px">
       <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
@@ -1387,10 +1046,10 @@ a.pe-card:hover{box-shadow:var(--shadow-md);border-color:var(--border-h);transfo
       <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
       <div class="photo-slot"><div class="photo-ph"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><span>src="photo.jpg"</span></div><div class="photo-cap">Caption here</div></div>
     </div>
- 
+
   </div>
 </div><!-- /fun -->
- 
+
 <script>
 /* ════ NAVIGATION ════ */
 function showHome() {
@@ -1403,7 +1062,7 @@ function showPage(id) {
   document.getElementById(id).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
- 
+
 /* ════ BUBBLE CURSOR ════ */
 (function(){
   var colors=['rgba(106,174,224,','rgba(176,216,242,','rgba(220,240,252,','rgba(70,130,180,'];
@@ -1428,7 +1087,7 @@ function showPage(id) {
     })();
   });
 })();
- 
+
 /* ════ ACCESSIBILITY PANEL ════ */
 (function(){
   var panel=document.getElementById('a11y-panel');
@@ -1438,7 +1097,7 @@ function showPage(id) {
   tog.addEventListener('click',function(){panel.classList.add('open');tog.setAttribute('aria-expanded','true');});
   close.addEventListener('click',function(){panel.classList.remove('open');tog.setAttribute('aria-expanded','false');});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')panel.classList.remove('open');});
- 
+
   function makeSlider(trkId,thmId,filId,valId,min,max,init,dec,unit,cb){
     var trk=document.getElementById(trkId),thm=document.getElementById(thmId),fil=document.getElementById(filId),val=document.getElementById(valId),cur=init;
     function pct(v){return(v-min)/(max-min);}
@@ -1491,4 +1150,3 @@ function showPage(id) {
 </script>
 </body>
 </html>
- 
